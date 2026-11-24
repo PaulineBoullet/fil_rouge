@@ -1,2 +1,4 @@
-<h1>Contacts#edit</h1>
-<p>Find me in app/views/contacts/edit.html.erb</p>
+<%= turbo_frame_tag "modal" do %>
+  <%= render "shared/modal_header", title: "Modifier #{@contact.first_name_was} #{@contact.last_name_was}", subtitle: "Changer l'adresse mail ne déplace pas les mails déjà importés." %>
+  <%= render "form", contact: @contact %>
+<% end %>

@@ -1,2 +1,4 @@
-<h1>Prompts#edit</h1>
-<p>Find me in app/views/prompts/edit.html.erb</p>
+<%= turbo_frame_tag "modal" do %>
+  <%= render "shared/modal_header", title: "Modifier #{@prompt.name_was}", subtitle: "Les synthèses déjà générées ne sont pas modifiées." %>
+  <%= render "form", prompt: @prompt %>
+<% end %>

@@ -1,2 +1,4 @@
-<h1>Prompts#new</h1>
-<p>Find me in app/views/prompts/new.html.erb</p>
+<%= turbo_frame_tag "modal" do %>
+  <%= render "shared/modal_header", title: "Ajouter un prompt", subtitle: "Rédigez les instructions que l'IA suivra pour résumer les échanges." %>
+  <%= render "form", prompt: @prompt %>
+<% end %>

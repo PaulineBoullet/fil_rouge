@@ -1,2 +1,4 @@
-<h1>Companies#edit</h1>
-<p>Find me in app/views/companies/edit.html.erb</p>
+<%= turbo_frame_tag "modal" do %>
+  <%= render "shared/modal_header", title: "Modifier #{@company.name_was}", subtitle: "Les modifications s'appliquent aux prochaines synthèses." %>
+  <%= render "form", company: @company %>
+<% end %>

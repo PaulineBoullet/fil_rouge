@@ -1,0 +1,29 @@
+// Fenêtre modale aux couleurs de la direction « pop »
+.modal-content {
+  border-radius: $border-radius;
+  box-shadow: 0 20px 70px rgba($ink, .35);
+}
+
+.modal-header {
+  align-items: flex-start;
+  padding: 24px 28px 16px;
+  border-bottom: 1px solid $line;
+}
+
+.modal-title {
+  font-family: $headers-font;
+  font-weight: 700;
+}
+
+.modal-subtitle {
+  margin: 4px 0 0;
+  font-size: .875rem;
+  color: $ink-muted;
+}
+
+.modal-body { padding: 24px 28px; }
+
+.modal-footer {
+  padding: 16px 28px 24px;
+  border-top: 1px solid $line;
+}
