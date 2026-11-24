@@ -1,2 +1,4 @@
-<h1>Employees#new</h1>
-<p>Find me in app/views/employees/new.html.erb</p>
+<%= turbo_frame_tag "modal" do %>
+  <%= render "shared/modal_header", title: "Ajouter un collaborateur", subtitle: "Ses mails avec les contacts de l'annuaire apparaîtront dans le dashboard." %>
+  <%= render "form", employee: @employee %>
+<% end %>

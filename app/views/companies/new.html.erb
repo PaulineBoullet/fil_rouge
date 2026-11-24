@@ -1,2 +1,4 @@
-<h1>Companies#new</h1>
-<p>Find me in app/views/companies/new.html.erb</p>
+<%= turbo_frame_tag "modal" do %>
+  <%= render "shared/modal_header", title: "Ajouter une entreprise", subtitle: "Les mails reçus de ce domaine seront rattachés à l'entreprise." %>
+  <%= render "form", company: @company %>
+<% end %>

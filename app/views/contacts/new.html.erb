@@ -1,2 +1,4 @@
-<h1>Contacts#new</h1>
-<p>Find me in app/views/contacts/new.html.erb</p>
+<%= turbo_frame_tag "modal" do %>
+  <%= render "shared/modal_header", title: "Ajouter un contact", subtitle: "Les mails échangés avec cette adresse lui seront rattachés." %>
+  <%= render "form", contact: @contact %>
+<% end %>

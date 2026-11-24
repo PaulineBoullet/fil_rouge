@@ -36,6 +36,15 @@
     </div>
 
     <%= render "shared/flashes" %>
-    <%= turbo_frame_tag "modal" %>
+    <%# Fenêtre modale unique : les formulaires s'y chargent via le cadre Turbo "modal" %>
+    <div class="modal fade" id="app-modal" tabindex="-1" aria-hidden="true"
+         data-controller="modal"
+         data-action="turbo:frame-load->modal#open turbo:frame-missing->modal#close hidden.bs.modal->modal#clear">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <%= turbo_frame_tag "modal" %>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

@@ -1,6 +1,6 @@
 <%# locals: (edit_path:, delete_path:, confirm:) %>
 <div class="row-actions">
-  <%= link_to "Modifier", edit_path, class: "btn btn-sm btn-outline-secondary" %>
+  <%= link_to "Modifier", edit_path, class: "btn btn-sm btn-outline-secondary", data: { turbo_frame: "modal" } %>
   <%= button_to "Supprimer", delete_path,
                 method: :delete,
                 class: "btn btn-sm btn-outline-danger",

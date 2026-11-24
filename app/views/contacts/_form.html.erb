@@ -1,0 +1,17 @@
+<%= simple_form_for contact do |f| %>
+  <div class="modal-body">
+    <%= f.error_notification message: "Merci de corriger les champs signalés." %>
+    <div class="row">
+      <div class="col-md-6"><%= f.input :first_name, label: "Prénom" %></div>
+      <div class="col-md-6"><%= f.input :last_name, label: "Nom" %></div>
+    </div>
+    <%= f.input :email, label: "Adresse mail", placeholder: "prenom.nom@exemple.fr" %>
+    <%= f.association :company, label: "Entreprise",
+                      collection: Company.order(:name), include_blank: "Aucune",
+                      hint: "Facultatif, par exemple pour une adresse personnelle." %>
+  </div>
+  <div class="modal-footer">
+    <%= link_to "Annuler", contacts_path, class: "btn btn-outline-secondary", data: { bs_dismiss: "modal" } %>
+    <%= f.button :submit, contact.new_record? ? "Ajouter le contact" : "Enregistrer", class: "btn-primary" %>
+  </div>
+<% end %>
