@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
     <title><%= content_for(:title) || "Fil Rouge" %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -24,6 +24,18 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div class="app-shell">
+      <%= render "shared/sidebar" %>
+
+      <main class="app-main">
+        <%= render "shared/decor" %>
+        <div class="app-content">
+          <%= yield %>
+        </div>
+      </main>
+    </div>
+
+    <%= render "shared/flashes" %>
+    <%= turbo_frame_tag "modal" %>
   </body>
 </html>

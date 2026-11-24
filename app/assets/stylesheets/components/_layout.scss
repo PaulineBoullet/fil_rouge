@@ -1,0 +1,24 @@
+// Structure générale : barre latérale + contenu
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-main {
+  flex: 1 1 auto;
+  min-width: 0;          // évite qu'un tableau large ne déborde
+  position: relative;    // repère du décor
+  overflow: hidden;
+}
+
+.app-content {
+  position: relative;
+  z-index: 1;            // le contenu passe devant le décor
+  max-width: 1200px;
+  padding: 32px;
+}
+
+@include media-breakpoint-down(md) {
+  .app-shell { flex-direction: column; }
+  .app-content { padding: 20px; }
+}
