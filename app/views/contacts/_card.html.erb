@@ -1,0 +1,23 @@
+<%= link_to contact_path(contact, date: @date), class: "entity-card" do %>
+  <div class="entity-card__head entity-card__head--person">
+    <span class="avatar-initials" aria-hidden="true"><%= contact.initials %></span>
+    <div>
+      <h3 class="entity-card__title"><%= contact.full_name %></h3>
+      <span class="entity-card__meta"><%= contact.email %></span>
+    </div>
+  </div>
+
+  <p class="entity-card__text">
+    <%= truncate(contact_summaries[contact.id]&.summary, length: 180) || "Pas de synthèse pour cette date." %>
+  </p>
+
+  <div class="entity-card__foot">
+    <span>
+      <%= pluralize(contact.emails_count, "mail") %>
+      <% if contact.last_email_at %>
+        · dernier à <%= contact.last_email_at.strftime("%H h %M") %>
+      <% end %>
+    </span>
+    <span class="entity-card__cta">Voir les mails →</span>
+  </div>
+<% end %>

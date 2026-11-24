@@ -1,0 +1,204 @@
+// Barre d'outils en haut de page (choix de la date)
+.page-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+
+.date-filter {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  .form-control { width: 170px; }
+}
+
+// Grille de cartes
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.section-title {
+  margin: 32px 0 16px;
+  font-size: 1.25rem;
+}
+
+// Carte d'entreprise ou de contact, cliquable en entier
+.entity-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 200px;
+  padding: 24px;
+  background: $white;
+  border: 1px solid $line;
+  border-radius: $border-radius;
+  color: $ink;
+  transition: box-shadow .15s ease, border-color .15s ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: $violet;
+    box-shadow: 0 15px 35px rgba($violet, .2);
+    color: $ink;
+    text-decoration: none;
+  }
+
+  &__head {
+    display: flex;
+    flex-direction: column;
+
+    &--person {
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.125rem;
+  }
+
+  &__meta {
+    font-size: .8125rem;
+    color: $ink-muted;
+  }
+
+  &__text {
+    flex-grow: 1;
+    margin: 0;
+    font-size: .9375rem;
+    line-height: 1.6;
+  }
+
+  &__foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid $line;
+    font-size: .8125rem;
+    color: $ink-muted;
+  }
+
+  &__cta {
+    color: $violet-text;
+    font-weight: 500;
+  }
+}
+
+.avatar-initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: $violet-soft;
+  color: $violet-dark;
+  font-weight: 600;
+  font-size: .875rem;
+}
+
+// Panneau de synthèse
+.summary-panel {
+  padding: 24px;
+  background: $white;
+  border: 1px solid $line;
+  border-radius: $border-radius;
+  box-shadow: 0 20px 70px rgba($violet, .2);
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: $violet-text;
+  }
+
+  &__date {
+    font-size: .75rem;
+    color: $ink-muted;
+  }
+
+  &__text p:last-child { margin-bottom: 0; }
+
+  &__empty {
+    margin: 0;
+    color: $ink-muted;
+  }
+}
+
+// Liste des mails
+.email-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.email-item {
+  padding: 20px 24px;
+  background: $white;
+  border: 1px solid $line;
+  border-radius: $border-radius;
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  &__subject {
+    margin: 0;
+    font-family: $body-font;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  &__date,
+  &__meta {
+    font-size: .8125rem;
+    color: $ink-muted;
+  }
+
+  &__meta { margin: 4px 0 8px; }
+
+  &__summary { margin-bottom: 8px; }
+
+  &__content {
+    font-size: .875rem;
+    color: $ink-muted;
+
+    summary {
+      color: $violet-text;
+      cursor: pointer;
+    }
+  }
+}
+
+// Message quand une liste est vide
+.empty-state {
+  padding: 40px 24px;
+  text-align: center;
+  background: $white;
+  border: 1px dashed $line-strong;
+  border-radius: $border-radius;
+  color: $ink-muted;
+
+  p { margin: 0; }
+}
