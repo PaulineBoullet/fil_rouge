@@ -10,9 +10,80 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_23_153359) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_24_110623) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "companies", force: :cascade do |t|
+    t.bigint "prompt_id"
+    t.string "name", null: false
+    t.string "domain", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["domain"], name: "index_companies_on_domain", unique: true
+    t.index ["prompt_id"], name: "index_companies_on_prompt_id"
+  end
+
+  create_table "company_summaries", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.text "summary"
+    t.datetime "generated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_company_summaries_on_company_id"
+  end
+
+  create_table "contact_summaries", force: :cascade do |t|
+    t.bigint "contact_id", null: false
+    t.text "summary"
+    t.datetime "generated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_id"], name: "index_contact_summaries_on_contact_id"
+  end
+
+  create_table "contacts", force: :cascade do |t|
+    t.bigint "company_id"
+    t.string "email", null: false
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_contacts_on_company_id"
+    t.index ["email"], name: "index_contacts_on_email", unique: true
+  end
+
+  create_table "emails", force: :cascade do |t|
+    t.bigint "contact_id", null: false
+    t.bigint "employee_id", null: false
+    t.string "message_id"
+    t.string "subject"
+    t.text "content"
+    t.text "summary"
+    t.datetime "sent_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_id"], name: "index_emails_on_contact_id"
+    t.index ["employee_id"], name: "index_emails_on_employee_id"
+    t.index ["message_id"], name: "index_emails_on_message_id", unique: true
+    t.index ["sent_at"], name: "index_emails_on_sent_at"
+  end
+
+  create_table "employees", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_employees_on_email", unique: true
+  end
+
+  create_table "prompts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "solid_cable_messages", force: :cascade do |t|
     t.binary "channel", null: false
@@ -184,6 +255,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_23_153359) do
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
+  add_foreign_key "companies", "prompts"
+  add_foreign_key "company_summaries", "companies"
+  add_foreign_key "contact_summaries", "contacts"
+  add_foreign_key "contacts", "companies"
+  add_foreign_key "emails", "contacts"
+  add_foreign_key "emails", "employees"
   add_foreign_key "solid_queue_batch_executions", "solid_queue_batches", column: "batch_id", on_delete: :cascade
   add_foreign_key "solid_queue_batch_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
