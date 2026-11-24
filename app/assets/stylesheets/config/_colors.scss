@@ -1,10 +1,33 @@
-// Define variables for your color scheme
+// Palette « pop » de Fil rouge
 
-// For example:
-$red: #FD1015;
-$blue: #0D6EFD;
-$yellow: #FFC65A;
-$orange: #E67E22;
-$green: #1EDD88;
-$gray: #0E0000;
-$light-gray: #F4F4F4;
+// Texte et surfaces sombres
+$ink:          #2E2A4F;  // texte principal, barre latérale
+$ink-muted:    #625E80;  // texte secondaire
+$lavender:     #C9C4E8;  // texte secondaire sur fond sombre
+
+// Fonds
+$cream:        #FFFDF6;  // fond de page
+$white:        #FFFFFF;  // cartes, tableaux, fenêtres
+
+// Violet
+$violet:       #6C5DD3;  // page active, accents, focus
+$violet-dark:  #4A3DB0;  // texte des badges sur fond violet pâle
+$violet-text:  #5B4BC4;  // liens
+$violet-soft:  #F3F1FD;  // badges, aplats décoratifs
+
+// Orange
+$orange:       #F05A28;  // décor uniquement, jamais sous du texte
+$orange-dark:  #C93F0C;  // boutons d'action
+
+// Jaune
+$yellow:       #FFD166;
+$yellow-soft:  #FFF1C7;  // aplats décoratifs
+
+// États
+$green:        #2F855A;
+$red:          #A32D2D;
+$amber:        #F0A202;
+
+// Filets
+$line:         rgba($ink, .12);
+$line-strong:  rgba($ink, .25);
