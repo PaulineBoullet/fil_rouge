@@ -1,0 +1,49 @@
+// Ligne recherche + bouton d'ajout
+.list-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  &__search {
+    flex: 0 1 420px;
+
+    .form-label {
+      font-size: .8125rem;
+      color: $ink-muted;
+      margin-bottom: 4px;
+    }
+  }
+}
+
+// Tableau sur fond blanc, défilable sur petit écran
+.list-table {
+  background: $white;
+  border: 1px solid $line;
+  border-radius: $border-radius;
+  overflow-x: auto;
+
+  table { min-width: 720px; }
+
+  th,
+  td { padding: 14px 16px; }
+
+  thead th {
+    background: $white;
+    color: $ink-muted;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+}
+
+// Boutons d'une ligne
+.row-actions {
+  display: inline-flex;
+  gap: 8px;
+
+  form { display: inline; }
+}

@@ -1,2 +1,43 @@
-<h1>Companies#index</h1>
-<p>Find me in app/views/companies/index.html.erb</p>
+<h1 class="visually-hidden">Paramètres – entreprises</h1>
+
+<%= render "shared/list_toolbar",
+           search_label: "Rechercher une entreprise",
+           placeholder: "Garage Morvan",
+           add_label: "Ajouter une entreprise",
+           add_path: new_company_path %>
+
+<% if @companies.present? %>
+  <div class="list-table">
+    <table class="table table-hover align-middle mb-0">
+      <thead>
+        <tr>
+          <th scope="col">Nom</th>
+          <th scope="col">Domaine</th>
+          <th scope="col">Prompt</th>
+          <th scope="col">Contacts</th>
+          <th scope="col" class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @companies.each do |company| %>
+          <tr>
+            <td class="fw-semibold"><%= company.name %></td>
+            <td class="text-secondary"><%= company.domain %></td>
+            <td class="text-secondary"><%= company.prompt&.name || "—" %></td>
+            <td class="text-secondary"><%= company.contacts_count %></td>
+            <td class="text-end">
+              <%= render "shared/row_actions",
+                         edit_path: edit_company_path(company),
+                         delete_path: company_path(company),
+                         confirm: "Supprimer #{company.name} ? Ses synthèses seront supprimées ; ses contacts restent dans l'annuaire, sans entreprise." %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="empty-state">
+    <p><%= params[:query].present? ? "Aucune entreprise ne correspond à « #{params[:query]} »." : "Aucune entreprise pour l'instant." %></p>
+  </div>
+<% end %>

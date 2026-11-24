@@ -1,2 +1,41 @@
-<h1>Prompts#index</h1>
-<p>Find me in app/views/prompts/index.html.erb</p>
+<h1 class="visually-hidden">Paramètres – prompts</h1>
+
+<%= render "shared/list_toolbar",
+           search_label: "Rechercher un prompt",
+           placeholder: "Suivi mensuel",
+           add_label: "Ajouter un prompt",
+           add_path: new_prompt_path %>
+
+<% if @prompts.present? %>
+  <div class="list-table">
+    <table class="table table-hover align-middle mb-0">
+      <thead>
+        <tr>
+          <th scope="col">Nom</th>
+          <th scope="col">Extrait</th>
+          <th scope="col">Entreprises</th>
+          <th scope="col" class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @prompts.each do |prompt| %>
+          <tr>
+            <td class="fw-semibold"><%= prompt.name %></td>
+            <td class="text-secondary"><%= truncate(prompt.content, length: 90) %></td>
+            <td class="text-secondary"><%= prompt.companies_count %></td>
+            <td class="text-end">
+              <%= render "shared/row_actions",
+                         edit_path: edit_prompt_path(prompt),
+                         delete_path: prompt_path(prompt),
+                         confirm: "Supprimer #{prompt.name} ? Les #{prompt.companies_count} entreprises qui l'utilisent n'auront plus de prompt." %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="empty-state">
+    <p><%= params[:query].present? ? "Aucun prompt ne correspond à « #{params[:query]} »." : "Aucun prompt pour l'instant." %></p>
+  </div>
+<% end %>

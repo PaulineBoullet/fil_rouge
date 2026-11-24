@@ -1,2 +1,41 @@
-<h1>Contacts#index</h1>
-<p>Find me in app/views/contacts/index.html.erb</p>
+<h1 class="visually-hidden">Paramètres – contacts</h1>
+
+<%= render "shared/list_toolbar",
+           search_label: "Rechercher un contact",
+           placeholder: "Pierre Le Bihan",
+           add_label: "Ajouter un contact",
+           add_path: new_contact_path %>
+
+<% if @contacts.present? %>
+  <div class="list-table">
+    <table class="table table-hover align-middle mb-0">
+      <thead>
+        <tr>
+          <th scope="col">Nom</th>
+          <th scope="col">Adresse mail</th>
+          <th scope="col">Entreprise</th>
+          <th scope="col" class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @contacts.each do |contact| %>
+          <tr>
+            <td class="fw-semibold"><%= contact.full_name %></td>
+            <td class="text-secondary"><%= contact.email %></td>
+            <td class="text-secondary"><%= contact.company&.name || "Aucune" %></td>
+            <td class="text-end">
+              <%= render "shared/row_actions",
+                         edit_path: edit_contact_path(contact),
+                         delete_path: contact_path(contact),
+                         confirm: "Supprimer #{contact.full_name} ? Ses mails et ses synthèses seront supprimés." %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="empty-state">
+    <p><%= params[:query].present? ? "Aucun contact ne correspond à « #{params[:query]} »." : "Aucun contact pour l'instant." %></p>
+  </div>
+<% end %>

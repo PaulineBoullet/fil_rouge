@@ -20,4 +20,11 @@ class ApplicationController < ActionController::Base
   rescue ArgumentError, TypeError
     nil
   end
+
+  # Motif de recherche pour ILIKE, ou nil si le champ est vide
+  def search_pattern
+    return if params[:query].blank?
+
+    "%#{ActiveRecord::Base.sanitize_sql_like(params[:query].strip)}%"
+  end
 end
