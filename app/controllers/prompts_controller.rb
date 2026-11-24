@@ -2,7 +2,13 @@ class PromptsController < ApplicationController
   before_action :set_prompt, only: %i[edit update destroy]
 
   def index
-    @prompts = Prompt.order(:name)
+    @prompts = Prompt.left_joins(:companies)
+                     .select("prompts.*, COUNT(companies.id) AS companies_count")
+                     .group(:id)
+                     .order(:name)
+    if search_pattern
+      @prompts = @prompts.where("prompts.name ILIKE :q OR prompts.content ILIKE :q", q: search_pattern)
+    end
   end
 
   def new

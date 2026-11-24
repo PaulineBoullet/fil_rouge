@@ -1,0 +1,8 @@
+<%# locals: (edit_path:, delete_path:, confirm:) %>
+<div class="row-actions">
+  <%= link_to "Modifier", edit_path, class: "btn btn-sm btn-outline-secondary" %>
+  <%= button_to "Supprimer", delete_path,
+                method: :delete,
+                class: "btn btn-sm btn-outline-danger",
+                form: { data: { turbo_confirm: confirm } } %>
+</div>

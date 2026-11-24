@@ -4,6 +4,12 @@ class ContactsController < ApplicationController
 
   def index
     @contacts = Contact.includes(:company).order(:last_name, :first_name)
+    if search_pattern
+      @contacts = @contacts.where(
+        "contacts.first_name ILIKE :q OR contacts.last_name ILIKE :q OR contacts.email ILIKE :q",
+        q: search_pattern
+      )
+    end
   end
 
   def show

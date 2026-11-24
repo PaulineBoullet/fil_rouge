@@ -1,0 +1,12 @@
+<%# locals: (search_label:, placeholder:, add_label:, add_path:) %>
+<div class="list-toolbar">
+  <%= form_with url: request.path, method: :get, class: "list-toolbar__search", role: "search" do |f| %>
+    <%= f.label :query, search_label, class: "form-label" %>
+    <div class="input-group">
+      <%= f.search_field :query, value: params[:query], placeholder: placeholder, class: "form-control" %>
+      <%= f.submit "Rechercher", class: "btn btn-outline-secondary", name: nil %>
+    </div>
+  <% end %>
+
+  <%= link_to add_label, add_path, class: "btn btn-primary" %>
+</div>

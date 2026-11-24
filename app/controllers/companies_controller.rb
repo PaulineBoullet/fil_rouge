@@ -3,7 +3,14 @@ class CompaniesController < ApplicationController
   before_action :set_date, only: :show
 
   def index
-    @companies = Company.includes(:prompt).order(:name)
+    @companies = Company.left_joins(:contacts)
+                        .select("companies.*, COUNT(contacts.id) AS contacts_count")
+                        .group(:id)
+                        .includes(:prompt)
+                        .order(:name)
+    if search_pattern
+      @companies = @companies.where("companies.name ILIKE :q OR companies.domain ILIKE :q", q: search_pattern)
+    end
   end
 
   def show

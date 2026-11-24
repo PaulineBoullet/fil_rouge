@@ -1,2 +1,41 @@
-<h1>Employees#index</h1>
-<p>Find me in app/views/employees/index.html.erb</p>
+<h1 class="visually-hidden">Paramètres – collaborateurs</h1>
+
+<%= render "shared/list_toolbar",
+           search_label: "Rechercher un collaborateur",
+           placeholder: "Julie Moreau",
+           add_label: "Ajouter un collaborateur",
+           add_path: new_employee_path %>
+
+<% if @employees.present? %>
+  <div class="list-table">
+    <table class="table table-hover align-middle mb-0">
+      <thead>
+        <tr>
+          <th scope="col">Nom</th>
+          <th scope="col">Adresse mail</th>
+          <th scope="col">Mails importés</th>
+          <th scope="col" class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @employees.each do |employee| %>
+          <tr>
+            <td class="fw-semibold"><%= employee.full_name %></td>
+            <td class="text-secondary"><%= employee.email %></td>
+            <td class="text-secondary"><%= employee.emails_count %></td>
+            <td class="text-end">
+              <%= render "shared/row_actions",
+                         edit_path: edit_employee_path(employee),
+                         delete_path: employee_path(employee),
+                         confirm: "Supprimer #{employee.full_name} ? Ses #{employee.emails_count} mails importés seront supprimés." %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="empty-state">
+    <p><%= params[:query].present? ? "Aucun collaborateur ne correspond à « #{params[:query]} »." : "Aucun collaborateur pour l'instant." %></p>
+  </div>
+<% end %>

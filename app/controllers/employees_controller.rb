@@ -2,7 +2,16 @@ class EmployeesController < ApplicationController
   before_action :set_employee, only: %i[edit update destroy]
 
   def index
-    @employees = Employee.order(:last_name, :first_name)
+    @employees = Employee.left_joins(:emails)
+                         .select("employees.*, COUNT(emails.id) AS emails_count")
+                         .group(:id)
+                         .order(:last_name, :first_name)
+    if search_pattern
+      @employees = @employees.where(
+        "employees.first_name ILIKE :q OR employees.last_name ILIKE :q OR employees.email ILIKE :q",
+        q: search_pattern
+      )
+    end
   end
 
   def new
