@@ -1,4 +1,6 @@
 class PagesController < ApplicationController
+  before_action :authenticate_user!
+
   def dashboard
     @date = selected_date
     @companies = Company.joins(contacts: :emails)
