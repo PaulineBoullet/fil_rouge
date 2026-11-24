@@ -1,2 +1,20 @@
-<h1>Companies#show</h1>
-<p>Find me in app/views/companies/show.html.erb</p>
+<h1 class="visually-hidden"><%= @company.name %></h1>
+
+<%= render "shared/date_toolbar" %>
+
+<%= render "shared/summary_panel",
+           title: "#{@company.name} · synthèse de l'entreprise",
+           summary: @summary %>
+
+<h2 class="section-title">Contacts ayant échangé le <%= @date.strftime("%d/%m/%Y") %></h2>
+
+<% if @contacts.any? %>
+  <div class="card-grid">
+    <%= render partial: "contacts/card", collection: @contacts, as: :contact,
+               locals: { contact_summaries: @contact_summaries } %>
+  </div>
+<% else %>
+  <div class="empty-state">
+    <p>Aucun échange avec les contacts de cette entreprise à cette date.</p>
+  </div>
+<% end %>

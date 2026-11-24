@@ -1,2 +1,14 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<h1 class="visually-hidden">Dashboard du <%= @date.strftime("%d/%m/%Y") %></h1>
+
+<%= render "shared/date_toolbar" %>
+
+<% if @companies.any? %>
+  <div class="card-grid">
+    <%= render partial: "companies/card", collection: @companies, as: :company,
+               locals: { summaries: @summaries, email_counts: @email_counts, contact_counts: @contact_counts } %>
+  </div>
+<% else %>
+  <div class="empty-state">
+    <p>Aucun échange avec une entreprise le <%= @date.strftime("%d/%m/%Y") %>.</p>
+  </div>
+<% end %>

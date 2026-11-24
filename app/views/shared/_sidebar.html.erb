@@ -1,0 +1,32 @@
+<aside class="sidebar">
+  <div>
+    <%= link_to root_path, class: "sidebar-brand" do %>
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+        <rect width="28" height="28" rx="2" fill="#F05A28"></rect>
+        <path d="M8 18 a6 6 0 0 1 6 -6 M14 12 a6 6 0 0 1 6 -6" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"></path>
+      </svg>
+      <span>Fil rouge</span>
+    <% end %>
+
+    <nav class="sidebar-nav" aria-label="Navigation principale">
+      <%= sidebar_link "Dashboard du jour", root_path, icon: "fa-table-columns", active: consultation_page? %>
+
+      <p class="sidebar-section">
+        <i class="fa-solid fa-gear" aria-hidden="true"></i> Paramètres
+      </p>
+      <%= sidebar_link "Entreprises", companies_path, sub: true, active: settings_page?("companies") %>
+      <%= sidebar_link "Contacts", contacts_path, sub: true, active: settings_page?("contacts") %>
+      <%= sidebar_link "Collaborateurs", employees_path, sub: true, active: settings_page?("employees") %>
+      <%= sidebar_link "Prompts", prompts_path, sub: true, active: settings_page?("prompts") %>
+    </nav>
+  </div>
+
+  <% if respond_to?(:user_signed_in?) && user_signed_in? %>
+    <div class="sidebar-account">
+      <p class="sidebar-user"><%= current_user.email %></p>
+      <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-outline-light btn-sm w-100" do %>
+        <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Se déconnecter
+      <% end %>
+    </div>
+  <% end %>
+</aside>

@@ -1,19 +1,20 @@
 class PagesController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_date
 
   def dashboard
-    @date = selected_date
-    @companies = Company.joins(contacts: :emails)
-                        .where(emails: { sent_at: @date.all_day })
-                        .distinct
-                        .order(:name)
-  end
+    emails_of_the_day = Email.joins(:contact).where(sent_at: @date.all_day)
 
-  private
+    # Entreprises avec au moins un échange à la date choisie
+    @companies = Company.where(id: emails_of_the_day.select("contacts.company_id")).order(:name)
 
-  def selected_date
-    Date.iso8601(params[:date])
-  rescue ArgumentError, TypeError
-    Date.current
+    # Synthèses de cette date, rangées par entreprise
+    @summaries = CompanySummary.where(generated_at: @date.all_day)
+                               .order(:generated_at)
+                               .index_by(&:company_id)
+
+    # Nombre de mails et de contacts de la date, par entreprise
+    @email_counts   = emails_of_the_day.group("contacts.company_id").count
+    @contact_counts = emails_of_the_day.group("contacts.company_id").distinct.count(:contact_id)
   end
 end

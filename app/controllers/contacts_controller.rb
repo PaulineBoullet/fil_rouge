@@ -1,13 +1,17 @@
 class ContactsController < ApplicationController
   before_action :set_contact, only: %i[show edit update destroy]
+  before_action :set_date, only: :show
 
   def index
     @contacts = Contact.includes(:company).order(:last_name, :first_name)
   end
 
   def show
-    @emails = @contact.emails.includes(:employee).order(sent_at: :desc)
-    @summary = @contact.contact_summaries.order(generated_at: :desc).first
+    @summary = @contact.contact_summaries.where(generated_at: @date.all_day).order(:generated_at).last
+    @emails = @contact.emails
+                      .where(sent_at: @date.all_day)
+                      .includes(:employee)
+                      .order(sent_at: :desc)
   end
 
   def new
