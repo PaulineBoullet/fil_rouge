@@ -10,6 +10,11 @@ class ApplicationController < ActionController::Base
   # le message flash pour qu'il s'affiche sur cette deuxième requête.
   before_action :keep_flash_for_frames
 
+  protected
+
+  def after_sign_in_path_for(resource)
+    root_path
+  end 
   private
 
   def keep_flash_for_frames
