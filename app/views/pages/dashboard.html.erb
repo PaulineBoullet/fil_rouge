@@ -1,4 +1,4 @@
-<h1 class="visually-hidden">Dashboard du <%= @date.strftime("%d/%m/%Y") %></h1>
+<h1 class="visually-hidden">Dashboard du <%= l(@date, format: :long) %></h1>
 
 <%= render "shared/date_toolbar" %>
 
@@ -9,6 +9,6 @@
   </div>
 <% else %>
   <div class="empty-state">
-    <p>Aucun échange avec une entreprise le <%= @date.strftime("%d/%m/%Y") %>.</p>
+    <p>Aucun échange avec une entreprise le <%= l(@date, format: :long) %>.</p>
   </div>
 <% end %>

@@ -27,7 +27,11 @@ module FilRouge
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
-    # config.time_zone = "Central Time (US & Canada)"
+    # Langue et fuseau horaire de l'application
+    config.i18n.default_locale = :fr
+    config.i18n.available_locales = [:fr, :en]
+    config.i18n.fallbacks = [:en]   # texte anglais si une traduction française manque (ex. Devise)
+    config.time_zone = "Paris"
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
