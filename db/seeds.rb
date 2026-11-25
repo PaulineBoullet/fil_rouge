@@ -1,3 +1,4 @@
+Email.destroy_all
 require "mail"
 
 # Données de test.
