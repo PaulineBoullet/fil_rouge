@@ -47,6 +47,7 @@ gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 
 gem "devise"
+gem "rails-i18n"    # traductions de Rails en français : messages d'erreur, jours, mois
 
 group :development, :test do
   gem "dotenv-rails"

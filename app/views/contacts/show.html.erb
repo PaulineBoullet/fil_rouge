@@ -6,7 +6,7 @@
            title: "#{@contact.full_name} · synthèse du contact",
            summary: @summary %>
 
-<h2 class="section-title">Mails du <%= @date.strftime("%d/%m/%Y") %></h2>
+<h2 class="section-title">Mails du <%= l(@date, format: :long) %></h2>
 
 <% if @emails.any? %>
   <div class="email-list">

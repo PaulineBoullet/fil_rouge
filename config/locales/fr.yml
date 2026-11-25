@@ -1,0 +1,24 @@
+fr:
+  activerecord:
+    models:
+      company: "Entreprise"
+      contact: "Contact"
+      employee: "Collaborateur"
+      prompt: "Prompt"
+    attributes:
+      company:
+        name: "Nom"
+        domain: "Domaine"
+        prompt: "Prompt"
+      contact:
+        first_name: "Prénom"
+        last_name: "Nom"
+        email: "Adresse mail"
+        company: "Entreprise"
+      employee:
+        first_name: "Prénom"
+        last_name: "Nom"
+        email: "Adresse mail"
+      prompt:
+        name: "Nom"
+        content: "Instructions"
