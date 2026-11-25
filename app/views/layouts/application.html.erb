@@ -20,20 +20,23 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "devise", "data-turbo-track": "reload" if devise_controller? %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <div class="app-shell">
+  <div class="app-shell">
+    <% unless devise_controller? %>
       <%= render "shared/sidebar" %>
+    <% end %>
 
-      <main class="app-main">
-        <%= render "shared/decor" %>
-        <div class="app-content">
-          <%= yield %>
-        </div>
-      </main>
-    </div>
+    <main class="app-main">
+      <%= render "shared/decor" %>
+      <div class="app-content">
+        <%= yield %>
+      </div>
+    </main>
+  </div>
 
     <%= render "shared/flashes" %>
     <%# Fenêtre modale unique : les formulaires s'y chargent via le cadre Turbo "modal" %>
