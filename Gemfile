@@ -50,6 +50,10 @@ gem "devise"
 gem "openai"
 gem "rails-i18n"
 
+gem "pdf-reader" # Lecture des PDF
+gem "docx"       # Lecture des fichiers Word
+gem "roo"        # Lecture des fichiers Excel
+
 group :development, :test do
   gem "dotenv-rails"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
