@@ -14,7 +14,11 @@ Rails.application.routes.draw do
   resources :companies do
     post :analyze_emails, on: :member
   end
-  
+
+  resources :emails, only: [] do
+    post :analyze, on: :member
+  end
+
   resources :contacts
   resources :employees, except: :show
   resources :prompts, except: :show
