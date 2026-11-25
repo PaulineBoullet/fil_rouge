@@ -4,7 +4,7 @@
     <h2 class="summary-panel__title"><%= title %></h2>
     <% if summary&.generated_at %>
       <span class="summary-panel__date">
-        Générée le <%= summary.generated_at.strftime("%d/%m/%Y à %H h %M") %>
+        Générée le <%= l(summary.generated_at, format: "%d %B %Y à %H h %M") %>
       </span>
     <% end %>
   </header>
@@ -12,6 +12,6 @@
   <% if summary&.summary.present? %>
     <%= simple_format(summary.summary, class: "summary-panel__text") %>
   <% else %>
-    <p class="summary-panel__empty">Aucune synthèse pour le <%= @date.strftime("%d/%m/%Y") %>.</p>
+    <p class="summary-panel__empty">Aucune synthèse pour le <%= l(@date, format: :long) %>.</p>
   <% end %>
 </section>
