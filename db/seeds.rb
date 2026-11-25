@@ -103,15 +103,16 @@ Dir.glob(Rails.root.join("db/seeds/emails/**/*.eml")).sort.each do |path|
     next
   end
 
-  # Le texte du mail, sans les pièces jointes
-  body = (mail.text_part || mail).decoded.to_s.force_encoding("UTF-8").scrub.strip
+  # Le mail complet, tel qu'il est dans le fichier .eml : en-têtes, texte et pièces
+  # jointes encodées. C'est au job de synthèse d'en extraire ce dont il a besoin.
+  raw = File.binread(path).force_encoding("UTF-8").scrub
 
   email = Email.find_or_initialize_by(message_id: mail.message_id || "seed-#{File.basename(path, '.eml')}@fil-rouge.local")
   email.update!(
     contact: contact,
     employee: employee,
     subject: mail.subject,
-    content: body,
+    content: raw,
     sent_at: mail.date,
     summary: nil
   )
