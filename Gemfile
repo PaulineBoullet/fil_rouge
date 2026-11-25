@@ -47,7 +47,12 @@ gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 
 gem "devise"
-gem "rails-i18n"    # traductions de Rails en français : messages d'erreur, jours, mois
+gem "openai"
+gem "rails-i18n"
+
+gem "pdf-reader" # Lecture des PDF
+gem "docx"       # Lecture des fichiers Word
+gem "roo"        # Lecture des fichiers Excel
 
 group :development, :test do
   gem "dotenv-rails"
