@@ -1,18 +1,25 @@
-<%= link_to company_path(company, date: @date), class: "entity-card" do %>
-  <div class="entity-card__head">
-    <h2 class="entity-card__title"><%= company.name %></h2>
-    <span class="entity-card__meta"><%= company.domain %></span>
-  </div>
+<div class="entity-card">
+  <%= link_to company_path(company, date: @date), class: "entity-card__link" do %>
+    <div class="entity-card__head">
+      <h2 class="entity-card__title"><%= company.name %></h2>
+      <span class="entity-card__meta"><%= company.domain %></span>
+    </div>
 
-  <p class="entity-card__text">
-    <%= truncate(summaries[company.id]&.summary, length: 220) || "Pas de synthèse pour cette date." %>
-  </p>
+    <p class="entity-card__text">
+      <%= truncate(summaries[company.id]&.summary, length: 220) || "Pas de synthèse pour cette date." %>
+    </p>
 
-  <div class="entity-card__foot">
-    <span>
-      <%= pluralize(email_counts.fetch(company.id, 0), "mail") %> ·
-      <%= pluralize(contact_counts.fetch(company.id, 0), "contact") %>
-    </span>
-    <span class="entity-card__cta">Voir les contacts →</span>
-  </div>
-<% end %>
+    <div class="entity-card__foot">
+      <span>
+        <%= pluralize(email_counts.fetch(company.id, 0), "mail") %> ·
+        <%= pluralize(contact_counts.fetch(company.id, 0), "contact") %>
+      </span>
+      <span class="entity-card__cta">Voir les contacts →</span>
+    </div>
+  <% end %>
+
+  <%= button_to "Analyser les emails",
+                analyze_emails_company_path(company, date: @date),
+                method: :post,
+                class: "button" %>
+</div>

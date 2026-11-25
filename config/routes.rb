@@ -11,7 +11,10 @@ Rails.application.routes.draw do
 
   root "pages#dashboard"
 
-  resources :companies
+  resources :companies do
+    post :analyze_emails, on: :member
+  end
+  
   resources :contacts
   resources :employees, except: :show
   resources :prompts, except: :show

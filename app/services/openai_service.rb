@@ -9,7 +9,7 @@ class OpenaiService
 
   def test_connection
     response = @client.responses.create(
-      model: "gpt-4.1-mini",
+      model: "gpt-6-luna",
       input: "Réponds simplement : Bonjour, la connexion fonctionne !"
     )
 
@@ -18,7 +18,7 @@ class OpenaiService
 
   def analyze_email(email_content)
     response = @client.responses.create(
-      model: "gpt-4.1-mini",
+      model: "gpt-6-luna",
       input: <<~PROMPT
         Tu es un assistant spécialisé dans l'analyse des emails pour un cabinet comptable.
 

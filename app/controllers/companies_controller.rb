@@ -1,7 +1,6 @@
 class CompaniesController < ApplicationController
-  before_action :set_company, only: %i[show edit update destroy]
-  before_action :set_date, only: :show
-
+  before_action :set_company, only: %i[show edit update destroy analyze_emails]
+  before_action :set_date, only: %i[show analyze_emails]
   def index
     @companies = Company.left_joins(:contacts)
                         .select("companies.*, COUNT(contacts.id) AS contacts_count")
@@ -57,6 +56,16 @@ class CompaniesController < ApplicationController
   def destroy
     @company.destroy
     redirect_to companies_path, notice: "Entreprise supprimée.", status: :see_other
+  end
+
+  def analyze_emails
+  emails = @company.emails.where(sent_at: @date.all_day)
+
+  emails.find_each do |email|
+    EmailAnalysisService.new(email).call
+  end
+
+  redirect_to root_path(date: @date), notice: "#{emails.count} emails analysés."
   end
 
   private
