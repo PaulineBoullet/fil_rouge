@@ -27,3 +27,27 @@
   padding: 16px 28px 24px;
   border-top: 1px solid $line;
 }
+
+// Fenêtre de confirmation de suppression
+.confirm-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.confirm-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba($red, .1);
+  color: $red;
+}
+
+.confirm-note {
+  margin: 0;
+  font-size: .875rem;
+  color: $ink-muted;
+}

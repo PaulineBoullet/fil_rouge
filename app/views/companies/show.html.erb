@@ -6,7 +6,7 @@
            title: "#{@company.name} · synthèse de l'entreprise",
            summary: @summary %>
 
-<h2 class="section-title">Contacts ayant échangé le <%= @date.strftime("%d/%m/%Y") %></h2>
+<h2 class="section-title">Contacts ayant échangé le <%= l(@date, format: :long) %></h2>
 
 <% if @contacts.any? %>
   <div class="card-grid">

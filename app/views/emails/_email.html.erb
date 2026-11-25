@@ -3,7 +3,7 @@
     <h3 class="email-item__subject"><%= email.subject.presence || "(sans objet)" %></h3>
     <% if email.sent_at %>
       <time class="email-item__date" datetime="<%= email.sent_at.iso8601 %>">
-        <%= email.sent_at.strftime("%d/%m/%Y · %H h %M") %>
+        <%= l(email.sent_at, format: "%d %B %Y · %H h %M") %>
       </time>
     <% end %>
   </header>

@@ -48,6 +48,7 @@ gem "sassc-rails"
 
 gem "devise"
 gem "openai"
+gem "rails-i18n"
 
 group :development, :test do
   gem "dotenv-rails"

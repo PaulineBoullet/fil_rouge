@@ -49,5 +49,32 @@
         </div>
       </div>
     </div>
+
+    <%# Fenêtre de confirmation, utilisée par tous les boutons qui portent turbo_confirm %>
+    <div class="modal fade" id="confirm-modal" tabindex="-1" aria-hidden="true"
+         aria-labelledby="confirm-title" role="alertdialog"
+         data-controller="confirm">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="confirm-heading">
+              <span class="confirm-icon" aria-hidden="true">
+                <i class="fa-solid fa-trash-can"></i>
+              </span>
+              <h2 id="confirm-title" class="modal-title h5">Confirmer la suppression</h2>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+          </div>
+          <div class="modal-body">
+            <p data-confirm-target="message"></p>
+            <p class="confirm-note">Cette action est définitive.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-danger" data-action="confirm#accept">Supprimer</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
