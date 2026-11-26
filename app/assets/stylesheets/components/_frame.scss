@@ -1,4 +1,4 @@
-// Cadre en L : barre du haut et rail d'icônes en jaune Agilea poudré,
+// Cadre en L : barre du haut et rail d'icônes en bleu canard Agilea poudré,
 // bande grise poudrée, panneau blanc à grands arrondis.
 
 // Poudrage : halos diffus et grain très fin (SVG en image de fond).
@@ -6,19 +6,19 @@
 .powder {
   background-color: $frame;
   background-image:
-    radial-gradient(420px 160px at 12% 0%, rgba(#fff, .35) 0%, rgba(#fff, 0) 70%),
-    radial-gradient(520px 220px at 78% 0%, rgba(#FFF6D0, .45) 0%, rgba(#FFF6D0, 0) 70%),
+    radial-gradient(420px 160px at 12% 0%, rgba(#fff, .18) 0%, rgba(#fff, 0) 70%),
+    radial-gradient(520px 220px at 78% 0%, rgba(#BFE3E2, .25) 0%, rgba(#BFE3E2, 0) 70%),
     radial-gradient(260px 520px at 0% 60%, rgba(#fff, .15) 0%, rgba(#fff, 0) 70%),
-    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxODAnIGhlaWdodD0nMTgwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nLjg1JyBudW1PY3RhdmVzPScyJyBzdGl0Y2hUaWxlcz0nc3RpdGNoJy8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPScwIDAgMCAwIDEgIDAgMCAwIDAgMSAgMCAwIDAgMCAxICAwIDAgMCAuMjggMCcvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbHRlcj0ndXJsKCNuKScvPjwvc3ZnPg==");
+    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxODAnIGhlaWdodD0nMTgwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nLjg1JyBudW1PY3RhdmVzPScyJyBzdGl0Y2hUaWxlcz0nc3RpdGNoJy8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPScwIDAgMCAwIDEgIDAgMCAwIDAgMSAgMCAwIDAgMCAxICAwIDAgMCAuMiAwJy8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9JzEwMCUnIGhlaWdodD0nMTAwJScgZmlsdGVyPSd1cmwoI24pJy8+PC9zdmc+");
   background-repeat: no-repeat, no-repeat, no-repeat, repeat;
 }
 
 .powder-soft {
   background-color: $band;
   background-image:
-    radial-gradient(600px 260px at 100% 0%, rgba(#F8EBB5, .6) 0%, rgba(#F8EBB5, 0) 70%),
+    radial-gradient(600px 260px at 100% 0%, rgba(#D3EAE9, .7) 0%, rgba(#D3EAE9, 0) 70%),
     radial-gradient(420px 600px at 0% 100%, rgba(#fff, .6) 0%, rgba(#fff, 0) 70%),
-    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxODAnIGhlaWdodD0nMTgwJz48ZmlsdGVyIGlkPSdtJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nLjknIG51bU9jdGF2ZXM9JzInIHN0aXRjaFRpbGVzPSdzdGl0Y2gnLz48ZmVDb2xvck1hdHJpeCB2YWx1ZXM9JzAgMCAwIDAgLjA2ICAwIDAgMCAwIC4yOSAgMCAwIDAgMCAuMzYgIDAgMCAwIC4xMiAwJy8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9JzEwMCUnIGhlaWdodD0nMTAwJScgZmlsdGVyPSd1cmwoI20pJy8+PC9zdmc+");
+    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxODAnIGhlaWdodD0nMTgwJz48ZmlsdGVyIGlkPSdtJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nLjknIG51bU9jdGF2ZXM9JzInIHN0aXRjaFRpbGVzPSdzdGl0Y2gnLz48ZmVDb2xvck1hdHJpeCB2YWx1ZXM9JzAgMCAwIDAgLjEzICAwIDAgMCAwIC4zOCAgMCAwIDAgMCAuMzggIDAgMCAwIC4xMiAwJy8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9JzEwMCUnIGhlaWdodD0nMTAwJScgZmlsdGVyPSd1cmwoI20pJy8+PC9zdmc+");
   background-repeat: no-repeat, no-repeat, repeat;
 }
 
@@ -45,14 +45,14 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  color: $teal;
+  color: #fff;
   text-decoration: none;
 
-  &:hover { color: $teal; text-decoration: none; }
+  &:hover { color: #fff; text-decoration: none; }
 
   &__logo { display: block; height: 30px; width: auto; }
 
-  &__sep { width: 1px; height: 22px; background: rgba($teal, .35); }
+  &__sep { width: 1px; height: 22px; background: rgba(#fff, .5); }
 
   &__name {
     position: relative;
@@ -68,7 +68,7 @@
     bottom: -3px;
     width: calc(100% + 10px);
     height: 8px;
-    color: $teal;
+    color: #fff;
   }
 }
 
@@ -81,30 +81,30 @@
   height: 38px;
   padding: 0 16px;
   border-radius: 999px;
-  background: rgba(#fff, .45);
-  border: 1px solid rgba($teal, .3);
-  color: $teal;
+  background: rgba(#fff, .1);
+  border: 1px solid rgba(#fff, .45);
+  color: #fff;
 
   input {
     flex: 1;
     min-width: 0;
     background: transparent;
     border: 0;
-    color: $teal;
+    color: #fff;
     font-size: .875rem;
 
-    &::placeholder { color: $teal; opacity: .75; }
+    &::placeholder { color: #fff; opacity: .9; }
     &:focus { outline: none; }
   }
 
-  &:focus-within { border-color: $teal; background: rgba(#fff, .7); }
+  &:focus-within { border-color: #fff; background: rgba(#fff, .18); }
 
   kbd {
     font-family: $body-font;
     font-size: .75rem;
-    color: $teal;
+    color: #fff;
     background: transparent;
-    border: 1px solid rgba($teal, .3);
+    border: 1px solid rgba(#fff, .45);
     border-radius: 4px;
     padding: 0 6px;
   }
@@ -115,11 +115,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: $teal;
+  color: #fff;
 
   &__text { display: flex; flex-direction: column; line-height: 1.25; }
   &__name { font-size: .8125rem; font-weight: 600; }
-  &__org { font-size: .75rem; color: rgba($teal, .8); }
+  &__org { font-size: .75rem; color: #fff; }
 }
 
 .frame__body {
@@ -138,7 +138,7 @@
   gap: 6px;
   padding: 12px 0 20px;
 
-  &__sep { width: 28px; height: 1px; background: rgba($teal, .2); margin: 8px 0; }
+  &__sep { width: 28px; height: 1px; background: rgba(#fff, .3); margin: 8px 0; }
   &__spacer { flex: 1; }
 }
 
@@ -159,7 +159,7 @@
   transition: background .15s, color .15s;
 
   &:hover,
-  &:focus-visible { background: rgba(#fff, .4); color: $teal; }
+  &:focus-visible { background: rgba(#fff, .16); color: #fff; }
 
   &[aria-current="page"] { background: #fff; color: $teal; box-shadow: 0 2px 8px rgba($teal, .15); }
 
@@ -202,7 +202,7 @@
     border: 2px solid $frame;
     box-sizing: content-box;
 
-    &--alert { background: $teal; color: #fff; }
+    &--alert { background: $ink; color: #fff; }
   }
 }
 
@@ -222,8 +222,8 @@
   min-height: 100%;
   border-radius: 24px 24px 0 0;
   background:
-    radial-gradient(900px 420px at 100% 0%, #FBF3D3 0%, rgba(#fff, 0) 70%),
-    radial-gradient(700px 360px at 0% 100%, #F1F0EC 0%, rgba(#fff, 0) 70%),
+    radial-gradient(900px 420px at 100% 0%, #E6F2F2 0%, rgba(#fff, 0) 70%),
+    radial-gradient(700px 360px at 0% 100%, #F1F3F5 0%, rgba(#fff, 0) 70%),
     #fff;
 }
 

@@ -1,41 +1,41 @@
-// Palette V2 aux couleurs d'Agilea : jaune #F1CD41 en couleur principale,
-// bleu canard du logo pour le texte d'accent, gris et blanc, effets poudrés.
+// Palette V2 aux couleurs du site d'Agilea Conseil : bleu canard #3A908F en couleur
+// principale, bleu nuit #39364E pour le texte, gris et blanc, effets poudrés.
 // Les noms de variables de la V1 sont conservés pour les composants existants.
 
 // Texte
-$ink:          #233038;  // texte principal
-$ink-muted:    #5A666C;  // texte secondaire
-$lavender:     #104B5C;  // texte et icônes sur le cadre jaune
+$ink:          #39364E;  // texte principal (bleu nuit du site)
+$ink-muted:    #696969;  // texte secondaire (gris du site)
+$lavender:     #FFFFFF;  // texte et icônes sur le cadre bleu canard
 
 // Fonds
-$cream:        #FBF9F2;  // fond de page (connexion)
+$cream:        #F7F9F9;  // fond de page (connexion)
 $white:        #FFFFFF;  // panneau, cartes, tableaux
 
 // Couleurs d'Agilea
-$frame:        #F1CD41;  // cadre en L, poudré (jaune Agilea)
-$band:         #EDEBE5;  // bande grise entre le cadre et le panneau
-$teal:         #104B5C;  // bleu canard du logo
-$violet:       #104B5C;  // accent : focus, liens actifs
-$violet-dark:  #104B5C;  // texte d'accent, liens
-$violet-text:  #104B5C;  // liens
-$violet-soft:  #FBF3D3;  // aplats jaune pâle
-$blush:        #F1CD41;  // liseré des synthèses
-$button:       #104B5C;  // boutons principaux
+$frame:        #3A908F;  // cadre en L, poudré (bleu canard du site)
+$band:         #EEF0F0;  // bande grise entre le cadre et le panneau
+$teal:         #226160;  // bleu canard foncé : texte d'accent et boutons sur fond blanc
+$violet:       #3A908F;  // accent : focus
+$violet-dark:  #226160;  // texte d'accent, liens
+$violet-text:  #226160;  // liens
+$violet-soft:  #E6F2F2;  // aplats bleu canard pâle (comme le site : bleu canard à 7 %)
+$blush:        #A9D3D2;  // liseré des synthèses
+$button:       #226160;  // boutons principaux
 
-// Anciennes couleurs, ramenées au jaune, au bleu canard et au gris
-$orange:       #F1CD41;
-$orange-dark:  #104B5C;
-$yellow:       #F1CD41;
-$yellow-soft:  #FBF3D3;
-$green:        #104B5C;
-$red:          #104B5C;
-$amber:        #6B5300;
+// Anciennes couleurs, ramenées au bleu canard et au gris
+$orange:       #3A908F;
+$orange-dark:  #226160;
+$yellow:       #A9D3D2;
+$yellow-soft:  #E6F2F2;
+$green:        #226160;
+$red:          #226160;
+$amber:        #39364E;
 
 // Gommettes de statut, du plus urgent (1) au moins urgent (4)
-$sticker-bg-1: #F1CD41;  $sticker-fg-1: #104B5C;
-$sticker-bg-2: #FBF0C4;  $sticker-fg-2: #6B5300;
-$sticker-bg-3: #E3ECEE;  $sticker-fg-3: #104B5C;
-$sticker-bg-4: #F1F1EF;  $sticker-fg-4: #6B7377;
+$sticker-bg-1: #226160;  $sticker-fg-1: #FFFFFF;
+$sticker-bg-2: #DCEFEE;  $sticker-fg-2: #1E5655;
+$sticker-bg-3: #ECEDF2;  $sticker-fg-3: #39364E;
+$sticker-bg-4: #F4F4F4;  $sticker-fg-4: #696969;
 
 // Filets
 $line:         rgba($ink, .12);

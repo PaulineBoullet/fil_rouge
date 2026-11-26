@@ -195,9 +195,9 @@
     position: absolute;
     inset: 6px 10px auto;
     height: 40px;
-    border: 1px solid #ECE6D2;
+    border: 1px solid #DCE7E7;
     border-radius: 20px;
-    background: #FBF6E6;
+    background: #F1F7F7;
   }
 
   &__body {
@@ -207,15 +207,15 @@
     flex-direction: column;
     gap: 10px;
     padding: 22px 14px 14px;
-    background: linear-gradient(180deg, #fff 0%, #FDFAF0 100%);
-    border: 1px solid #ECE6D2;
+    background: linear-gradient(180deg, #fff 0%, #F7FBFB 100%);
+    border: 1px solid #DCE7E7;
     border-radius: 20px;
     box-shadow: 0 14px 30px -18px rgba($violet-dark, .28);
     transition: box-shadow .15s, border-color .15s;
   }
 
   &:hover &__body,
-  &:focus-visible &__body { box-shadow: 0 18px 36px -16px rgba($violet-dark, .35); border-color: #E0D3A6; }
+  &:focus-visible &__body { box-shadow: 0 18px 36px -16px rgba($violet-dark, .35); border-color: #B9D6D5; }
 
   &__title { font-size: 1rem; font-weight: 600; line-height: 1.3; }
 
@@ -278,7 +278,7 @@
   &--sent { background: $sticker-bg-2; color: $sticker-fg-2; border: 1px solid rgba($sticker-fg-2, .33); }
 }
 
-.row-link__status .sticker__dot.sticker--1 { color: $sticker-fg-1; }
+.row-link__status .sticker__dot.sticker--1 { color: $sticker-bg-1; }
 .row-link__status .sticker__dot.sticker--2 { color: $sticker-fg-2; }
 .row-link__status .sticker__dot.sticker--3 { color: $sticker-fg-3; }
 .row-link__status .sticker__dot.sticker--4 { color: $sticker-fg-4; }
@@ -321,16 +321,16 @@
   font-weight: 600;
   letter-spacing: .02em;
 
-  &--0 { background: #FBF0C4; color: #6B5300; }
-  &--1 { background: #E3ECEE; color: #104B5C; }
-  &--2 { background: #F1F0EC; color: #4A5257; }
-  &--3 { background: #F7E7A8; color: #5C4A00; }
+  &--0 { background: #DCEFEE; color: #1E5655; }
+  &--1 { background: #ECEDF2; color: #39364E; }
+  &--2 { background: #E6F2F2; color: #226160; }
+  &--3 { background: #F4F4F4; color: #4F4F4F; }
 }
 
 // Vue en lignes
 .rows {
   background: #fff;
-  border: 1px solid #ECE6D2;
+  border: 1px solid #DCE7E7;
   border-radius: 20px;
   overflow: hidden;
 }
@@ -379,7 +379,7 @@
     span {
       height: 12px;
       border-radius: 6px;
-      background: linear-gradient(90deg, #F1EEE4 25%, #FBF8EE 50%, #F1EEE4 75%);
+      background: linear-gradient(90deg, #E9EFEF 25%, #F6F9F9 50%, #E9EFEF 75%);
       background-size: 200% 100%;
       animation: shimmer 1.4s linear infinite;
       &:first-child { flex: 1; }
