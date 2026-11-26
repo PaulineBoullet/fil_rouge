@@ -7,6 +7,12 @@
 #
 # Les statuts et catégories des fils sont posés ici en attendant que l'IA les propose.
 
+# En production, on refuse de tout effacer sans autorisation explicite
+if Rails.env.production? && ENV["RESET_SEED"] != "1"
+  abort "Seed bloquée en production : elle efface toutes les données. " \
+        "Relance avec RESET_SEED=1 si c'est voulu."
+end
+
 puts "Suppression des données existantes…"
 [EmailParticipant, Email, CompanySummary, Conversation, Contact, Company, Employee,
  Category, Status, Prompt, ImportFailure, Setting].each(&:delete_all)
