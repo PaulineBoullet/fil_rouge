@@ -10,9 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_26_130941) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_26_160008) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "companies", force: :cascade do |t|
     t.bigint "prompt_id"
@@ -20,8 +28,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_26_130941) do
     t.string "domain", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "state", default: "pending", null: false
     t.index ["domain"], name: "index_companies_on_domain", unique: true
     t.index ["prompt_id"], name: "index_companies_on_prompt_id"
+    t.index ["state"], name: "index_companies_on_state"
   end
 
   create_table "company_summaries", force: :cascade do |t|
@@ -30,32 +40,65 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_26_130941) do
     t.datetime "generated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "day"
+    t.index ["company_id", "day"], name: "index_company_summaries_on_company_id_and_day", unique: true
     t.index ["company_id"], name: "index_company_summaries_on_company_id"
-  end
-
-  create_table "contact_summaries", force: :cascade do |t|
-    t.bigint "contact_id", null: false
-    t.text "summary"
-    t.datetime "generated_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["contact_id"], name: "index_contact_summaries_on_contact_id"
   end
 
   create_table "contacts", force: :cascade do |t|
     t.bigint "company_id"
     t.string "email", null: false
-    t.string "first_name", null: false
-    t.string "last_name", null: false
+    t.string "first_name"
+    t.string "last_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "state", default: "pending", null: false
+    t.string "display_name"
     t.index ["company_id"], name: "index_contacts_on_company_id"
     t.index ["email"], name: "index_contacts_on_email", unique: true
+    t.index ["state"], name: "index_contacts_on_state"
+  end
+
+  create_table "conversations", force: :cascade do |t|
+    t.bigint "company_id"
+    t.bigint "origin_contact_id"
+    t.bigint "category_id"
+    t.bigint "status_id"
+    t.string "title"
+    t.boolean "hidden", default: false, null: false
+    t.boolean "internal", default: false, null: false
+    t.boolean "status_locked", default: false, null: false
+    t.boolean "category_locked", default: false, null: false
+    t.datetime "first_email_at"
+    t.datetime "last_email_at"
+    t.text "summary"
+    t.datetime "summary_generated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_conversations_on_category_id"
+    t.index ["company_id"], name: "index_conversations_on_company_id"
+    t.index ["last_email_at"], name: "index_conversations_on_last_email_at"
+    t.index ["origin_contact_id"], name: "index_conversations_on_origin_contact_id"
+    t.index ["status_id"], name: "index_conversations_on_status_id"
+  end
+
+  create_table "email_participants", force: :cascade do |t|
+    t.bigint "email_id", null: false
+    t.string "role", null: false
+    t.string "address", null: false
+    t.string "name"
+    t.bigint "employee_id"
+    t.bigint "contact_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address"], name: "index_email_participants_on_address"
+    t.index ["contact_id"], name: "index_email_participants_on_contact_id"
+    t.index ["email_id", "role"], name: "index_email_participants_on_email_id_and_role"
+    t.index ["email_id"], name: "index_email_participants_on_email_id"
+    t.index ["employee_id"], name: "index_email_participants_on_employee_id"
   end
 
   create_table "emails", force: :cascade do |t|
-    t.bigint "contact_id", null: false
-    t.bigint "employee_id", null: false
     t.string "message_id"
     t.string "subject"
     t.text "content"
@@ -64,24 +107,49 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_26_130941) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "metadata", default: {}, null: false
-    t.index ["contact_id"], name: "index_emails_on_contact_id"
-    t.index ["employee_id"], name: "index_emails_on_employee_id"
+    t.bigint "conversation_id"
+    t.string "in_reply_to"
+    t.string "reference_ids", default: [], null: false, array: true
+    t.integer "attachments_count", default: 0, null: false
+    t.index ["conversation_id"], name: "index_emails_on_conversation_id"
+    t.index ["in_reply_to"], name: "index_emails_on_in_reply_to"
     t.index ["message_id"], name: "index_emails_on_message_id", unique: true
+    t.index ["reference_ids"], name: "index_emails_on_reference_ids", using: :gin
     t.index ["sent_at"], name: "index_emails_on_sent_at"
   end
 
   create_table "employees", force: :cascade do |t|
     t.string "email", null: false
-    t.string "first_name", null: false
-    t.string "last_name", null: false
+    t.string "first_name"
+    t.string "last_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "state", default: "pending", null: false
+    t.string "display_name"
     t.index ["email"], name: "index_employees_on_email", unique: true
+    t.index ["state"], name: "index_employees_on_state"
+  end
+
+  create_table "import_failures", force: :cascade do |t|
+    t.string "filename", null: false
+    t.text "reason"
+    t.integer "attempts", default: 1, null: false
+    t.datetime "last_attempt_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["filename"], name: "index_import_failures_on_filename", unique: true
   end
 
   create_table "prompts", force: :cascade do |t|
     t.string "name", null: false
     t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "is_default", default: false, null: false
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.string "org_domain"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -256,6 +324,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_26_130941) do
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
+  create_table "statuses", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.integer "rank", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rank"], name: "index_statuses_on_rank"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -270,10 +347,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_26_130941) do
 
   add_foreign_key "companies", "prompts"
   add_foreign_key "company_summaries", "companies"
-  add_foreign_key "contact_summaries", "contacts"
   add_foreign_key "contacts", "companies"
-  add_foreign_key "emails", "contacts"
-  add_foreign_key "emails", "employees"
+  add_foreign_key "conversations", "categories"
+  add_foreign_key "conversations", "companies"
+  add_foreign_key "conversations", "contacts", column: "origin_contact_id"
+  add_foreign_key "conversations", "statuses"
+  add_foreign_key "email_participants", "contacts"
+  add_foreign_key "email_participants", "emails"
+  add_foreign_key "email_participants", "employees"
+  add_foreign_key "emails", "conversations"
   add_foreign_key "solid_queue_batch_executions", "solid_queue_batches", column: "batch_id", on_delete: :cascade
   add_foreign_key "solid_queue_batch_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
