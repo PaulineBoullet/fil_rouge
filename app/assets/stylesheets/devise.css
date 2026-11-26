@@ -33,7 +33,7 @@
 }
 
 .login-brand {
-  color: #963e4b;
+  color: #104B5C;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 4px;
@@ -79,8 +79,8 @@
 }
 
 .login-field input:focus {
-  border-color: #963e4b;
-  box-shadow: 0 0 0 3px rgba(150, 62, 75, 0.1);
+  border-color: #104B5C;
+  box-shadow: 0 0 0 3px rgba(16, 75, 92, 0.12);
 }
 
 /* MÉMORISATION */
@@ -95,7 +95,7 @@
 }
 
 .login-remember input {
-  accent-color: #963e4b;
+  accent-color: #104B5C;
 }
 
 /* BOUTON */
@@ -105,7 +105,7 @@
   height: 49px;
   border: none;
   border-radius: 9px;
-  background: #963e4b;
+  background: #104B5C;
   color: white;
   font-size: 14px;
   font-weight: 600;
@@ -114,7 +114,7 @@
 }
 
 .login-button:hover {
-  background: #7d303d;
+  background: #0B3A47;
   transform: translateY(-1px);
 }
 
@@ -129,7 +129,7 @@
 }
 
 .login-links a {
-  color: #963e4b;
+  color: #104B5C;
   text-decoration: none;
 }
 

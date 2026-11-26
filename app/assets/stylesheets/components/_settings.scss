@@ -35,7 +35,7 @@
 
 .list-table {
   border-radius: 20px;
-  border-color: #EADDE0;
+  border-color: #ECE6D2;
 
   thead th {
     text-transform: none;
@@ -71,7 +71,7 @@
   background: $sticker-bg-2;
   color: $sticker-fg-2;
 
-  &--ok { background: #F1EEEE; color: #6E6567; }
+  &--ok { background: #E3ECEE; color: #104B5C; }
   &--blocked { background: $sticker-bg-1; color: $sticker-fg-1; }
 }
 
@@ -86,7 +86,7 @@
 .panel-card {
   padding: 18px 20px;
   background: #fff;
-  border: 1px solid #EADDE0;
+  border: 1px solid #ECE6D2;
   border-radius: 20px;
 
   > summary { width: fit-content; list-style: none; &::-webkit-details-marker { display: none; } }
