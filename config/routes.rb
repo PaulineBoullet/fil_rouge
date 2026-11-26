@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   root "pages#dashboard"
   get "recherche" => "search#index", as: :search
   get "domaines-tiers/:id" => "companies#show", as: :company_view
+  post "domaines-tiers/:id/synthese" => "companies#analyze_emails", as: :analyze_company
 
   resources :conversations, path: "fils", only: %i[show update] do
     member do
