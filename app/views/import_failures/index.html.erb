@@ -1,0 +1,24 @@
+<% content_for :title, "Mails en erreur – Fil rouge" %>
+<%= render "shared/page_head", title: "Mails en erreur",
+           subtitle: "Consultation seule : la liste des mails que l'outil n'a pas pu intégrer." %>
+
+<% if @failures.any? %>
+  <div class="list-table">
+    <table class="table align-middle mb-0">
+      <caption class="visually-hidden">Mails en erreur</caption>
+      <thead><tr><th scope="col">Fichier</th><th scope="col">Raison</th><th scope="col">Tentatives</th><th scope="col">Dernière tentative</th></tr></thead>
+      <tbody>
+        <% @failures.each do |failure| %>
+          <tr>
+            <td><code><%= failure.filename %></code></td>
+            <td><%= failure.reason %></td>
+            <td><%= failure.attempts %></td>
+            <td><%= failure.last_attempt_at ? l(failure.last_attempt_at, format: "%-d %B à %H h %M") : "—" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="empty-state"><p>Aucun mail en erreur.</p></div>
+<% end %>

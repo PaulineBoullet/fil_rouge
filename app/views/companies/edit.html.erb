@@ -1,4 +1,4 @@
 <%= turbo_frame_tag "modal" do %>
-  <%= render "shared/modal_header", title: "Modifier #{@company.name_was}", subtitle: "Les modifications s'appliquent aux prochaines synthèses." %>
+  <%= render "shared/modal_header", title: "Modifier #{@company.name_was}" %>
   <%= render "form", company: @company %>
 <% end %>

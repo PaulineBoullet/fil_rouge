@@ -1,12 +1,8 @@
 <%= simple_form_for employee do |f| %>
   <div class="modal-body">
     <%= f.error_notification message: "Merci de corriger les champs signalés." %>
-    <div class="row">
-      <div class="col-md-6"><%= f.input :first_name, label: "Prénom" %></div>
-      <div class="col-md-6"><%= f.input :last_name, label: "Nom" %></div>
-    </div>
-    <%= f.input :email, label: "Adresse mail professionnelle", placeholder: "prenom.nom@votre-cabinet.fr",
-                hint: "Elle sert à rattacher au collaborateur les mails qu'il envoie et reçoit." %>
+    <%= f.input :display_name, label: "Nom" %>
+    <%= f.input :email, label: "Adresse mail", placeholder: "prenom.nom@#{Setting.org_domain.presence || 'votre-domaine.fr'}" %>
   </div>
   <div class="modal-footer">
     <%= link_to "Annuler", employees_path, class: "btn btn-outline-secondary", data: { bs_dismiss: "modal" } %>

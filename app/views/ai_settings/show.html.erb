@@ -1,0 +1,111 @@
+<% content_for :title, "Réglages de l'IA – Fil rouge" %>
+<%= render "shared/page_head", title: "Réglages de l'IA",
+           subtitle: "Les listes dans lesquelles l'IA choisit la catégorie et le statut de chaque fil, et les consignes qu'elle suit pour rédiger les synthèses." %>
+
+<%= render "shared/section_head", id: "categories", title: "Catégories",
+           note: "L'IA propose une catégorie pour chaque fil, en s'appuyant sur la description ; l'utilisateur peut la changer." %>
+<div class="list-table">
+  <table class="table align-middle mb-0">
+    <caption class="visually-hidden">Catégories de fil</caption>
+    <thead><tr><th scope="col">Catégorie</th><th scope="col">Description pour l'IA</th><th scope="col">Fils</th><th scope="col"></th></tr></thead>
+    <tbody>
+      <% @categories.each do |category| %>
+        <% form_id = dom_id(category, :form) %>
+        <tr>
+          <td><%= text_field_tag "category[name]", category.name, form: form_id, class: "form-control", aria: { label: "Nom de la catégorie #{category.name}" } %></td>
+          <td><%= text_area_tag "category[description]", category.description, form: form_id, rows: 3, class: "form-control",
+                                placeholder: "Décrivez quand l'IA doit choisir cette valeur", aria: { label: "Description de la catégorie #{category.name}" } %></td>
+          <td><%= @category_counts.fetch(category.id, 0) %></td>
+          <td class="text-end">
+            <div class="row-actions">
+              <%= button_tag "Enregistrer", form: form_id, class: "btn btn-sm btn-outline-secondary" %>
+              <%= button_to "Supprimer", category_path(category), method: :delete, class: "btn btn-sm btn-outline-danger",
+                            form: { data: { turbo_confirm: "Supprimer la catégorie #{category.name} ? Les fils concernés n'auront plus de catégorie." } } %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td><%= text_field_tag "category[name]", nil, form: "new-category", class: "form-control", placeholder: "Nouvelle catégorie", aria: { label: "Nouvelle catégorie" } %></td>
+        <td><%= text_area_tag "category[description]", nil, form: "new-category", rows: 3, class: "form-control",
+                              placeholder: "Décrivez quand l'IA doit choisir cette valeur", aria: { label: "Description de la nouvelle catégorie" } %></td>
+        <td></td>
+        <td class="text-end"><%= button_tag "Ajouter", form: "new-category", class: "btn btn-sm btn-primary" %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<% @categories.each do |category| %>
+  <%= form_with model: category, id: dom_id(category, :form), class: "d-none" do %><% end %>
+<% end %>
+<%= form_with url: categories_path, id: "new-category", class: "d-none" do %><% end %>
+
+<%= render "shared/section_head", id: "statuts", title: "Statuts",
+           note: "Du plus urgent au moins urgent : cet ordre classe les fils et les cartes dans chaque journée. L'IA choisit le statut d'après sa description." %>
+<div class="list-table">
+  <table class="table align-middle mb-0">
+    <caption class="visually-hidden">Statuts de fil</caption>
+    <thead><tr><th scope="col">Priorité</th><th scope="col">Statut</th><th scope="col">Aperçu</th><th scope="col">Description pour l'IA</th><th scope="col">Fils</th><th scope="col"></th></tr></thead>
+    <tbody>
+      <% @statuses.each_with_index do |status, index| %>
+        <% form_id = dom_id(status, :form) %>
+        <tr>
+          <td class="fw-semibold"><%= index + 1 %></td>
+          <td><%= text_field_tag "status[name]", status.name, form: form_id, class: "form-control", aria: { label: "Nom du statut #{status.name}" } %></td>
+          <td><%= status_sticker(status, floating: false) %></td>
+          <td><%= text_area_tag "status[description]", status.description, form: form_id, rows: 3, class: "form-control",
+                                placeholder: "Décrivez quand l'IA doit choisir cette valeur", aria: { label: "Description du statut #{status.name}" } %></td>
+          <td><%= @status_counts.fetch(status.id, 0) %></td>
+          <td class="text-end">
+            <div class="row-actions row-actions--stack">
+              <span class="row-actions">
+                <%= button_to "↑", move_status_path(status, direction: "up"), method: :patch, class: "btn btn-sm btn-outline-secondary",
+                              disabled: index.zero?, aria: { label: "Monter #{status.name}" } %>
+                <%= button_to "↓", move_status_path(status, direction: "down"), method: :patch, class: "btn btn-sm btn-outline-secondary",
+                              disabled: index == @statuses.size - 1, aria: { label: "Descendre #{status.name}" } %>
+              </span>
+              <%= button_tag "Enregistrer", form: form_id, class: "btn btn-sm btn-outline-secondary" %>
+              <%= button_to "Supprimer", status_path(status), method: :delete, class: "btn btn-sm btn-outline-danger",
+                            form: { data: { turbo_confirm: "Supprimer le statut #{status.name} ? Les fils concernés n'auront plus de statut." } } %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td></td>
+        <td><%= text_field_tag "status[name]", nil, form: "new-status", class: "form-control", placeholder: "Nouveau statut", aria: { label: "Nouveau statut" } %></td>
+        <td></td>
+        <td><%= text_area_tag "status[description]", nil, form: "new-status", rows: 3, class: "form-control",
+                              placeholder: "Décrivez quand l'IA doit choisir cette valeur", aria: { label: "Description du nouveau statut" } %></td>
+        <td></td>
+        <td class="text-end"><%= button_tag "Ajouter", form: "new-status", class: "btn btn-sm btn-primary" %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<% @statuses.each do |status| %>
+  <%= form_with model: status, id: dom_id(status, :form), class: "d-none" do %><% end %>
+<% end %>
+<%= form_with url: statuses_path, id: "new-status", class: "d-none" do %><% end %>
+
+<%= render "shared/section_head", id: "prompts", title: "Prompts spécifiques",
+           note: "Un domaine tiers peut avoir un prompt spécifique pour ses synthèses. Sans prompt spécifique, l'IA utilise le prompt par défaut." %>
+<div class="prompt-list">
+  <% if @default_prompt %>
+    <%= render "ai_settings/prompt_card", prompt: @default_prompt %>
+  <% end %>
+  <% @prompts.each do |prompt| %>
+    <%= render "ai_settings/prompt_card", prompt: prompt %>
+  <% end %>
+
+  <details class="panel-card">
+    <summary class="btn btn-primary">Ajouter un prompt spécifique</summary>
+    <%= form_with model: Prompt.new, class: "prompt-form" do |f| %>
+      <%= f.label :name, "Nom", class: "form-label" %>
+      <%= f.text_field :name, class: "form-control", required: true %>
+      <%= f.label :content, "Consigne donnée à l'IA", class: "form-label" %>
+      <%= f.text_area :content, rows: 3, class: "form-control", required: true %>
+      <%= f.submit "Ajouter", class: "btn btn-primary btn-sm" %>
+    <% end %>
+  </details>
+</div>

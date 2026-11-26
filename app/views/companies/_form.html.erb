@@ -1,14 +1,13 @@
 <%= simple_form_for company do |f| %>
   <div class="modal-body">
     <%= f.error_notification message: "Merci de corriger les champs signalés." %>
-    <%= f.input :name, label: "Nom", placeholder: "Nom de l'entreprise" %>
-    <%= f.input :domain, label: "Domaine de messagerie", placeholder: "exemple.fr",
-                hint: "Sans « @ » ni « www ». Les mails venant de ce domaine seront rattachés à l'entreprise." %>
-    <%= f.association :prompt, label: "Prompt de synthèse",
-                      collection: Prompt.order(:name), include_blank: "Aucun prompt" %>
+    <%= f.input :name, label: "Nom", placeholder: "Nom affiché" %>
+    <%= f.input :domain, label: "Domaine", placeholder: "exemple.fr",
+                hint: "Sans « @ » ni « www ». Les échanges avec ce domaine seront regroupés sous ce nom." %>
+    <%= f.association :prompt, label: "Prompt spécifique", collection: Prompt.specific, include_blank: "Prompt par défaut" %>
   </div>
   <div class="modal-footer">
     <%= link_to "Annuler", companies_path, class: "btn btn-outline-secondary", data: { bs_dismiss: "modal" } %>
-    <%= f.button :submit, company.new_record? ? "Ajouter l'entreprise" : "Enregistrer", class: "btn-primary" %>
+    <%= f.button :submit, company.new_record? ? "Ajouter le domaine tiers" : "Enregistrer", class: "btn-primary" %>
   </div>
 <% end %>

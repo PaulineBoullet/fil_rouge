@@ -1,41 +1,82 @@
-<h1 class="visually-hidden">Paramètres – contacts</h1>
+<% content_for :title, "Correspondants – Fil rouge" %>
+<%= render "shared/page_head", title: "Correspondants",
+           subtitle: "Les personnes extérieures, regroupées par domaine tiers. On les valide une par une, une fois leur domaine tiers validé. Un expéditeur automatique se bloque : ses fils ne s'affichent plus.",
+           actions: link_to("Ajouter un correspondant", new_contact_path(company_id: params[:company_id]), class: "btn btn-outline-secondary", data: { turbo_frame: "modal" }) %>
 
-<%= render "shared/list_toolbar",
-           search_label: "Rechercher un contact",
-           placeholder: "Nom, prénom ou adresse mail",
-           add_label: "Ajouter un contact",
-           add_path: new_contact_path %>
+<%= form_with url: contacts_path, method: :get, class: "filters", data: { controller: "autosubmit" } do %>
+  <span class="filters__icon" aria-hidden="true"><%= icon(:filter, size: 16) %></span>
+  <%= select_tag :company_id, options_from_collection_for_select(@companies, :id, :name, params[:company_id]),
+                 include_blank: "Domaine tiers : tous", class: "pill-select", aria: { label: "Domaine tiers" },
+                 data: { action: "change->autosubmit#submit" } %>
+  <%= select_tag :state, options_for_select([["À valider", "pending"], ["Validés", "validated"], ["Bloqués", "blocked"]], params[:state]),
+                 include_blank: "État : tous", class: "pill-select", aria: { label: "État" },
+                 data: { action: "change->autosubmit#submit" } %>
+  <%= search_field_tag :query, params[:query], placeholder: "Nom ou adresse…", class: "pill-input", aria: { label: "Rechercher un correspondant" } %>
+<% end %>
 
-<% if @contacts.present? %>
-  <div class="list-table">
-    <table class="table table-hover align-middle mb-0">
-      <thead>
-        <tr>
-          <th scope="col">Nom</th>
-          <th scope="col">Adresse mail</th>
-          <th scope="col">Entreprise</th>
-          <th scope="col" class="text-end">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @contacts.each do |contact| %>
-          <tr>
-            <td class="fw-semibold"><%= contact.full_name %></td>
-            <td class="text-secondary"><%= contact.email %></td>
-            <td class="text-secondary"><%= contact.company&.name || "Aucune" %></td>
-            <td class="text-end">
-              <%= render "shared/row_actions",
-                         edit_path: edit_contact_path(contact),
-                         delete_path: contact_path(contact),
-                         confirm: "Supprimer #{contact.full_name} ? Ses mails et ses synthèses seront supprimés." %>
-            </td>
-          </tr>
+<% if @groups.empty? %>
+  <div class="empty-state"><p>Aucun correspondant.</p></div>
+<% end %>
+
+<% @groups.each do |company, contacts| %>
+  <% contacts.select(&:pending?).each do |contact| %>
+    <%= form_with url: validate_contact_path(contact), method: :patch, id: dom_id(contact, :validate), class: "d-none" do %><% end %>
+  <% end %>
+  <section class="contact-group">
+    <div class="contact-group__head">
+      <h2 class="section-title"><%= company&.name || "Sans domaine tiers" %></h2>
+      <% if company %>
+        <span class="muted-small"><%= company.domain %></span>
+        <% if company.validated? %>
+          <span class="state-chip state-chip--ok">Domaine validé</span>
+        <% else %>
+          <span class="state-chip">Domaine à valider</span>
+          <%= link_to "Valider le domaine d'abord", companies_path, class: "muted-small" %>
         <% end %>
-      </tbody>
-    </table>
-  </div>
-<% else %>
-  <div class="empty-state">
-    <p><%= params[:query].present? ? "Aucun contact ne correspond à « #{params[:query]} »." : "Aucun contact pour l'instant." %></p>
-  </div>
+      <% end %>
+    </div>
+    <div class="list-table">
+      <table class="table align-middle mb-0">
+        <caption class="visually-hidden">Correspondants de <%= company&.name || "sans domaine tiers" %></caption>
+        <thead><tr><th scope="col">Correspondant</th><th scope="col">État</th><th scope="col">Mails</th><th scope="col">Dernier échange</th><th scope="col"></th></tr></thead>
+        <tbody>
+          <% contacts.each do |contact| %>
+            <tr>
+              <td>
+                <% if contact.pending? && contact.validatable? %>
+                  <%= text_field_tag :display_name, contact.name, form: dom_id(contact, :validate), class: "form-control form-control-sm", aria: { label: "Nom de #{contact.email}" } %>
+                  <span class="muted-small"><%= contact.email %></span>
+                <% else %>
+                  <span class="person-cell"><%= initials_avatar(contact, size: 32) %>
+                    <span><strong><%= contact.name %></strong><br><span class="muted-small"><%= contact.email %></span></span>
+                  </span>
+                <% end %>
+              </td>
+              <td>
+                <span class="state-chip <%= { "validated" => "state-chip--ok", "blocked" => "state-chip--blocked" }[contact.state] %>">
+                  <%= { "pending" => "À valider", "validated" => "Validé", "blocked" => "Bloqué" }[contact.state] %>
+                </span>
+              </td>
+              <td><%= @email_counts.fetch(contact.id, 0) %></td>
+              <td><%= @last_exchange[contact.id] ? day_label(@last_exchange[contact.id].to_date) : "—" %></td>
+              <td class="text-end">
+                <div class="row-actions">
+                  <% if contact.pending? && contact.validatable? %>
+                    <%= button_tag "Valider", form: dom_id(contact, :validate), class: "btn btn-primary btn-sm" %>
+                  <% end %>
+                  <% if contact.blocked? %>
+                    <%= button_to "Débloquer", unblock_contact_path(contact), method: :patch, class: "btn btn-sm btn-outline-secondary" %>
+                  <% else %>
+                    <%= button_to "Bloquer", block_contact_path(contact), method: :patch, class: "btn btn-sm btn-outline-secondary",
+                                  title: "Pour un expéditeur automatique : notification, newsletter…" %>
+                  <% end %>
+                  <%= link_to "Modifier", edit_contact_path(contact), class: "btn btn-sm btn-outline-secondary", data: { turbo_frame: "modal" } %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </section>
 <% end %>
