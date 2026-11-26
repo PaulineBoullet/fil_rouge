@@ -9,8 +9,14 @@ module ApplicationHelper
     l(date, format: "%-d %B %Y").capitalize
   end
 
+  # Précision après le libellé : « jeudi 26 novembre » après « Aujourd'hui »,
+  # « 24 novembre » après « Mardi », rien après une date complète
   def day_detail(date)
-    date ? l(date, format: "%A %-d %B") : ""
+    return if date.nil?
+    return l(date, format: "%A %-d %B") if date >= Date.yesterday
+    return l(date, format: "%-d %B") if date > Date.current - 7
+
+    nil
   end
 
   # « suite aujourd'hui », « suite hier », « suite le 24 novembre »

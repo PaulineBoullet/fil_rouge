@@ -1,6 +1,7 @@
 <%# locals: (date:, count:) %>
 <div class="day-sep">
-  <h2 class="day-sep__title"><%= day_label(date) %> <span class="day-sep__date">· <%= day_detail(date) %></span></h2>
+  <% detail = day_detail(date) %>
+  <h2 class="day-sep__title"><%= day_label(date) %><% if detail %> <span class="day-sep__date">· <%= detail %></span><% end %></h2>
   <span class="day-sep__line" aria-hidden="true"></span>
   <span class="day-sep__count"><%= count %></span>
 </div>
