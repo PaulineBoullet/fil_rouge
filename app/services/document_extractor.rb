@@ -4,21 +4,27 @@ class DocumentExtractor
   end
 
   def extract_text
-    filename = @attachment[:filename].to_s.downcase
-
-    case File.extname(filename)
-    when ".pdf"
-      extract_pdf
-    when ".docx"
-      extract_docx
-    when ".xlsx"
-      extract_xlsx
-    else
-      "Format non pris en charge : #{filename}"
-    end
+    extension = File.extname(@attachment[:filename].to_s).downcase
+    extract_by_extension(extension)
+  rescue StandardError => e
+    "Pièce jointe illisible : #{e.message}"
   end
 
   private
+
+  def extract_by_extension(extension)
+    return extract_pdf.presence || analyze_visual if extension == ".pdf"
+    return analyze_visual if %w[.jpg .jpeg .png].include?(extension)
+    return extract_docx if extension == ".docx"
+    return extract_xlsx if extension == ".xlsx"
+
+    "Format non pris en charge : #{extension}"
+  end
+
+  def analyze_visual
+    response = OpenaiService.new.analyze_visual_attachment(@attachment)
+    response.output_text
+  end
 
   def extract_pdf
     reader = PDF::Reader.new(StringIO.new(@attachment[:content]))
