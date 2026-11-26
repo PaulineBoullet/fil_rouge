@@ -4,34 +4,25 @@ class EmailAnalysisService
   end
 
   def call
-    content = analysis_content
-
-    save_analysis(
-      generate_summary(content),
-      generate_metadata(content)
+    result = OpenaiService.new.analyze_email(
+      analysis_content,
+      instructions: company_prompt
     )
+
+    save_summary(result)
+    save_metadata(result)
 
     @email.summary
   end
 
   private
 
-  def generate_summary(content)
-    OpenaiService.new.analyze_email(
-      content,
-      instructions: company_prompt
-    ).output_text
+  def save_summary(result)
+    @email.update!(summary: result.fetch("summary"))
   end
 
-  def generate_metadata(content)
-    EmailMetadataExtractor.new.call(content)
-  end
-
-  def save_analysis(summary, metadata)
-    @email.update!(
-      summary: summary,
-      metadata: metadata
-    )
+  def save_metadata(result)
+    @email.update!(metadata: result.except("summary"))
   end
 
   def analysis_content
@@ -47,26 +38,16 @@ class EmailAnalysisService
   def email_metadata
     [
       "MÉTADONNÉES DE L'EMAIL",
-      "Identifiant : #{@email.id}",
-      "Message-ID : #{@email.message_id}",
-      "Objet : #{email_subject}",
-      "Date d'envoi : #{email_date}",
+      "Objet : #{@email.subject.presence || 'Sans objet'}",
+      "Date d'envoi : #{@email.sent_at || 'Non renseignée'}",
       "Entreprise : #{company_name}",
       "Contact : #{contact_name}",
       "Collaborateur : #{employee_name}"
     ].join("\n")
   end
 
-  def email_subject
-    @email.subject.presence || 'Sans objet'
-  end
-
-  def email_date
-    @email.sent_at || 'Non renseignée'
-  end
-
   def company_name
-    @email.contact.company&.name || 'Non renseignée'
+    @email.contact.company&.name || "Non renseignée"
   end
 
   def contact_name
@@ -76,7 +57,7 @@ class EmailAnalysisService
   end
 
   def employee_name
-    @email.employee&.full_name || 'Non renseigné'
+    @email.employee&.full_name || "Non renseigné"
   end
 
   def attachments_content(attachments)
