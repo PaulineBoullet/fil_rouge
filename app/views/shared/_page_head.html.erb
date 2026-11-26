@@ -1,0 +1,9 @@
+<%# locals: (title:, subtitle: nil, kicker: "Paramètres", actions: nil) %>
+<div class="page-head">
+  <div>
+    <span class="page-head__kicker"><%= kicker %></span>
+    <h1 class="page-head__title"><%= title %></h1>
+    <% if subtitle %><p class="page-head__sub"><%= subtitle %></p><% end %>
+  </div>
+  <% if actions %><div class="page-head__actions"><%= actions %></div><% end %>
+</div>

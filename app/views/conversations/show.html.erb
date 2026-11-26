@@ -1,0 +1,79 @@
+<% content_for :title, "#{@conversation.display_title} – Fil rouge" %>
+
+<% crumbs = @conversation.company ? [[@conversation.company.name, company_view_path(@conversation.company)]] : [["Fils internes", root_path(internal: "1")]] %>
+<%= breadcrumb(*crumbs, title: @conversation.display_title) %>
+
+<section class="synth" aria-label="Synthèse du fil">
+  <div class="synth__head">
+    <span class="synth__label">
+      Synthèse
+      <span class="muted">
+        <% if @conversation.summary_generated_at %>
+          · rédigée le <%= l(@conversation.summary_generated_at, format: "%-d %B à %H h %M") %>
+        <% else %>
+          · pas encore rédigée
+        <% end %>
+      </span>
+    </span>
+
+    <div class="synth__actions">
+      <%= form_with model: @conversation, class: "inline-form", data: { controller: "autosubmit" } do |f| %>
+        <%= f.collection_select :status_id, Status.ordered, :id, :name, { include_blank: "Sans statut" },
+                                class: "pill-select", aria: { label: "Statut du fil" }, data: { action: "change->autosubmit#submit" } %>
+      <% end %>
+      <%= form_with model: @conversation, class: "inline-form", data: { controller: "autosubmit" } do |f| %>
+        <%= f.collection_select :category_id, Category.ordered, :id, :name, { include_blank: "Sans catégorie" },
+                                class: "pill-select", aria: { label: "Catégorie du fil" }, data: { action: "change->autosubmit#submit" } %>
+      <% end %>
+      <%= button_to toggle_hidden_conversation_path(@conversation), method: :patch, class: "pill-button", form_class: "inline-form" do %>
+        <%= icon(:eye_off, size: 16) %> <%= @conversation.hidden? ? "Ne plus masquer" : "Masquer" %>
+      <% end %>
+    </div>
+  </div>
+
+  <% if @conversation.summary.present? %>
+    <p class="synth__text"><%= @conversation.summary %></p>
+  <% else %>
+    <p class="synth__text muted">La synthèse du fil sera rédigée par l'IA après le traitement de nuit.</p>
+  <% end %>
+
+  <div class="synth__foot">
+    <% if @emails_after_summary.positive? %>
+      <span class="muted-small"><%= pluralize_fr(@emails_after_summary, "mail arrivé", "mails arrivés") %> depuis, pas encore pris en compte.</span>
+    <% end %>
+    <%= button_to "Mettre à jour avec l'IA", analyze_conversation_path(@conversation), class: "btn btn-link btn-sm", form_class: "inline-form" %>
+  </div>
+</section>
+
+<%= form_with url: conversation_path(@conversation), method: :get, class: "filters", role: "search",
+              aria: { label: "Filtres du fil" }, data: { controller: "autosubmit" } do %>
+  <span class="filters__icon" aria-hidden="true"><%= icon(:filter, size: 16) %></span>
+  <%= select_tag :person, options_for_select(@people.map { |p| [p.name, "#{p.model_name.singular}-#{p.id}"] }, params[:person]),
+                 include_blank: "Personne : toutes", class: "pill-select", aria: { label: "Personne" },
+                 data: { action: "change->autosubmit#submit" } %>
+  <%= select_tag :direction, options_for_select([["Reçus et envoyés", ""], ["Reçus", "recus"], ["Envoyés", "envoyes"]], params[:direction]),
+                 class: "pill-select", aria: { label: "Sens" }, data: { action: "change->autosubmit#submit" } %>
+  <label class="pill-toggle">
+    <%= check_box_tag :attachments, "1", params[:attachments] == "1", data: { action: "change->autosubmit#submit" } %> Avec pièces jointes
+  </label>
+<% end %>
+
+<% if @days.empty? %>
+  <div class="empty-state"><p>Aucun mail ne correspond à ces filtres.</p></div>
+<% end %>
+
+<% @days.each do |date, emails| %>
+  <section class="day" aria-label="<%= day_label(date) %>">
+    <%= render "shared/day_separator", date: date, count: pluralize_fr(emails.size, "mail") %>
+    <div class="mail-list">
+      <%= render partial: "conversations/mail_card", collection: emails, as: :email %>
+    </div>
+  </section>
+<% end %>
+
+<% if @days.any? %>
+  <p class="feed-end">Début du fil<%= " : #{l(@conversation.first_email_at.to_date, format: :long)}" if @conversation.first_email_at %>.</p>
+<% end %>
+
+<%# Panneau de lecture d'un mail %>
+<%= turbo_frame_tag "mail_panel", src: (email_path(@open_email) if @open_email) %>

@@ -1,14 +1,16 @@
-<h1 class="visually-hidden">Dashboard du <%= l(@date, format: :long) %></h1>
+<% content_for :title, "Dashboard – Fil rouge" %>
 
-<%= render "shared/date_toolbar" %>
+<%= breadcrumb %>
+<%= render "shared/filters", selected_companies: Company.where(id: selected_domain_ids).order(:name).to_a %>
 
-<% if @companies.any? %>
-  <div class="card-grid">
-    <%= render partial: "companies/card", collection: @companies, as: :company,
-               locals: { summaries: @summaries, email_counts: @email_counts, contact_counts: @contact_counts } %>
+<% if @feed.empty? %>
+  <div class="empty-state">
+    <p>Aucun échange à afficher.</p>
+    <p class="muted-small">
+      Les fils n'apparaissent qu'une fois leur domaine tiers et leur premier correspondant validés
+      (<%= link_to "domaines tiers", companies_path %>, <%= link_to "correspondants", contacts_path %>).
+    </p>
   </div>
 <% else %>
-  <div class="empty-state">
-    <p>Aucun échange avec une entreprise le <%= l(@date, format: :long) %>.</p>
-  </div>
+  <%= render "pages/feed_page", feed: @feed, cards: @cards %>
 <% end %>

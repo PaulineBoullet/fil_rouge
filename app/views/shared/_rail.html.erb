@@ -1,0 +1,13 @@
+<nav class="rail" aria-label="Navigation principale">
+  <%= rail_link "Dashboard", root_path, :dashboard, active: consultation_page? %>
+  <span class="rail__sep" aria-hidden="true"></span>
+  <span class="visually-hidden">Paramètres</span>
+  <%= rail_link "Mon domaine", organization_path, :organization, active: controller_name == "settings" %>
+  <%= rail_link "Collaborateurs", employees_path, :employees, active: controller_name == "employees", count: pending_counts[:employees] %>
+  <%= rail_link "Domaines tiers", companies_path, :companies, active: controller_name == "companies" && action_name != "show", count: pending_counts[:companies] %>
+  <%= rail_link "Correspondants", contacts_path, :contacts, active: controller_name == "contacts", count: pending_counts[:contacts] %>
+  <%= rail_link "Réglages de l'IA", ai_settings_path, :ai, active: controller_name.in?(%w[ai_settings categories statuses prompts]) %>
+  <%= rail_link "Mails en erreur", import_failures_path, :errors, active: controller_name == "import_failures", count: pending_counts[:errors], alert: true %>
+  <span class="rail__spacer"></span>
+  <%= rail_link "Se déconnecter", destroy_user_session_path, :logout, method: :delete %>
+</nav>

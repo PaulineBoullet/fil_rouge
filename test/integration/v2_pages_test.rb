@@ -1,0 +1,70 @@
+require "test_helper"
+
+# Parcours de toutes les pages V2 avec un petit jeu de données importé.
+class V2PagesTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+  include EmlFactory
+
+  setup do
+    sign_in User.create!(email: "test@filrouge.fr", password: "password")
+    Setting.create!(org_domain: "kelenn.test")
+    Status.create!(name: "Urgent", rank: 1, description: "Échéance proche")
+    Status.create!(name: "Information", rank: 2)
+    Category.create!(name: "Facturation")
+    Prompt.create!(name: "Prompt par défaut", content: "Résume.", is_default: true)
+
+    import eml(id: "a@morvan.fr", from: "Claire DUBOIS <claire@morvan.fr>", to: "Camille TANGUY <camille@kelenn.test>",
+               subject: "Facture", date: 2.days.ago.rfc2822)
+    import eml(id: "b@kelenn.test", from: "camille@kelenn.test", to: "claire@morvan.fr", subject: "RE: Facture",
+               in_reply_to: "a@morvan.fr", date: 1.hour.ago.rfc2822)
+    Company.update_all(state: "validated")
+    Contact.update_all(state: "validated")
+    Employee.update_all(state: "validated")
+    @conversation = Conversation.first
+    @company = Company.first
+  end
+
+  test "pages de consultation" do
+    get root_path
+    assert_response :success
+    assert_select ".fil-card", minimum: 1
+    assert_select ".crumbs__here", "Dashboard"
+
+    get root_path(view: "lignes")
+    assert_response :success
+    assert_select ".row-link", minimum: 1
+
+    get root_path(domains: [@company.id])
+    assert_redirected_to company_view_path(@company)
+
+    get company_view_path(@company)
+    assert_response :success
+
+    get conversation_path(@conversation)
+    assert_response :success
+    assert_select ".synth"
+
+    email = @conversation.emails.first
+    get email_path(email), headers: { "Turbo-Frame" => "mail_panel" }
+    assert_response :success
+    assert_select ".mail-panel"
+
+    get search_path(q: "Fact")
+    assert_response :success
+  end
+
+  test "pages de paramètres" do
+    [organization_path, employees_path, companies_path, contacts_path, ai_settings_path, import_failures_path].each do |path|
+      get path
+      assert_response :success, path
+    end
+  end
+
+  test "modifier le statut d'un fil le verrouille" do
+    urgent = Status.find_by!(name: "Urgent")
+    patch conversation_path(@conversation), params: { conversation: { status_id: urgent.id } }
+    assert_redirected_to conversation_path(@conversation)
+    assert @conversation.reload.status_locked?
+    assert_equal urgent, @conversation.status
+  end
+end

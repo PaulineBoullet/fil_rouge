@@ -1,0 +1,36 @@
+<%# locals: (prompt:) %>
+<section class="panel-card prompt-card">
+  <%= form_with model: prompt, class: "prompt-form" do |f| %>
+    <div class="prompt-card__head">
+      <%= f.text_field :name, class: "form-control", aria: { label: "Nom du prompt" } %>
+      <%= f.submit "Enregistrer", class: "btn btn-sm btn-outline-secondary" %>
+    </div>
+    <%= f.label :content, "Consigne donnée à l'IA", class: "form-label", for: dom_id(prompt, :content) %>
+    <%= f.text_area :content, rows: 3, class: "form-control", id: dom_id(prompt, :content) %>
+  <% end %>
+
+  <h3 class="form-label">Domaines tiers associés</h3>
+  <% if prompt.is_default? %>
+    <p class="muted-small">Utilisé pour tous les domaines tiers qui n'ont pas de prompt spécifique.</p>
+  <% else %>
+    <div class="chip-row">
+      <% prompt.companies.sort_by(&:name).each do |company| %>
+        <span class="domain-chip domain-chip--neutral">
+          <%= company.name %>
+          <%= button_to "×", company_path(company), method: :patch, params: { company: { prompt_id: "" } },
+                        class: "domain-chip__remove", form_class: "inline-form", aria: { label: "Retirer #{company.name}" } %>
+        </span>
+      <% end %>
+      <% others = @companies.reject { |c| c.prompt_id == prompt.id } %>
+      <% if others.any? %>
+        <%= form_with url: assign_prompt_path(prompt), method: :patch, class: "inline-form", data: { controller: "autosubmit" } do %>
+          <%= select_tag :company_id, options_from_collection_for_select(others, :id, :name), include_blank: "+ Associer un domaine tiers",
+                         class: "pill-select", aria: { label: "Associer un domaine tiers à #{prompt.name}" },
+                         data: { action: "change->autosubmit#submit" } %>
+        <% end %>
+      <% end %>
+    </div>
+    <%= button_to "Supprimer ce prompt", prompt_path(prompt), method: :delete, class: "btn btn-sm btn-outline-danger",
+                  form: { data: { turbo_confirm: "Supprimer le prompt #{prompt.name} ? Ses domaines tiers utiliseront le prompt par défaut." } } %>
+  <% end %>
+</section>

@@ -1,0 +1,50 @@
+<%= turbo_frame_tag "mail_panel" do %>
+  <div class="mail-panel" role="dialog" aria-modal="true" aria-labelledby="mail-title">
+    <%= link_to "", conversation_path(@email.conversation_id), class: "mail-panel__backdrop",
+                aria: { label: "Fermer" }, data: { turbo_frame: "_top" } %>
+    <aside class="mail-panel__sheet">
+      <header class="mail-panel__head">
+        <div>
+          <span class="muted-small"><%= @email.sent_at ? l(@email.sent_at, format: "%A %-d %B %Y · %H h %M") : "Date inconnue" %></span>
+          <h2 id="mail-title" class="mail-panel__title"><%= @email.subject.presence || "(sans objet)" %></h2>
+        </div>
+        <%= link_to conversation_path(@email.conversation_id), class: "icon-button", aria: { label: "Fermer" }, data: { turbo_frame: "_top" } do %>
+          <%= icon(:close, size: 18) %>
+        <% end %>
+      </header>
+
+      <dl class="mail-panel__people">
+        <% { "De" => "from", "À" => "to", "Cc" => "cc" }.each do |label, role| %>
+          <% people = @email.email_participants.select { |p| p.role == role } %>
+          <% next if people.empty? %>
+          <dt><%= label %></dt>
+          <dd><%= safe_join(people.map { |p| "#{p.display_name} <#{p.address}>" }, ", ") %></dd>
+        <% end %>
+      </dl>
+
+      <% if @email.summary.present? %>
+        <section class="synth synth--compact">
+          <span class="synth__label">Synthèse du mail</span>
+          <p class="synth__text"><%= @email.summary %></p>
+        </section>
+      <% end %>
+
+      <div class="mail-panel__body"><%= simple_format(h(@reader.body)) %></div>
+
+      <% attachments = @reader.attachments %>
+      <% if attachments.any? %>
+        <h3 class="mail-panel__subtitle">Pièces jointes</h3>
+        <ul class="attachment-list">
+          <% attachments.each_with_index do |attachment, index| %>
+            <li>
+              <%= link_to attachment_email_path(@email, index: index), data: { turbo: false } do %>
+                <%= icon(:clip, size: 14) %> <%= attachment[:filename].presence || "Pièce jointe #{index + 1}" %>
+              <% end %>
+              <span class="muted-small"><%= number_to_human_size(attachment[:content].to_s.bytesize) %></span>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </aside>
+  </div>
+<% end %>

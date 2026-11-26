@@ -1,20 +1,17 @@
-<h1 class="visually-hidden"><%= @company.name %></h1>
+<% content_for :title, "#{@company.name} – Fil rouge" %>
 
-<%= render "shared/date_toolbar" %>
+<%= breadcrumb title: @company.name %>
+<%= render "shared/filters", selected_companies: [@company], show_view_switch: false %>
 
-<%= render "shared/summary_panel",
-           title: "#{@company.name} · synthèse de l'entreprise",
-           summary: @summary %>
-
-<h2 class="section-title">Contacts ayant échangé le <%= l(@date, format: :long) %></h2>
-
-<% if @contacts.any? %>
-  <div class="card-grid">
-    <%= render partial: "contacts/card", collection: @contacts, as: :contact,
-               locals: { contact_summaries: @contact_summaries } %>
+<% if @company.pending? %>
+  <div class="notice-panel">
+    Ce domaine tiers n'est pas encore validé : ses fils ne s'afficheront qu'après validation dans
+    <%= link_to "Paramètres › Domaines tiers", companies_path %>.
   </div>
+<% end %>
+
+<% if @feed.empty? %>
+  <div class="empty-state"><p>Aucun fil à afficher pour <%= @company.name %>.</p></div>
 <% else %>
-  <div class="empty-state">
-    <p>Aucun échange avec les contacts de cette entreprise à cette date.</p>
-  </div>
+  <%= render "companies/feed_page", feed: @feed, cards: @cards, company: @company %>
 <% end %>

@@ -43,6 +43,18 @@ class OpenaiService
     JSON.parse(response.output_text)
   end
 
+  # Synthèse libre d'un texte (synthèse d'un fil à partir des synthèses de ses mails,
+  # synthèse d'un domaine tiers pour un jour à partir des synthèses de ses fils)
+  def summarize(content, instructions:)
+    response = @client.responses.create(
+      model: MODEL,
+      instructions: instructions,
+      input: content
+    )
+
+    response.output_text.to_s.strip
+  end
+
   def analyze_visual_attachment(attachment)
     @client.responses.create(
       model: MODEL,

@@ -1,0 +1,22 @@
+<%# locals: (card:, date:) %>
+<% path = card.company ? company_view_path(card.company, **filter_params.except(:view, :from)) : root_path(internal: "1") %>
+<%= link_to path, class: ["fil-card", ("is-stale" if card.stale?)],
+            aria: { label: "#{card.name}, #{pluralize_fr(card.conversations.size, 'fil')}#{", priorité : #{card.top_status.name}" if card.top_status}#{", échanges plus récents #{later_label(card.later_day).delete_prefix('suite ')}" if card.stale?}" } do %>
+  <% if card.conversations.size > 1 %><span class="fil-card__sheet" aria-hidden="true"></span><% end %>
+  <div class="fil-card__body">
+    <%= status_sticker(card.top_status) %>
+    <%= count_bubble(card.conversations.size, label: pluralize_fr(card.conversations.size, "fil")) %>
+    <span class="fil-card__title"><%= card.name %></span>
+    <p class="fil-card__text">
+      <% if card.summary %>
+        <%= card.summary.summary %>
+      <% else %>
+        <span class="muted"><%= card.conversations.map(&:display_title).first(3).join(" · ") %></span>
+      <% end %>
+    </p>
+    <div class="fil-card__foot">
+      <%= people_line(card.contacts) %>
+      <% if card.stale? %><span class="fil-card__later"><%= later_label(card.later_day).capitalize %></span><% end %>
+    </div>
+  </div>
+<% end %>

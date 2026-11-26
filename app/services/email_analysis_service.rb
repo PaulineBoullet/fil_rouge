@@ -25,14 +25,21 @@ class EmailAnalysisService
     @email.update!(metadata: result.except("summary"))
   end
 
+  # Limite du texte envoyé à l'IA : au-delà, le modèle refuse la requête (pièces jointes volumineuses)
+  MAX_INPUT_CHARS = 60_000
+
   def analysis_content
     reader = EmlReader.new(@email)
 
-    [
+    content = [
       email_metadata,
       "CONTENU DE L'EMAIL\n#{reader.body}",
       attachments_content(reader.attachments)
     ].join("\n\n")
+
+    return content if content.length <= MAX_INPUT_CHARS
+
+    "#{content.first(MAX_INPUT_CHARS)}\n\n[Texte tronqué : seuls les #{MAX_INPUT_CHARS} premiers caractères ont été transmis.]"
   end
 
   def email_metadata
@@ -40,24 +47,26 @@ class EmailAnalysisService
       "MÉTADONNÉES DE L'EMAIL",
       "Objet : #{@email.subject.presence || 'Sans objet'}",
       "Date d'envoi : #{@email.sent_at || 'Non renseignée'}",
-      "Entreprise : #{company_name}",
-      "Contact : #{contact_name}",
-      "Collaborateur : #{employee_name}"
+      "Domaine tiers : #{company_name}",
+      "Expéditeur : #{sender_name}",
+      "Destinataires : #{recipient_names}"
     ].join("\n")
   end
 
+  def company
+    @email.conversation&.company
+  end
+
   def company_name
-    @email.contact.company&.name || "Non renseignée"
+    company&.name || "Non renseigné"
   end
 
-  def contact_name
-    contact = @email.contact
-    contact.try(:full_name).presence || contact.try(:name).presence ||
-      "Contact ##{@email.contact_id}"
+  def sender_name
+    @email.sender&.display_name || "Non renseigné"
   end
 
-  def employee_name
-    @email.employee&.full_name || "Non renseigné"
+  def recipient_names
+    @email.recipients.map(&:display_name).join(", ").presence || "Non renseignés"
   end
 
   def attachments_content(attachments)
@@ -81,7 +90,8 @@ class EmailAnalysisService
     ].join("\n")
   end
 
+  # Prompt spécifique du domaine tiers, sinon prompt par défaut
   def company_prompt
-    @email.contact.company&.prompt&.content
+    (company&.effective_prompt || Prompt.default_prompt)&.content
   end
 end

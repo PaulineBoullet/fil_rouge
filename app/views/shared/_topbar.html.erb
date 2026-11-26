@@ -1,0 +1,27 @@
+<header class="topbar">
+  <%= link_to root_path, class: "brand", aria: { label: "Fil rouge, retour au dashboard" } do %>
+    Fil rouge
+    <svg class="brand__thread" viewBox="0 0 90 9" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M1 5 C 14 1, 22 8, 36 4 S 60 1, 72 5 S 84 7, 89 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  <% end %>
+
+  <%= form_with url: search_path, method: :get, class: "topbar-search", role: "search",
+                data: { controller: "hotkey", action: "keydown.meta+k@window->hotkey#focus keydown.ctrl+k@window->hotkey#focus" } do |f| %>
+    <%= icon(:search, size: 16) %>
+    <%= f.label :q, "Rechercher", class: "visually-hidden" %>
+    <%= f.search_field :q, value: params[:q], placeholder: "Rechercher un domaine tiers, une personne, un fil",
+                       data: { hotkey_target: "input" } %>
+    <kbd>⌘K</kbd>
+  <% end %>
+
+  <% if user_signed_in? %>
+    <div class="topbar-user">
+      <%= initials_avatar(current_user.email.split("@").first.tr("._", "  ").titleize, size: 32) %>
+      <span class="topbar-user__text">
+        <span class="topbar-user__name"><%= current_user.email %></span>
+        <span class="topbar-user__org"><%= Setting.org_domain.presence || "Domaine à renseigner" %></span>
+      </span>
+    </div>
+  <% end %>
+</header>

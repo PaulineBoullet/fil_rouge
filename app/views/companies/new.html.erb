@@ -1,4 +1,4 @@
 <%= turbo_frame_tag "modal" do %>
-  <%= render "shared/modal_header", title: "Ajouter une entreprise", subtitle: "Les mails reçus de ce domaine seront rattachés à l'entreprise." %>
+  <%= render "shared/modal_header", title: "Ajouter un domaine tiers", subtitle: "Un domaine tiers ajouté à la main est validé d'office. Ses correspondants restent à valider." %>
   <%= render "form", company: @company %>
 <% end %>

@@ -1,0 +1,29 @@
+<%# Un paquet de jours du dashboard. Chargé dans la page, puis dans un cadre Turbo pour les paquets suivants. %>
+<%# locals: (feed:, cards:) %>
+<% content = capture do %>
+  <% feed.dates.each do |date| %>
+    <% day_cards = cards.for(date) %>
+    <section class="day" aria-label="<%= day_label(date) %>">
+      <%= render "shared/day_separator", date: date,
+                 count: "#{pluralize_fr(day_cards.size, 'domaine tiers', 'domaines tiers')} · #{pluralize_fr(day_cards.sum { |c| c.conversations.size }, 'fil')}" %>
+      <% if list_view == "lignes" %>
+        <div class="rows">
+          <%= render partial: "pages/company_row", collection: day_cards, as: :card %>
+        </div>
+      <% else %>
+        <div class="card-grid">
+          <%= render partial: "pages/company_card", collection: day_cards, as: :card, locals: { date: date } %>
+        </div>
+      <% end %>
+    </section>
+  <% end %>
+  <%= render "shared/load_more", next_before: feed.next_before,
+             url: root_path(domains: selected_domain_ids, before: feed.next_before, **filter_params.except(:from)),
+             end_label: "Début des échanges." %>
+<% end %>
+
+<% if feed.before && turbo_frame_request? %>
+  <%= turbo_frame_tag "feed-#{feed.before}" do %><%= content %><% end %>
+<% else %>
+  <%= content %>
+<% end %>

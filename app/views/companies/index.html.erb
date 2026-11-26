@@ -1,43 +1,68 @@
-<h1 class="visually-hidden">Paramètres – entreprises</h1>
+<% content_for :title, "Domaines tiers – Fil rouge" %>
+<%= render "shared/page_head", title: "Domaines tiers",
+           subtitle: "Les domaines d'expédition de vos échanges : entreprises, administrations, associations… Tant qu'un domaine tiers n'est pas validé, ses fils ne s'affichent pas.",
+           actions: link_to("Ajouter un domaine tiers", new_company_path, class: "btn btn-outline-secondary", data: { turbo_frame: "modal" }) %>
 
-<%= render "shared/list_toolbar",
-           search_label: "Rechercher une entreprise",
-           placeholder: "Nom ou domaine",
-           add_label: "Ajouter une entreprise",
-           add_path: new_company_path %>
-
-<% if @companies.present? %>
+<%= render "shared/section_head", title: "À valider", count: @pending.size,
+           note: "Un domaine tiers qu'on ne valide pas reste ici, sans apparaître dans l'outil." %>
+<% if @pending.any? %>
+  <% @pending.each do |company| %>
+    <%= form_with url: validate_company_path(company), method: :patch, id: dom_id(company, :validate), class: "d-none" do %><% end %>
+  <% end %>
   <div class="list-table">
-    <table class="table table-hover align-middle mb-0">
-      <thead>
-        <tr>
-          <th scope="col">Nom</th>
-          <th scope="col">Domaine</th>
-          <th scope="col">Prompt</th>
-          <th scope="col">Contacts</th>
-          <th scope="col" class="text-end">Actions</th>
-        </tr>
-      </thead>
+    <table class="table align-middle mb-0">
+      <caption class="visually-hidden">Domaines tiers à valider</caption>
+      <thead><tr><th scope="col">Domaine tiers détecté</th><th scope="col">Nom proposé (modifiable)</th><th scope="col">Apparu le</th><th scope="col">Fils</th><th scope="col">Adresses</th><th scope="col"></th></tr></thead>
       <tbody>
-        <% @companies.each do |company| %>
+        <% @pending.each do |company| %>
           <tr>
-            <td class="fw-semibold"><%= company.name %></td>
-            <td class="text-secondary"><%= company.domain %></td>
-            <td class="text-secondary"><%= company.prompt&.name || "—" %></td>
-            <td class="text-secondary"><%= company.contacts_count %></td>
-            <td class="text-end">
-              <%= render "shared/row_actions",
-                         edit_path: edit_company_path(company),
-                         delete_path: company_path(company),
-                         confirm: "Supprimer #{company.name} ? Ses synthèses seront supprimées ; ses contacts restent dans l'annuaire, sans entreprise." %>
-            </td>
+            <td><%= company.domain %></td>
+            <td><%= text_field_tag :name, company.name, form: dom_id(company, :validate), class: "form-control", aria: { label: "Nom de #{company.domain}" } %></td>
+            <td><%= @first_seen[company.id] ? l(@first_seen[company.id].to_date, format: "%-d %B") : "—" %></td>
+            <td><%= @conversation_counts.fetch(company.id, 0) %></td>
+            <td><%= @contact_counts.fetch(company.id, 0) %></td>
+            <td class="text-end"><%= button_tag "Valider", form: dom_id(company, :validate), class: "btn btn-primary btn-sm" %></td>
           </tr>
         <% end %>
       </tbody>
     </table>
   </div>
 <% else %>
-  <div class="empty-state">
-    <p><%= params[:query].present? ? "Aucune entreprise ne correspond à « #{params[:query]} »." : "Aucune entreprise pour l'instant." %></p>
-  </div>
+  <p class="muted-small">Aucun domaine tiers à valider.</p>
 <% end %>
+
+<%= render "shared/section_head", title: "Validés", count: @validated.size %>
+<div class="list-table">
+  <table class="table align-middle mb-0">
+    <caption class="visually-hidden">Domaines tiers validés</caption>
+    <thead><tr><th scope="col">Domaine tiers</th><th scope="col">Fils</th><th scope="col">Correspondants</th><th scope="col">Prompt spécifique</th><th scope="col"></th></tr></thead>
+    <tbody>
+      <% @validated.each do |company| %>
+        <tr>
+          <td>
+            <span class="person-cell"><span class="logo-chip" aria-hidden="true"><%= company.initials %></span>
+              <span><%= link_to company.name, company_view_path(company), class: "fw-semibold" %><br><span class="muted-small"><%= company.domain %></span></span>
+            </span>
+          </td>
+          <td><%= @conversation_counts.fetch(company.id, 0) %></td>
+          <td><%= @contact_counts.fetch(company.id, 0) %></td>
+          <td>
+            <%= form_with model: company, data: { controller: "autosubmit" } do |f| %>
+              <%= f.collection_select :prompt_id, @prompts, :id, :name, { include_blank: "Prompt par défaut" },
+                                      class: "pill-select", aria: { label: "Prompt spécifique de #{company.name}" },
+                                      data: { action: "change->autosubmit#submit" } %>
+            <% end %>
+          </td>
+          <td class="text-end">
+            <div class="row-actions">
+              <%= link_to "Correspondants", contacts_path(company_id: company.id), class: "btn btn-sm btn-outline-secondary" %>
+              <%= link_to "Modifier", edit_company_path(company), class: "btn btn-sm btn-outline-secondary", data: { turbo_frame: "modal" } %>
+              <%= button_to "Supprimer", company_path(company), method: :delete, class: "btn btn-sm btn-outline-danger",
+                            form: { data: { turbo_confirm: "Supprimer #{company.name} ? Ses fils restent en base mais ne s'afficheront plus ; ses correspondants restent, sans domaine tiers." } } %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

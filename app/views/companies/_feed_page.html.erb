@@ -1,0 +1,40 @@
+<%# locals: (feed:, cards:, company:) %>
+<% content = capture do %>
+  <% feed.dates.each do |date| %>
+    <% day_cards = cards.for(date) %>
+    <section class="day" aria-label="<%= day_label(date) %>">
+      <%= render "shared/day_separator", date: date, count: pluralize_fr(day_cards.size, "fil") %>
+      <div class="card-grid">
+        <% day_cards.each do |card| %>
+          <%= link_to conversation_path(card.conversation), class: ["fil-card", ("is-stale" if card.stale?)] do %>
+            <% if card.emails_count > 1 %><span class="fil-card__sheet" aria-hidden="true"></span><% end %>
+            <div class="fil-card__body">
+              <%= status_sticker(card.status) %>
+              <%= count_bubble(card.emails_count, label: "#{pluralize_fr(card.emails_count, 'mail')} ce jour") %>
+              <span class="fil-card__title"><%= card.conversation.display_title %></span>
+              <% if card.conversation.category %>
+                <span class="category-tag"><%= card.conversation.category.name %></span>
+              <% end %>
+              <p class="fil-card__text">
+                <%= card.conversation.summary.presence || tag.span("Synthèse à venir.", class: "muted") %>
+              </p>
+              <div class="fil-card__foot">
+                <%= people_line(card.people) %>
+                <% if card.stale? %><span class="fil-card__later"><%= later_label(card.later_day).capitalize %></span><% end %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+  <%= render "shared/load_more", next_before: feed.next_before,
+             url: company_view_path(company, before: feed.next_before, **filter_params.except(:from)),
+             end_label: "Début des échanges avec #{company.name}." %>
+<% end %>
+
+<% if feed.before && turbo_frame_request? %>
+  <%= turbo_frame_tag "feed-#{feed.before}" do %><%= content %><% end %>
+<% else %>
+  <%= content %>
+<% end %>

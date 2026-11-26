@@ -1,17 +1,17 @@
+# Paramètres – Collaborateurs : adresses du domaine de l'organisation.
 class EmployeesController < ApplicationController
-  before_action :set_employee, only: %i[edit update destroy]
+  before_action :set_employee, only: %i[edit update destroy validate]
 
   def index
-    @employees = Employee.left_joins(:emails)
-                         .select("employees.*, COUNT(emails.id) AS emails_count")
-                         .group(:id)
-                         .order(:last_name, :first_name)
-    if search_pattern
-      @employees = @employees.where(
-        "employees.first_name ILIKE :q OR employees.last_name ILIKE :q OR employees.email ILIKE :q",
-        q: search_pattern
-      )
-    end
+    employees = Employee.by_name
+    employees = employees.where("display_name ILIKE :q OR email ILIKE :q", q: search_pattern) if search_pattern
+    @pending = employees.pending.to_a
+    @validated = employees.validated.to_a
+    stats = EmailParticipant.where(employee_id: @pending + @validated).joins(:email)
+    @email_counts = stats.group(:employee_id).distinct.count(:email_id)
+    @conversation_counts = stats.group(:employee_id).distinct.count("emails.conversation_id")
+    @last_exchange = stats.group(:employee_id).maximum("emails.sent_at")
+    @first_seen = stats.group(:employee_id).minimum("emails.sent_at")
   end
 
   def new
@@ -19,7 +19,7 @@ class EmployeesController < ApplicationController
   end
 
   def create
-    @employee = Employee.new(employee_params)
+    @employee = Employee.new(employee_params.merge(state: :validated))
     if @employee.save
       redirect_to employees_path, notice: "Collaborateur ajouté."
     else
@@ -43,6 +43,12 @@ class EmployeesController < ApplicationController
     redirect_to employees_path, notice: "Collaborateur supprimé.", status: :see_other
   end
 
+  def validate
+    @employee.display_name = params[:display_name] if params[:display_name].present?
+    @employee.validated!
+    redirect_to employees_path, notice: "#{@employee.name} est validé."
+  end
+
   private
 
   def set_employee
@@ -50,6 +56,6 @@ class EmployeesController < ApplicationController
   end
 
   def employee_params
-    params.expect(employee: [:first_name, :last_name, :email])
+    params.expect(employee: [:display_name, :email])
   end
 end

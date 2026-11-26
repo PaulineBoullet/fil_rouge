@@ -1,18 +1,23 @@
+# Un correspondant : une personne extérieure, rattachée au domaine tiers de son adresse.
 class Contact < ApplicationRecord
+  include PersonName
+
+  enum :state, { pending: "pending", validated: "validated", blocked: "blocked" }, default: :pending
+
   belongs_to :company, optional: true
-  has_many :emails, dependent: :destroy
-  has_many :contact_summaries, dependent: :destroy
+  has_many :email_participants, dependent: :nullify
+  has_many :emails, -> { distinct }, through: :email_participants
+  has_many :originated_conversations, class_name: "Conversation", foreign_key: :origin_contact_id,
+                                      inverse_of: :origin_contact, dependent: :nullify
 
   normalizes :email, with: ->(email) { email.strip.downcase }
-  validates :email, :first_name, :last_name, presence: true
-  validates :email, uniqueness: true
+  validates :email, presence: true, uniqueness: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "n'est pas une adresse mail valide" }
 
-  def full_name
-    "#{first_name} #{last_name}"
-  end
+  scope :by_name, -> { order(Arel.sql("LOWER(COALESCE(NULLIF(contacts.display_name, ''), contacts.last_name, contacts.email))")) }
 
-  def initials
-    "#{first_name.to_s.first}#{last_name.to_s.first}".upcase
+  # Un correspondant ne se valide qu'une fois son domaine tiers validé
+  def validatable?
+    company.nil? || company.validated?
   end
 end
