@@ -1,0 +1,25 @@
+<%# locals: (email:) %>
+<% sender = email.sender %>
+<% sent = email.sent_by_organization? %>
+<%= link_to email_path(email), class: "fil-card fil-card--wide",
+            data: { turbo_frame: "mail_panel", turbo_action: "advance" },
+            aria: { label: "#{sent ? 'Envoyé' : 'Reçu'} de #{sender&.display_name}#{", #{l(email.sent_at, format: '%H h %M')}" if email.sent_at}" } do %>
+  <div class="fil-card__body">
+    <span class="sticker sticker--floating <%= sent ? "sticker--sent" : "sticker--received" %>">
+      <span class="sticker__dot" aria-hidden="true"></span><%= sent ? "Envoyé" : "Reçu" %>
+    </span>
+    <% if email.attachments_count.positive? %>
+      <%= count_bubble(safe_join([icon(:clip, size: 13), email.attachments_count]), label: pluralize_fr(email.attachments_count, "pièce jointe", "pièces jointes")) %>
+    <% end %>
+    <span class="fil-card__title"><%= sender&.display_name || "Expéditeur inconnu" %></span>
+    <span class="muted-small"><%= email.sent_at ? l(email.sent_at, format: "%H h %M") : "heure inconnue" %> · <%= email.subject %></span>
+    <p class="fil-card__text">
+      <%= email.summary.presence || tag.span("Synthèse à venir.", class: "muted") %>
+    </p>
+    <div class="fil-card__foot">
+      <% recipients = email.recipients %>
+      <%= avatar_row(recipients.filter_map(&:person)) %>
+      <span class="muted-small fil-card__ellipsis">à <%= recipients.map(&:display_name).join(", ") %></span>
+    </div>
+  </div>
+<% end %>

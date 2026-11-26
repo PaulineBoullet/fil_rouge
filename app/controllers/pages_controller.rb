@@ -1,19 +1,16 @@
+# Dashboard : une carte par domaine tiers et par jour d'échange.
 class PagesController < ApplicationController
-  before_action :set_date
+  include ConversationFilters
 
   def dashboard
-    emails_of_the_day = Email.joins(:contact).where(sent_at: @date.all_day)
+    # Un seul domaine tiers sélectionné : on descend dans sa vue
+    if selected_domain_ids.one?
+      return redirect_to company_view_path(selected_domain_ids.first, **filter_params.except(:view))
+    end
 
-    # Entreprises avec au moins un échange à la date choisie
-    @companies = Company.where(id: emails_of_the_day.select("contacts.company_id")).order(:name)
+    @feed = ActivityFeed.new(conversations: filtered_conversations, before: feed_before)
+    @cards = DashboardCards.new(@feed)
 
-    # Synthèses de cette date, rangées par entreprise
-    @summaries = CompanySummary.where(generated_at: @date.all_day)
-                               .order(:generated_at)
-                               .index_by(&:company_id)
-
-    # Nombre de mails et de contacts de la date, par entreprise
-    @email_counts   = emails_of_the_day.group("contacts.company_id").count
-    @contact_counts = emails_of_the_day.group("contacts.company_id").distinct.count(:contact_id)
+    render partial: "pages/feed_page", locals: { feed: @feed, cards: @cards } if turbo_frame_request?
   end
 end

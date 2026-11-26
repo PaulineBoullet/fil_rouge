@@ -1,28 +1,50 @@
 Rails.application.routes.draw do
   devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
-
+  # Consultation : dashboard → domaine tiers → fil → mail
   root "pages#dashboard"
+  get "recherche" => "search#index", as: :search
+  get "domaines-tiers/:id" => "companies#show", as: :company_view
 
-  resources :companies do
-    post :analyze_emails, on: :member
+  resources :conversations, path: "fils", only: %i[show update] do
+    member do
+      patch :toggle_hidden
+      post :analyze
+    end
+  end
+  resources :emails, path: "mails", only: :show do
+    member do
+      get :attachment
+      post :analyze
+    end
   end
 
-  resources :emails, only: [] do
-    post :analyze, on: :member
+  # Paramètres
+  scope "parametres" do
+    resource :organization, path: "mon-domaine", only: %i[show update], controller: "settings"
+    resources :employees, path: "collaborateurs", except: :show do
+      patch :validate, on: :member
+    end
+    resources :companies, path: "domaines-tiers", except: :show do
+      patch :validate, on: :member
+    end
+    resources :contacts, path: "correspondants", except: :show do
+      member do
+        patch :validate
+        patch :block
+        patch :unblock
+      end
+    end
+    get "reglages-ia" => "ai_settings#show", as: :ai_settings
+    resources :categories, only: %i[create update destroy]
+    resources :statuses, only: %i[create update destroy] do
+      patch :move, on: :member
+    end
+    resources :prompts, only: %i[create update destroy] do
+      patch :assign, on: :member
+    end
+    resources :import_failures, path: "mails-en-erreur", only: :index
   end
 
-  resources :contacts
-  resources :employees, except: :show
-  resources :prompts, except: :show
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   get "up" => "rails/health#show", as: :rails_health_check
 end

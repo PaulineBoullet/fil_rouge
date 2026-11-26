@@ -12,33 +12,20 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def after_sign_in_path_for(resource)
+  def after_sign_in_path_for(_resource)
     root_path
   end
+
   private
 
   def keep_flash_for_frames
     flash.keep if turbo_frame_request?
   end
 
-  # Date affichée sur le dashboard et les pages entreprise et contact.
-  # Sans date dans l'adresse (ou avec une date invalide), on prend
-  # la dernière date pour laquelle une synthèse existe.
-  def set_date
-    @latest_date = CompanySummary.maximum(:generated_at)&.to_date || Date.current
-    @date = parse_date(params[:date]) || @latest_date
-  end
-
-  def parse_date(value)
-    Date.iso8601(value)
-  rescue ArgumentError, TypeError
-    nil
-  end
-
   # Motif de recherche pour ILIKE, ou nil si le champ est vide
-  def search_pattern
-    return if params[:query].blank?
+  def search_pattern(value = params[:query])
+    return if value.blank?
 
-    "%#{ActiveRecord::Base.sanitize_sql_like(params[:query].strip)}%"
+    "%#{ActiveRecord::Base.sanitize_sql_like(value.strip)}%"
   end
 end

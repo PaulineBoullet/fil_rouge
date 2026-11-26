@@ -1,0 +1,61 @@
+<% content_for :title, "Recherche – Fil rouge" %>
+<%= breadcrumb title: "Recherche" %>
+
+<%= form_with url: search_path, method: :get, class: "filters", role: "search" do |f| %>
+  <%= f.search_field :q, value: @query, placeholder: "Domaine tiers, personne, titre ou objet…", class: "pill-input pill-input--wide",
+                     autofocus: true, aria: { label: "Rechercher" } %>
+  <%= f.submit "Rechercher", name: nil, class: "btn btn-primary btn-sm" %>
+<% end %>
+
+<% if @query.present? %>
+  <% if [@companies, @contacts, @employees, @conversations].all?(&:empty?) %>
+    <div class="empty-state"><p>Aucun résultat pour « <%= @query %> ».</p></div>
+  <% end %>
+
+  <% if @companies.any? %>
+    <section class="search-group">
+      <h2 class="section-title">Domaines tiers</h2>
+      <ul class="search-list">
+        <% @companies.each do |company| %>
+          <li><%= link_to company.name, company_view_path(company) %> <span class="muted-small"><%= company.domain %></span></li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <% if @contacts.any? || @employees.any? %>
+    <section class="search-group">
+      <h2 class="section-title">Personnes</h2>
+      <ul class="search-list">
+        <% @contacts.each do |contact| %>
+          <li>
+            <%= initials_avatar(contact) %>
+            <%= link_to contact.name, root_path(address: contact.email) %>
+            <span class="muted-small">Correspondant<%= " · #{contact.company.name}" if contact.company %></span>
+          </li>
+        <% end %>
+        <% @employees.each do |employee| %>
+          <li>
+            <%= initials_avatar(employee) %>
+            <%= link_to employee.name, root_path(address: employee.email) %>
+            <span class="muted-small">Collaborateur</span>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <% if @conversations.any? %>
+    <section class="search-group">
+      <h2 class="section-title">Fils</h2>
+      <ul class="search-list">
+        <% @conversations.each do |conversation| %>
+          <li>
+            <%= link_to conversation.display_title, conversation_path(conversation) %>
+            <span class="muted-small"><%= conversation.company&.name %><%= " · #{l(conversation.last_email_at.to_date, format: :long)}" if conversation.last_email_at %></span>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+<% end %>
