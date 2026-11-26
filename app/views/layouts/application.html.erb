@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <title><%= content_for(:title) || "Fil Rouge" %></title>
+    <title><%= content_for(:title) || "Fil rouge" %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Fil Rouge">
@@ -24,19 +24,32 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-  <div class="app-shell">
-    <% unless devise_controller? %>
-      <%= render "shared/sidebar" %>
-    <% end %>
-
-    <main class="app-main">
-      <%= render "shared/decor" %>
-      <div class="app-content">
-        <%= yield %>
+  <body class="<%= devise_controller? ? "auth-page" : "app-page" %>">
+  <% if devise_controller? %>
+    <div class="app-shell">
+      <main class="app-main">
+        <%= render "shared/decor" %>
+        <div class="app-content">
+          <%= yield %>
+        </div>
+      </main>
+    </div>
+  <% else %>
+    <%# Cadre en L : barre du haut et rail d'icônes, puis bande grise et panneau blanc %>
+    <div class="frame powder">
+      <%= render "shared/topbar" %>
+      <div class="frame__body">
+        <%= render "shared/rail" %>
+        <div class="frame__band powder-soft">
+          <div class="frame__panel">
+            <main class="frame__main" id="contenu">
+              <%= yield %>
+            </main>
+          </div>
+        </div>
       </div>
-    </main>
-  </div>
+    </div>
+  <% end %>
 
     <%= render "shared/flashes" %>
     <%# Fenêtre modale unique : les formulaires s'y chargent via le cadre Turbo "modal" %>

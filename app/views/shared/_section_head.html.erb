@@ -1,0 +1,5 @@
+<%# locals: (title:, count: nil, note: nil, id: nil) %>
+<div class="section-head" <%= "id=#{id}" if id %>>
+  <h2 class="section-title"><%= title %><% if count %> <span class="count-chip"><%= count %></span><% end %></h2>
+  <% if note %><p class="muted-small"><%= note %></p><% end %>
+</div>

@@ -1,24 +1,23 @@
 fr:
   activerecord:
     models:
-      company: "Entreprise"
-      contact: "Contact"
+      company: "Domaine tiers"
+      contact: "Correspondant"
+      conversation: "Fil"
       employee: "Collaborateur"
       prompt: "Prompt"
+      category: "Catégorie"
+      status: "Statut"
+      setting: "Réglage"
     attributes:
       company:
         name: "Nom"
         domain: "Domaine"
-        prompt: "Prompt"
       contact:
-        first_name: "Prénom"
-        last_name: "Nom"
+        display_name: "Nom"
         email: "Adresse mail"
-        company: "Entreprise"
       employee:
-        first_name: "Prénom"
-        last_name: "Nom"
+        display_name: "Nom"
         email: "Adresse mail"
-      prompt:
-        name: "Nom"
-        content: "Instructions"
+      setting:
+        org_domain: "Domaine de l'organisation"

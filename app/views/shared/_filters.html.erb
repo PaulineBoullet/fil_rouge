@@ -1,0 +1,65 @@
+<%# Barre de filtres du dashboard et de la vue d'un domaine tiers.
+    Le formulaire envoie toujours vers le dashboard : avec un seul domaine tiers sélectionné,
+    le dashboard redirige vers la vue de ce domaine. %>
+<%# locals: (selected_companies:, show_view_switch: true) %>
+<%= form_with url: root_path, method: :get, class: "filters", role: "search", aria: { label: "Filtres" },
+              data: { controller: "autosubmit" } do |f| %>
+  <span class="filters__icon" aria-hidden="true"><%= icon(:filter, size: 16) %></span>
+
+  <% selected_companies.each do |company| %>
+    <%= hidden_field_tag "domains[]", company.id, id: nil %>
+    <span class="domain-chip">
+      <%= company.name %>
+      <%= link_to "×", root_path(domains: (selected_companies - [company]).map(&:id), **filter_params),
+                  class: "domain-chip__remove", aria: { label: "Retirer #{company.name} du filtre" } %>
+    </span>
+  <% end %>
+
+  <% others = Company.validated.where.not(id: selected_companies.map(&:id)).order(:name) %>
+  <%= select_tag "domains[]", options_from_collection_for_select(others, :id, :name),
+                 include_blank: selected_companies.any? ? "+ Domaine tiers" : "Domaine tiers : tous",
+                 id: "filter-domain", class: "pill-select", aria: { label: "Filtrer par domaine tiers" },
+                 data: { action: "change->autosubmit#submit" } %>
+
+  <%= select_tag :status, options_from_collection_for_select(Status.ordered, :id, :name, params[:status]),
+                 include_blank: "Statut : tous", class: "pill-select", aria: { label: "Statut" },
+                 data: { action: "change->autosubmit#submit" } %>
+
+  <%= select_tag :category, options_from_collection_for_select(Category.ordered, :id, :name, params[:category]),
+                 include_blank: "Catégorie : toutes", class: "pill-select", aria: { label: "Catégorie" },
+                 data: { action: "change->autosubmit#submit" } %>
+
+  <%= search_field_tag :address, params[:address], placeholder: "Adresse…", class: "pill-input",
+                       aria: { label: "Filtrer par adresse" } %>
+
+  <label class="pill-toggle">
+    <%= check_box_tag :hidden, "1", show_hidden?, data: { action: "change->autosubmit#submit" } %> Fils masqués
+  </label>
+  <label class="pill-toggle">
+    <%= check_box_tag :internal, "1", show_internal?, data: { action: "change->autosubmit#submit" } %> Fils internes
+  </label>
+
+  <%= hidden_field_tag :view, list_view if show_view_switch && list_view == "lignes" %>
+
+  <span class="filters__end">
+    <% if show_view_switch %>
+      <span class="view-switch" role="group" aria-label="Affichage">
+        <%= link_to "Cartes", root_path(domains: selected_companies.map(&:id), **filter_params.except(:view)),
+                    class: ["view-switch__item", ("is-on" if list_view == "cartes")], aria: { current: (list_view == "cartes" ? "page" : nil) } %>
+        <%= link_to "Lignes", root_path(domains: selected_companies.map(&:id), **filter_params.merge(view: "lignes")),
+                    class: ["view-switch__item", ("is-on" if list_view == "lignes")], aria: { current: (list_view == "lignes" ? "page" : nil) } %>
+      </span>
+    <% end %>
+
+    <details class="goto-date">
+      <summary class="pill-button"><%= icon(:calendar, size: 16) %> Aller à une date</summary>
+      <div class="goto-date__panel">
+        <%= label_tag :from, "Afficher les échanges jusqu'au", class: "form-label" %>
+        <%= date_field_tag :from, params[:from], max: Date.current, class: "form-control" %>
+        <%= submit_tag "Afficher", name: nil, class: "btn btn-primary btn-sm" %>
+      </div>
+    </details>
+  </span>
+
+  <noscript><%= submit_tag "Filtrer", name: nil, class: "btn btn-outline-secondary btn-sm" %></noscript>
+<% end %>

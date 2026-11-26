@@ -1,16 +1,16 @@
-// Surcharges des variables Bootstrap pour la direction « pop »
+// Surcharges des variables Bootstrap pour la V2 (bordeaux pastel, gris et blanc)
 
 // Général
 $font-family-sans-serif: $body-font;
 $headings-font-family:   $headers-font;
-$headings-font-weight:   700;
+$headings-font-weight:   500;
 $headings-color:         $ink;
-$body-bg:                $cream;
+$body-bg:                $white;
 $body-color:             $ink;
 $font-size-base:         1rem;
 
 // Couleurs de thème
-$primary:   $orange-dark;
+$primary:   $button;
 $secondary: $ink-muted;
 $success:   $green;
 $info:      $violet;
@@ -25,13 +25,16 @@ $link-hover-color:      $violet-dark;
 $link-decoration:       none;
 $link-hover-decoration: underline;
 
-// Arrondis presque droits
-$border-radius-sm:   2px;
-$border-radius:      2px;
-$border-radius-lg:   2px;
-$border-radius-xl:   2px;
-$border-radius-xxl:  2px;
-$border-radius-pill: 50rem;   // conservé pour les avatars
+// Grands arrondis ; boutons en pilule
+$border-radius-sm:   8px;
+$border-radius:      10px;
+$border-radius-lg:   20px;
+$border-radius-xl:   24px;
+$border-radius-xxl:  24px;
+$border-radius-pill: 50rem;
+$btn-border-radius:    50rem;
+$btn-border-radius-sm: 50rem;
+$btn-border-radius-lg: 50rem;
 
 // Bordures
 $border-color:       $line;
@@ -59,4 +62,4 @@ $modal-content-border-color: transparent;
 
 // Tableaux
 $table-border-color: $line;
-$table-hover-bg:     rgba($violet, .04);
+$table-hover-bg:     $violet-soft;

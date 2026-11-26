@@ -1,0 +1,12 @@
+<%# Paquet suivant de jours, chargé quand on arrive en bas de la page %>
+<%# locals: (next_before:, url:, end_label:) %>
+<% if next_before %>
+  <%= turbo_frame_tag "feed-#{next_before}", src: url, loading: :lazy, class: "feed-more" do %>
+    <div class="load-more" aria-live="polite">
+      <div class="load-more__skeleton"><span></span><span></span></div>
+      Chargement des jours précédents…
+    </div>
+  <% end %>
+<% else %>
+  <p class="feed-end"><%= end_label %></p>
+<% end %>

@@ -1,32 +1,39 @@
-// Palette « pop » de Fil rouge
+// Palette V2 : bordeaux pastel, gris et blanc, effets poudrés.
+// Les noms de variables de la V1 sont conservés pour les composants existants.
 
-// Texte et surfaces sombres
-$ink:          #2E2A4F;  // texte principal, barre latérale
-$ink-muted:    #625E80;  // texte secondaire
-$lavender:     #C9C4E8;  // texte secondaire sur fond sombre
+// Texte
+$ink:          #3B2A2F;  // texte principal
+$ink-muted:    #6E5A63;  // texte secondaire
+$lavender:     #FBEFF1;  // texte sur le cadre bordeaux
 
 // Fonds
-$cream:        #FFFDF6;  // fond de page
-$white:        #FFFFFF;  // cartes, tableaux, fenêtres
+$cream:        #FAF5F5;  // fond de page (connexion)
+$white:        #FFFFFF;  // panneau, cartes, tableaux
 
-// Violet
-$violet:       #6C5DD3;  // page active, accents, focus
-$violet-dark:  #4A3DB0;  // texte des badges sur fond violet pâle
-$violet-text:  #5B4BC4;  // liens
-$violet-soft:  #F3F1FD;  // badges, aplats décoratifs
+// Bordeaux
+$frame:        #9A5867;  // cadre en L, poudré
+$band:         #EEEAEA;  // bande grise entre le cadre et le panneau
+$violet:       #B05468;  // accent : focus, liens actifs
+$violet-dark:  #7A2638;  // bordeaux foncé : liens, texte d'accent
+$violet-text:  #7A2638;  // liens
+$violet-soft:  #F8ECEE;  // aplats rosés
+$blush:        #E8C5CC;  // liseré des synthèses
+$button:       #8E3B4E;  // boutons principaux
 
-// Orange
-$orange:       #F05A28;  // décor uniquement, jamais sous du texte
-$orange-dark:  #C93F0C;  // boutons d'action
+// Anciennes couleurs, ramenées au bordeaux et au gris
+$orange:       #9A5867;
+$orange-dark:  #8E3B4E;
+$yellow:       #F6D3DA;
+$yellow-soft:  #FBF4F5;
+$green:        #6E6567;
+$red:          #7A2638;
+$amber:        #9B4457;
 
-// Jaune
-$yellow:       #FFD166;
-$yellow-soft:  #FFF1C7;  // aplats décoratifs
-
-// États
-$green:        #2F855A;
-$red:          #A32D2D;
-$amber:        #F0A202;
+// Gommettes de statut, du plus urgent (1) au moins urgent (4)
+$sticker-bg-1: #F1D9DE;  $sticker-fg-1: #7A2638;
+$sticker-bg-2: #F8ECEE;  $sticker-fg-2: #9B4457;
+$sticker-bg-3: #EFEAEB;  $sticker-fg-3: #5E5457;
+$sticker-bg-4: #F3EEEF;  $sticker-fg-4: #857C7E;
 
 // Filets
 $line:         rgba($ink, .12);
