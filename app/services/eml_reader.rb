@@ -1,4 +1,3 @@
-
 class EmlReader
   def initialize(email)
     @email = email
