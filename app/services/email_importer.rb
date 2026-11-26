@@ -54,6 +54,21 @@ class EmailImporter
     Result.new(status: :failed, error: "#{e.class} : #{e.message}")
   end
 
+  # Relit l'en-tête d'un mail déjà en base : en-têtes de réponse, pièces jointes et
+  # participants, reliés aux personnes selon le domaine de l'organisation actuel.
+  # Sert après un changement de domaine et pour les mails repris de la V1.
+  def refresh(email)
+    mail = Mail.new(@raw)
+    email.update!(
+      in_reply_to: ids_from(mail.in_reply_to).last,
+      reference_ids: ids_from(mail.references),
+      attachments_count: mail.attachments.size
+    )
+    email.email_participants.delete_all
+    create_participants(email, mail)
+    email.email_participants.reload
+  end
+
   private
 
   def create_participants(email, mail)

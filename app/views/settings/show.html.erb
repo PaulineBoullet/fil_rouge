@@ -6,7 +6,7 @@
   <%= simple_form_for @setting, url: organization_path, method: :patch do |f| %>
     <%= f.error_notification message: "Merci de corriger le champ signalé." %>
     <%= f.input :org_domain, label: "Domaine de l'organisation", placeholder: "exemple.fr",
-                hint: "Toute adresse de ce domaine est proposée comme collaborateur. Toute adresse d'un autre domaine est regroupée sous ce domaine tiers, créé à sa première apparition : une entreprise, une administration, une association… Un seul domaine en V2." %>
+                hint: "Toute adresse de ce domaine est proposée comme collaborateur. Toute adresse d'un autre domaine est regroupée sous ce domaine tiers, créé à sa première apparition : une entreprise, une administration, une association… Un seul domaine en V2. Changer le domaine réattribue les adresses de tous les mails déjà en base ; une personne qui change de catégorie garde sa validation." %>
     <%= f.button :submit, "Enregistrer", class: "btn-primary" %>
   <% end %>
 </section>
