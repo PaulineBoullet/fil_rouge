@@ -3,7 +3,6 @@
 class SettingsController < ApplicationController
   def show
     @setting = Setting.current
-    load_employees
   end
 
   def update
@@ -18,7 +17,6 @@ class SettingsController < ApplicationController
       end
       redirect_to organization_path, notice: notice
     else
-      load_employees
       render :show, status: :unprocessable_entity
     end
   end
@@ -28,15 +26,5 @@ class SettingsController < ApplicationController
     Reidentification.new.call
     redirect_to organization_path, notice: "Identification relancée : #{Employee.count} collaborateurs identifiés, " \
                                            "#{Contact.pending.count} correspondants à valider."
-  end
-
-  private
-
-  # Collaborateurs identifiés : toutes les adresses du domaine de l'organisation
-  def load_employees
-    @employees = Employee.by_name.to_a
-    stats = EmailParticipant.where(employee_id: @employees).joins(:email)
-    @conversation_counts = stats.group(:employee_id).distinct.count("emails.conversation_id")
-    @last_exchange = stats.group(:employee_id).maximum("emails.sent_at")
   end
 end

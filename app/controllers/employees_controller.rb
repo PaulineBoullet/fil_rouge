@@ -1,4 +1,4 @@
-# Collaborateurs : les adresses du domaine de l'organisation, listées dans « Mon domaine ».
+# Collaborateurs : les adresses du domaine de l'organisation, listées avec les domaines tiers.
 # Il n'y a rien à valider ; on peut seulement corriger le nom affiché.
 class EmployeesController < ApplicationController
   before_action :set_employee
@@ -8,7 +8,7 @@ class EmployeesController < ApplicationController
 
   def update
     if @employee.update(params.expect(employee: [:display_name]))
-      redirect_to organization_path, notice: "Collaborateur modifié."
+      redirect_to companies_path, notice: "Collaborateur modifié."
     else
       render :edit, status: :unprocessable_entity
     end

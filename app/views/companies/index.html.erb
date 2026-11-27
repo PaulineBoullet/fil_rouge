@@ -1,6 +1,6 @@
-<% content_for :title, "Domaines tiers – Fil rouge" %>
-<%= render "shared/page_head", title: "Domaines tiers",
-           subtitle: "Les domaines d'expédition de vos échanges : entreprises, administrations, associations… Tant qu'un domaine tiers n'est pas validé, ses fils ne s'affichent pas.",
+<% content_for :title, "Domaines tiers et collaborateurs – Fil rouge" %>
+<%= render "shared/page_head", title: "Domaines tiers et collaborateurs",
+           subtitle: "Les domaines d'expédition de vos échanges (entreprises, administrations, associations…) et les collaborateurs de votre domaine. Tant qu'un domaine tiers n'est pas validé, ses fils ne s'affichent pas.",
            actions: link_to("Ajouter un domaine tiers", new_company_path, class: "btn btn-outline-secondary", data: { turbo_frame: "modal" }) %>
 
 <%= render "shared/section_head", title: "À valider", count: @pending.size,
@@ -66,3 +66,5 @@
     </tbody>
   </table>
 </div>
+
+<%= render "companies/employees", **@employees_overview.locals %>
