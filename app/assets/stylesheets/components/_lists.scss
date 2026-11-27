@@ -11,7 +11,7 @@
     flex: 0 1 420px;
 
     .form-label {
-      font-size: .8125rem;
+      font-size: $fs-sm;
       color: $ink-muted;
       margin-bottom: 4px;
     }
@@ -33,7 +33,7 @@
   thead th {
     background: $white;
     color: $ink-muted;
-    font-size: .75rem;
+    font-size: $fs-xs;
     font-weight: 600;
     letter-spacing: .06em;
     text-transform: uppercase;

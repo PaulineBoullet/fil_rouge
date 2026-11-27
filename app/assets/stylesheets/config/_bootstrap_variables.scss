@@ -7,7 +7,16 @@ $headings-font-weight:   500;
 $headings-color:         $ink;
 $body-bg:                $white;
 $body-color:             $ink;
-$font-size-base:         1rem;
+$font-size-base:         $fs-md;
+$font-size-sm:           $fs-sm;
+$font-size-lg:           $fs-lg;
+$h1-font-size:           $fs-2xl;
+$h2-font-size:           $fs-xl;
+$h3-font-size:           $fs-lg;
+$h4-font-size:           $fs-lg;
+$h5-font-size:           $fs-lg;
+$h6-font-size:           $fs-md;
+$small-font-size:        $fs-sm;
 
 // Couleurs de thème
 $primary:   $button;

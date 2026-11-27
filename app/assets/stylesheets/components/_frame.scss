@@ -51,6 +51,7 @@
 
   &:hover { color: var(--theme-on); text-decoration: none; }
 
+  // Nom de l'organisation et « Fil rouge » : taille de marque, hors échelle
   &__org { font-weight: 600; font-size: 1.125rem; line-height: 1; white-space: nowrap; }
 
   // Logo de Fil rouge : le fil blanc sur un carré de la couleur du thème, plus soutenue que le cadre
@@ -104,7 +105,7 @@
     background: transparent;
     border: 0;
     color: var(--theme-on);
-    font-size: .875rem;
+    font-size: $fs-md;
 
     &::placeholder { color: var(--theme-on); opacity: .9; }
     &:focus { outline: none; }
@@ -114,7 +115,7 @@
 
   kbd {
     font-family: $body-font;
-    font-size: .75rem;
+    font-size: $fs-xs;
     color: var(--theme-on);
     background: transparent;
     border: 1px solid color-mix(in srgb, var(--theme-on) 45%, transparent);
@@ -131,8 +132,8 @@
   color: var(--theme-on);
 
   &__text { display: flex; flex-direction: column; line-height: 1.25; }
-  &__name { font-size: .8125rem; font-weight: 600; }
-  &__org { font-size: .75rem; color: var(--theme-on); }
+  &__name { font-size: $fs-sm; font-weight: 600; }
+  &__org { font-size: $fs-xs; color: var(--theme-on); }
 }
 
 // Déconnexion, en haut à droite
@@ -146,7 +147,7 @@
   border-radius: 999px;
   background: transparent;
   color: var(--theme-on);
-  font-size: .8125rem;
+  font-size: $fs-sm;
   font-weight: 600;
   cursor: pointer;
   transition: background .15s;
@@ -204,7 +205,7 @@
     white-space: nowrap;
     background: #1E1A1B;
     color: #fff;
-    font-size: .8125rem;
+    font-size: $fs-sm;
     font-weight: 600;
     padding: 5px 10px;
     border-radius: 6px;
@@ -226,7 +227,7 @@
     height: 16px;
     padding: 0 4px;
     border-radius: 999px;
-    font-size: .625rem;
+    font-size: .625rem; // pastille du rail, hors échelle
     font-weight: 700;
     line-height: 16px;
     text-align: center;
