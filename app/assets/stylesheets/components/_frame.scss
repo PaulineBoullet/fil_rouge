@@ -52,6 +52,9 @@
 
   &__logo { display: block; height: 30px; width: auto; }
 
+  // Logo de Fil rouge, à droite du nom
+  &__mark { display: block; width: 28px; height: 28px; }
+
   &__sep { width: 1px; height: 22px; background: rgba(#fff, .5); }
 
   &__name {
