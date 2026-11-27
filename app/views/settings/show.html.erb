@@ -6,7 +6,7 @@
   <%= simple_form_for @setting, url: organization_path, method: :patch do |f| %>
     <%= f.error_notification message: "Merci de corriger le champ signalé." %>
     <%= f.input :org_domain, label: "Domaine de l'organisation", placeholder: "exemple.fr",
-                hint: "Tant qu'il n'est pas renseigné, aucun mail ne s'affiche. Toute adresse de ce domaine est proposée comme collaborateur. Toute adresse d'un autre domaine est regroupée sous ce domaine tiers, créé à sa première apparition : une entreprise, une administration, une association… Un seul domaine en V2. Changer le domaine réattribue les adresses de tous les mails déjà en base ; une personne qui change de catégorie garde sa validation." %>
+                hint: "Tant qu'il n'est pas renseigné, aucun mail ne s'affiche. Toute adresse de ce domaine est proposée comme collaborateur. Toute adresse d'un autre domaine est regroupée sous ce domaine tiers, créé à sa première apparition : une entreprise, une administration, une association… Un seul domaine en V2. Changer le domaine réattribue les adresses de tous les mails déjà en base ; une adresse qui change de catégorie (correspondant devenu collaborateur, ou l'inverse) redevient « à valider »." %>
     <%= f.button :submit, "Enregistrer", class: "btn-primary" %>
   <% end %>
 </section>
@@ -15,7 +15,7 @@
   <h2 class="section-title">Relancer l'identification</h2>
   <p class="muted-small">
     Relit tous les mails déjà en base avec le domaine ci-dessus : chaque adresse est rattachée à un collaborateur ou
-    à un correspondant, et les mails sans fil (repris de la V1) sont rattachés à un fil. Les validations sont conservées.
+    à un correspondant, et les mails sans fil (repris de la V1) sont rattachés à un fil. Une adresse qui change de catégorie redevient « à valider » ; les autres gardent leur état.
   </p>
   <%= button_to "Relancer l'identification", reidentify_organization_path, class: "btn btn-outline-secondary",
                 form: { data: { turbo_confirm: "Relire tous les mails en base ? Cela peut prendre quelques secondes." } } %>

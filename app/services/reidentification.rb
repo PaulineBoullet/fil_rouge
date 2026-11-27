@@ -8,8 +8,9 @@
 # 3. chaque fil reprend son domaine tiers et son premier correspondant, ou devient interne ;
 # 4. les personnes et domaines tiers qui ne servent plus sont supprimés.
 #
-# Une personne qui change de catégorie garde sa validation (un correspondant validé devient
-# un collaborateur validé, et inversement). Les fils gardent leur statut, leur catégorie,
+# Une personne qui change de catégorie (un correspondant qui devient collaborateur, ou
+# l'inverse) est une nouvelle détection : elle est « à valider ». Les personnes qui restent
+# dans leur catégorie gardent leur état. Les fils gardent leur statut, leur catégorie,
 # leur masquage et leur synthèse.
 class Reidentification
   Result = Struct.new(:employees, :contacts, :conversations, keyword_init: true)
@@ -20,10 +21,8 @@ class Reidentification
   end
 
   def call
-    previous_states = remember_states
-
     ActiveRecord::Base.transaction do
-      relink_participants(previous_states)
+      relink_participants
       attach_orphan_emails
       Conversation.find_each { |conversation| recompute(conversation) }
       clean_up
@@ -34,31 +33,10 @@ class Reidentification
 
   private
 
-  # État de validation de chaque adresse avant le changement
-  def remember_states
-    states = {}
-    Contact.find_each { |c| states[c.email] = c.state }
-    Employee.find_each { |e| states[e.email] = e.state }
-    states
-  end
-
-  def relink_participants(previous_states)
+  def relink_participants
     EmailParticipant.find_each do |participant|
       person = @resolver.call(participant.address, participant.name)
-      record = person[:employee] || person[:contact]
-      carry_state(record, previous_states[participant.address])
       participant.update_columns(employee_id: person[:employee]&.id, contact_id: person[:contact]&.id)
-    end
-  end
-
-  # Une personne qui vient de changer de catégorie garde sa validation
-  def carry_state(record, previous_state)
-    return if record.nil? || previous_state.nil? || !record.pending?
-
-    if record.is_a?(Employee)
-      record.validated! if previous_state == "validated"
-    elsif %w[validated blocked].include?(previous_state)
-      record.update!(state: previous_state)
     end
   end
 
