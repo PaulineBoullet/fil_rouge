@@ -23,7 +23,7 @@ class ActivityFeed
   end
 
   def emails
-    @emails ||= Email.displayable.where(conversation_id: @conversations.select(:id)).where.not(sent_at: nil)
+    @emails ||= Email.where(conversation_id: @conversations.select(:id)).where.not(sent_at: nil)
   end
 
   def dates

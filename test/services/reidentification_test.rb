@@ -19,8 +19,7 @@ class ReidentificationTest < ActiveSupport::TestCase
 
     Reidentification.new(org_domain: "kelenn.test").call
 
-    camille = Employee.find_by!(email: "camille@kelenn.test")
-    assert camille.pending?, "un correspondant devenu collaborateur est à valider"
+    assert Employee.exists?(email: "camille@kelenn.test")
     assert_not Contact.exists?(email: "camille@kelenn.test")
     assert_not Company.exists?(domain: "kelenn.test")
 
@@ -31,7 +30,6 @@ class ReidentificationTest < ActiveSupport::TestCase
 
   test "retirer le domaine transforme les collaborateurs en correspondants à valider" do
     import eml(id: "a@kelenn.test", from: "camille@kelenn.test", to: "claire@morvan.fr", subject: "Facture")
-    Employee.find_by!(email: "camille@kelenn.test").validated!
     Contact.find_by!(email: "claire@morvan.fr").validated!
 
     Reidentification.new(org_domain: "").call

@@ -49,7 +49,6 @@ class EmailImporterTest < ActiveSupport::TestCase
     assert contact.company.pending?
 
     employee = Employee.find_by!(email: "camille@kelenn.test")
-    assert employee.pending?
     assert_equal "Camille Tanguy", employee.name
   end
 

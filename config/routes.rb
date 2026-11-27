@@ -25,9 +25,7 @@ Rails.application.routes.draw do
     resource :organization, path: "mon-domaine", only: %i[show update], controller: "settings" do
       post :reidentify, on: :member
     end
-    resources :employees, path: "collaborateurs", except: :show do
-      patch :validate, on: :member
-    end
+    resources :employees, path: "collaborateurs", only: %i[edit update]
     resources :companies, path: "domaines-tiers", except: :show do
       patch :validate, on: :member
     end

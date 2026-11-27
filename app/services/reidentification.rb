@@ -8,9 +8,9 @@
 # 3. chaque fil reprend son domaine tiers et son premier correspondant, ou devient interne ;
 # 4. les personnes et domaines tiers qui ne servent plus sont supprimés.
 #
-# Une personne qui change de catégorie (un correspondant qui devient collaborateur, ou
-# l'inverse) est une nouvelle détection : elle est « à valider ». Les personnes qui restent
-# dans leur catégorie gardent leur état. Les fils gardent leur statut, leur catégorie,
+# Les collaborateurs n'ont pas d'état de validation. Un collaborateur qui devient
+# correspondant est une nouvelle détection : il est « à valider ». Les correspondants qui
+# le restent gardent leur état. Les fils gardent leur statut, leur catégorie,
 # leur masquage et leur synthèse.
 class Reidentification
   Result = Struct.new(:employees, :contacts, :conversations, keyword_init: true)

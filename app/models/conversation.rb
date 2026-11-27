@@ -11,7 +11,7 @@ class Conversation < ApplicationRecord
   # - domaine tiers validé et premier correspondant validé (ni à valider, ni bloqué) ;
   # - les fils internes seulement si on les demande ;
   # - les fils masqués seulement si on les demande ;
-  # - au moins un mail affichable (expéditeur collaborateur validé ou extérieur).
+  # - au moins un mail.
   def self.displayable(show_hidden: false, show_internal: false)
     return none if Setting.org_domain.blank?
 
@@ -20,7 +20,7 @@ class Conversation < ApplicationRecord
                "AND conversations.origin_contact_id IN (SELECT id FROM contacts WHERE state = 'validated')"
     condition = show_internal ? "(#{external}) OR conversations.internal = TRUE" : external
 
-    relation = where(condition).where(id: Email.displayable.select(:conversation_id))
+    relation = where(condition).where(id: Email.select(:conversation_id))
     relation = relation.where(hidden: false) unless show_hidden
     relation
   end

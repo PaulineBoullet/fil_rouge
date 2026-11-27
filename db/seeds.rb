@@ -47,8 +47,6 @@ puts "  #{results.count { |r| r.status == :imported }} mails importés, " \
      "#{results.count { |r| r.status == :duplicate }} doublons, #{results.count { |r| r.status == :failed }} en erreur."
 
 # Validation d'une partie de ce que l'outil a découvert
-Employee.where(email: %w[camille.tanguy@kelenn-conseil.example thomas.garnier@kelenn-conseil.example
-                         sarah.lemoine@kelenn-conseil.example]).update_all(state: "validated")
 
 Company.where(domain: %w[transports-morvan.fr menuiserie-hamon.fr clinique-des-pins.fr])
        .update_all(state: "validated", prompt_id: rh.id)
@@ -70,5 +68,5 @@ end
 
 puts "Terminé : #{Employee.count} collaborateurs, #{Company.count} domaines tiers, #{Contact.count} correspondants, " \
      "#{Conversation.count} fils, #{Email.count} mails."
-puts "À valider : #{Employee.pending.count} collaborateurs, #{Company.pending.count} domaines tiers, #{Contact.pending.count} correspondants."
+puts "À valider : #{Company.pending.count} domaines tiers, #{Contact.pending.count} correspondants."
 puts "Connexion : test@filrouge.fr / password"

@@ -37,20 +37,8 @@ class ConversationTest < ActiveSupport::TestCase
     assert_includes Conversation.displayable(show_hidden: true), @conversation
   end
 
-  test "les mails d'un collaborateur non validé sont masqués" do
-    @company.validated!
-    @contact.validated!
-    import eml(id: "b@kelenn.test", from: "camille@kelenn.test", to: "claire@morvan.fr", subject: "RE: Facture",
-               in_reply_to: "a@morvan.fr")
-
-    assert_equal 1, @conversation.emails.displayable.count
-    Employee.find_by!(email: "camille@kelenn.test").validated!
-    assert_equal 2, @conversation.emails.displayable.count
-  end
-
   test "les fils internes n'apparaissent qu'avec le filtre" do
     import eml(id: "c@kelenn.test", from: "sarah@kelenn.test", to: "equipe@kelenn.test", subject: "Séminaire")
-    Employee.update_all(state: "validated")
     internal = Conversation.find_by!(internal: true)
 
     assert_not_includes Conversation.displayable, internal

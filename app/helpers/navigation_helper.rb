@@ -39,7 +39,6 @@ module NavigationHelper
   # Compteurs du rail : ce qui attend une action dans les paramètres
   def pending_counts
     @pending_counts ||= {
-      employees: Employee.pending.count,
       companies: Company.pending.count,
       contacts: Contact.pending.joins(:company).merge(Company.validated).count,
       errors: ImportFailure.count

@@ -19,7 +19,6 @@ class V2PagesTest < ActionDispatch::IntegrationTest
                in_reply_to: "a@morvan.fr", date: 1.hour.ago.rfc2822)
     Company.update_all(state: "validated")
     Contact.update_all(state: "validated")
-    Employee.update_all(state: "validated")
     @conversation = Conversation.first
     @company = Company.first
   end
@@ -54,7 +53,7 @@ class V2PagesTest < ActionDispatch::IntegrationTest
   end
 
   test "pages de paramètres" do
-    [organization_path, employees_path, companies_path, contacts_path, ai_settings_path, import_failures_path].each do |path|
+    [organization_path, companies_path, contacts_path, ai_settings_path, import_failures_path].each do |path|
       get path
       assert_response :success, path
     end

@@ -1,7 +1,7 @@
+# Un collaborateur : une adresse du domaine de l'organisation. Il n'y a rien à valider ;
+# les collaborateurs sont listés dans la page « Mon domaine ».
 class Employee < ApplicationRecord
   include PersonName
-
-  enum :state, { pending: "pending", validated: "validated" }, default: :pending
 
   has_many :email_participants, dependent: :nullify
   has_many :emails, -> { distinct }, through: :email_participants

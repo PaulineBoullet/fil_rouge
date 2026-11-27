@@ -1,4 +1,4 @@
 <%= turbo_frame_tag "modal" do %>
-  <%= render "shared/modal_header", title: "Modifier #{@employee.name}", subtitle: "Changer l'adresse mail ne déplace pas les mails déjà importés." %>
+  <%= render "shared/modal_header", title: "Modifier #{@employee.name}", subtitle: "Le nom est lu dans l'en-tête des mails ; vous pouvez le corriger." %>
   <%= render "form", employee: @employee %>
 <% end %>
