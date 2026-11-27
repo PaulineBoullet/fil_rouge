@@ -5,7 +5,7 @@ class PagesController < ApplicationController
   def dashboard
     # Un seul domaine tiers sélectionné : on descend dans sa vue
     if selected_domain_ids.one?
-      return redirect_to company_view_path(selected_domain_ids.first, **filter_params)
+      return redirect_to company_view_path(selected_domain_ids.first, **filter_params.except(:view))
     end
 
     @feed = ActivityFeed.new(conversations: filtered_conversations, before: feed_before)

@@ -1,7 +1,8 @@
 <% content_for :title, "Dashboard – Fil rouge" %>
 
 <%= breadcrumb %>
-<%= render "shared/filters", selected_companies: Company.where(id: selected_domain_ids).order(:name).to_a %>
+<%= render "shared/filters", selected_companies: Company.where(id: selected_domain_ids).order(:name).to_a,
+           show_view_switch: true %>
 
 <% if @feed.empty? %>
   <%= render "pages/diagnosis", diagnosis: DisplayDiagnosis.new %>

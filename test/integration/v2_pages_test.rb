@@ -30,6 +30,10 @@ class V2PagesTest < ActionDispatch::IntegrationTest
     assert_select ".company-groups .company-group .fil-card", minimum: 1
     assert_select ".crumbs__here", "Dashboard"
 
+    get root_path(view: "lignes")
+    assert_response :success
+    assert_select ".row-link", minimum: 1
+
     get root_path(domains: [@company.id])
     assert_redirected_to company_view_path(@company)
 

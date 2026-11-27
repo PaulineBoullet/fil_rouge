@@ -4,7 +4,7 @@
   <% if diagnosis.any? %>
     <p class="muted-small">Voici pourquoi :</p>
     <%= render "pages/diagnosis_list", diagnosis: diagnosis %>
-  <% elsif filter_params.any? || selected_domain_ids.any? %>
+  <% elsif filter_params.except(:view).any? || selected_domain_ids.any? %>
     <p class="muted-small">Aucun fil ne correspond aux filtres choisis. <%= link_to "Retirer les filtres", root_path %></p>
   <% else %>
     <p class="muted-small">Aucun mail n'a encore été importé.</p>
