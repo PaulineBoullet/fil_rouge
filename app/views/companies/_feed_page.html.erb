@@ -10,7 +10,7 @@
     </section>
   <% end %>
   <%= render "shared/load_more", next_before: feed.next_before,
-             url: company_view_path(company, before: feed.next_before, **filter_params.except(:from)),
+             url: company_view_path(company, before: feed.next_before, **filter_params),
              end_label: "Début des échanges avec #{company.name}." %>
 <% end %>
 

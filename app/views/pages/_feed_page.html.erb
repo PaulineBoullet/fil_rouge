@@ -12,7 +12,7 @@
     </section>
   <% end %>
   <%= render "shared/load_more", next_before: feed.next_before,
-             url: root_path(domains: selected_domain_ids, before: feed.next_before, **filter_params.except(:from)),
+             url: root_path(domains: selected_domain_ids, before: feed.next_before, **filter_params),
              end_label: "Début des échanges." %>
 <% end %>
 

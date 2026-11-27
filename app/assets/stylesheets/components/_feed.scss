@@ -115,26 +115,6 @@
   }
 }
 
-.goto-date {
-  position: relative;
-
-  &__panel {
-    position: absolute;
-    right: 0;
-    top: 44px;
-    z-index: 30;
-    width: 280px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 16px;
-    background: #fff;
-    border: 1px solid $line;
-    border-radius: 20px;
-    box-shadow: 0 24px 60px rgba($ink, .18);
-  }
-}
-
 .inline-form { display: inline-flex; margin: 0; }
 
 // Séparateur de jour

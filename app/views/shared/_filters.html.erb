@@ -39,16 +39,5 @@
     <%= check_box_tag :internal, "1", show_internal?, data: { action: "change->autosubmit#submit" } %> Fils internes
   </label>
 
-  <span class="filters__end">
-    <details class="goto-date">
-      <summary class="pill-button"><%= icon(:calendar, size: 16) %> Aller à une date</summary>
-      <div class="goto-date__panel">
-        <%= label_tag :from, "Afficher les échanges jusqu'au", class: "form-label" %>
-        <%= date_field_tag :from, params[:from], max: Date.current, class: "form-control" %>
-        <%= submit_tag "Afficher", name: nil, class: "btn btn-primary btn-sm" %>
-      </div>
-    </details>
-  </span>
-
   <noscript><%= submit_tag "Filtrer", name: nil, class: "btn btn-outline-secondary btn-sm" %></noscript>
 <% end %>
