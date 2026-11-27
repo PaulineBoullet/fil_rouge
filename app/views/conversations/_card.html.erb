@@ -1,10 +1,13 @@
 <%# Carte d'un fil pour un jour (vue d'un domaine tiers et dashboard) : titre, priorité,
     catégorie, nombre de messages et de nouveaux messages du jour, nombre de participants.
     locals: (card:) %>
-<%= link_to conversation_path(card.conversation), class: ["fil-card", "fil-card--compact", ("is-stale" if card.stale?)],
+<%= link_to conversation_path(card.conversation), class: ["fil-card", "fil-card--compact", ("fil-card--stacked" if card.total_count > 1), ("is-stale" if card.stale?)],
             aria: { label: [card.conversation.display_title, card.status&.name, card.category&.name,
                              pluralize_fr(card.total_count, "message"), "#{card.new_count} ce jour",
                              pluralize_fr(card.participants_count, "participant")].compact.join(", ") } do %>
+  <%# Feuilles empilées derrière la carte : une pour 2 messages, deux à partir de 3 %>
+  <% sheets = [card.total_count - 1, 2].min %>
+  <% sheets.times do |i| %><span class="fil-card__sheet fil-card__sheet--<%= i + 1 %>" aria-hidden="true"></span><% end %>
   <div class="fil-card__body">
     <div class="fil-card__tags">
       <%= status_sticker(card.status, floating: false) %>

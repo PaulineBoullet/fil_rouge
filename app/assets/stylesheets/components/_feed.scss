@@ -296,10 +296,42 @@
 
 // Carte de fil compacte : étiquettes, titre, chiffres ; pas de contenu
 .fil-card--compact {
-  padding-top: 0;
 
-  .fil-card__body { padding: 14px 16px; gap: 12px; }
+  .fil-card__body { padding: 14px 16px; gap: 12px; transition: transform .2s ease, box-shadow .2s ease, border-color .15s; }
   .fil-card__later { margin-left: 0; margin-top: -4px; }
+
+  // Empilement : les messages du fil, en feuilles derrière la carte.
+  // Toutes les cartes gardent la même marge haute, empilées ou non, pour rester alignées.
+  padding-top: 14px;
+
+  .fil-card__sheet {
+    inset: auto;
+    top: 7px;
+    left: 10px;
+    right: 10px;
+    height: 44px;
+    border-radius: 16px;
+    border-color: $line-strong;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba($ink, .06);
+    transition: transform .2s ease;
+  }
+
+  .fil-card__sheet--1 { z-index: 1; }
+  .fil-card__body { z-index: 2; }
+  .fil-card__sheet--2 { z-index: 0; top: 0; left: 20px; right: 20px; background: var(--theme-soft); }
+
+  // Un peu de mouvement au survol : la carte se soulève, les feuilles s'écartent
+  &:hover, &:focus-visible {
+    .fil-card__body { transform: translateY(-2px); }
+    .fil-card__sheet--1 { transform: translateY(-4px) rotate(-1.5deg); }
+    .fil-card__sheet--2 { transform: translateY(-8px) rotate(2deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fil-card__body, .fil-card__sheet { transition: none; }
+    &:hover .fil-card__body, &:hover .fil-card__sheet { transform: none; }
+  }
 }
 
 .fil-card__tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
