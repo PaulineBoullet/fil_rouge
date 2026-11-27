@@ -66,7 +66,7 @@ class V2PagesTest < ActionDispatch::IntegrationTest
 
     get root_path
     assert_select ".brand__org", "Kelenn Conseil"
-    assert_select "html[style*='--theme: #9A5867']"
+    assert_select "body[style*='--theme: #9A5867']"
     assert_select "link[rel=icon][href*='9A5867']"
 
     get brand_icon_path(v: "9A5867")

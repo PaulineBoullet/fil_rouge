@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" style="<%= Setting.current.theme.css_variables %>">
+<html lang="fr">
   <head>
     <title><%= content_for(:title) || "Fil rouge" %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -25,7 +25,9 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="<%= devise_controller? ? "auth-page" : "app-page" %>">
+  <%# Couleurs du thème sur <body> et non sur <html> : Turbo remplace <body> à chaque page,
+      ce qui applique tout de suite une couleur changée dans Mon domaine. %>
+  <body class="<%= devise_controller? ? "auth-page" : "app-page" %>" style="<%= Setting.current.theme.css_variables %>">
   <% if devise_controller? %>
     <div class="app-shell">
       <main class="app-main">
