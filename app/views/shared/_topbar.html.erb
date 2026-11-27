@@ -1,14 +1,17 @@
 <header class="topbar">
-  <%= link_to root_path, class: "brand", aria: { label: "Agilea Conseil · Fil rouge, retour au dashboard" } do %>
-    <%= image_tag "agilea-logo-blanc.png", alt: "", class: "brand__logo" %>
-    <span class="brand__sep" aria-hidden="true"></span>
+  <% org_name = Setting.current.org_name.presence %>
+  <%= link_to root_path, class: "brand", aria: { label: "#{org_name ? "#{org_name} · " : ""}Fil rouge, retour au dashboard" } do %>
+    <% if org_name %>
+      <span class="brand__org"><%= org_name %></span>
+      <span class="brand__sep" aria-hidden="true"></span>
+    <% end %>
     <span class="brand__name">
       Fil rouge
       <svg class="brand__thread" viewBox="0 0 90 9" preserveAspectRatio="none" aria-hidden="true">
         <path d="M1 5 C 14 1, 22 8, 36 4 S 60 1, 72 5 S 84 7, 89 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
       </svg>
     </span>
-    <%= image_tag "fil-rouge-logo.png", alt: "", class: "brand__mark" %>
+    <span class="brand__mark" aria-hidden="true"><%= image_tag "fil-rouge-fil.png", alt: "" %></span>
   <% end %>
 
   <%= form_with url: search_path, method: :get, class: "topbar-search", role: "search",

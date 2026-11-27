@@ -59,6 +59,21 @@ class V2PagesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "le nom de l'organisation et la couleur du thème se règlent dans Mon domaine" do
+    patch organization_path, params: { setting: { org_domain: "kelenn.test", org_name: "Kelenn Conseil", theme_color: "#9a5867" } }
+    assert_redirected_to organization_path
+    assert_equal "#9A5867", Setting.current.theme_color
+
+    get root_path
+    assert_select ".brand__org", "Kelenn Conseil"
+    assert_select "html[style*='--theme: #9A5867']"
+    assert_select "link[rel=icon][href*='9A5867']"
+
+    get brand_icon_path(v: "9A5867")
+    assert_response :success
+    assert_equal "image/png", response.media_type
+  end
+
   test "modifier le statut d'un fil le verrouille" do
     urgent = Status.find_by!(name: "Urgent")
     patch conversation_path(@conversation), params: { conversation: { status_id: urgent.id } }

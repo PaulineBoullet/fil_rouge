@@ -8,13 +8,13 @@ class SettingsController < ApplicationController
 
   def update
     @setting = Setting.current
-    if @setting.update(params.expect(setting: [:org_domain]))
+    if @setting.update(params.expect(setting: [:org_domain, :org_name, :theme_color]))
       if @setting.saved_change_to_org_domain?
         Reidentification.new(org_domain: @setting.org_domain).call
         notice = "Domaine enregistré. Les adresses des mails ont été réattribuées : " \
                  "#{Employee.count} collaborateurs identifiés, #{Contact.pending.count} correspondants à valider."
       else
-        notice = "Domaine enregistré."
+        notice = "Réglages enregistrés."
       end
       redirect_to organization_path, notice: notice
     else

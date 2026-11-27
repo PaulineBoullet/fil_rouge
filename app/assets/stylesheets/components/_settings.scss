@@ -7,7 +7,7 @@
   justify-content: space-between;
   gap: 16px;
 
-  &__kicker { font-size: .8125rem; font-weight: 600; color: $violet-dark; }
+  &__kicker { font-size: .8125rem; font-weight: 600; color: var(--theme-dark); }
   &__title { margin: 0; font-size: 2.75rem; font-weight: 500; line-height: 1.1; }
   &__sub { margin: 6px 0 0; font-size: .875rem; color: $ink-muted; max-width: 90ch; }
   &__actions { display: flex; gap: 8px; }
@@ -29,8 +29,8 @@
   font-weight: 600;
   padding: 1px 9px;
   border-radius: 999px;
-  background: $violet-soft;
-  color: $violet-dark;
+  background: var(--theme-soft);
+  color: var(--theme-dark);
 }
 
 .list-table {
@@ -56,8 +56,8 @@
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  background: $violet-soft;
-  color: $violet-dark;
+  background: var(--theme-soft);
+  color: var(--theme-dark);
   font-size: .75rem;
   font-weight: 700;
 }
@@ -68,11 +68,11 @@
   border-radius: 999px;
   font-size: .75rem;
   font-weight: 600;
-  background: $sticker-bg-2;
-  color: $sticker-fg-2;
+  background: var(--theme-soft);
+  color: var(--theme-dark);
 
   &--ok { background: #DCEFEE; color: #1E5655; }
-  &--blocked { background: $sticker-bg-1; color: $sticker-fg-1; }
+  &--blocked { background: var(--theme-dark); color: #fff; }
 }
 
 .contact-group {
@@ -97,3 +97,33 @@
 .prompt-card__head { display: flex; gap: 8px; }
 .prompt-form { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
 .chip-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+
+// Mon domaine : choix de la couleur du thème
+.theme-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+
+  .form-control-color { width: 56px; height: 40px; padding: 4px; border-radius: 10px; }
+}
+
+.theme-swatch {
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+
+  input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+
+  span {
+    display: block;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px $line-strong;
+  }
+
+  input:checked + span,
+  input:focus-visible + span { box-shadow: 0 0 0 2px $ink; }
+}

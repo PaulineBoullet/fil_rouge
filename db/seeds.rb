@@ -21,7 +21,7 @@ puts "Création des données de démonstration…"
 
 User.find_or_create_by!(email: "test@filrouge.fr") { |u| u.password = "password" }
 
-Setting.create!(org_domain: "kelenn-conseil.example")
+Setting.create!(org_domain: "kelenn-conseil.example", org_name: "Kelenn Conseil")
 
 # Réglages de l'IA
 statuses = [

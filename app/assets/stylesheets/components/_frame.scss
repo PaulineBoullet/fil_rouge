@@ -1,13 +1,14 @@
-// Cadre en L : barre du haut et rail d'icônes en bleu canard Agilea poudré,
+// Cadre en L : barre du haut et rail d'icônes poudrés, dans la couleur du thème choisie dans Mon domaine
+// (variables CSS --theme-*, voir _theme.scss et ThemeColors),
 // bande grise poudrée, panneau blanc à grands arrondis.
 
 // Poudrage : halos diffus et grain très fin (SVG en image de fond).
 // Le SVG est encodé en base64 : en clair, Sprockets réécrit son url(#n) interne et le grain devient noir.
 .powder {
-  background-color: $frame;
+  background-color: var(--theme);
   background-image:
     radial-gradient(420px 160px at 12% 0%, rgba(#fff, .18) 0%, rgba(#fff, 0) 70%),
-    radial-gradient(520px 220px at 78% 0%, rgba(#BFE3E2, .25) 0%, rgba(#BFE3E2, 0) 70%),
+    radial-gradient(520px 220px at 78% 0%, color-mix(in srgb, var(--theme-blush) 25%, transparent) 0%, transparent 70%),
     radial-gradient(260px 520px at 0% 60%, rgba(#fff, .15) 0%, rgba(#fff, 0) 70%),
     url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxODAnIGhlaWdodD0nMTgwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nLjg1JyBudW1PY3RhdmVzPScyJyBzdGl0Y2hUaWxlcz0nc3RpdGNoJy8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPScwIDAgMCAwIDEgIDAgMCAwIDAgMSAgMCAwIDAgMCAxICAwIDAgMCAuMiAwJy8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9JzEwMCUnIGhlaWdodD0nMTAwJScgZmlsdGVyPSd1cmwoI24pJy8+PC9zdmc+");
   background-repeat: no-repeat, no-repeat, no-repeat, repeat;
@@ -16,9 +17,9 @@
 .powder-soft {
   background-color: $band;
   background-image:
-    radial-gradient(600px 260px at 100% 0%, rgba(#D3EAE9, .7) 0%, rgba(#D3EAE9, 0) 70%),
+    radial-gradient(600px 260px at 100% 0%, color-mix(in srgb, var(--theme-blush) 45%, transparent) 0%, transparent 70%),
     radial-gradient(420px 600px at 0% 100%, rgba(#fff, .6) 0%, rgba(#fff, 0) 70%),
-    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxODAnIGhlaWdodD0nMTgwJz48ZmlsdGVyIGlkPSdtJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nLjknIG51bU9jdGF2ZXM9JzInIHN0aXRjaFRpbGVzPSdzdGl0Y2gnLz48ZmVDb2xvck1hdHJpeCB2YWx1ZXM9JzAgMCAwIDAgLjEzICAwIDAgMCAwIC4zOCAgMCAwIDAgMCAuMzggIDAgMCAwIC4xMiAwJy8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9JzEwMCUnIGhlaWdodD0nMTAwJScgZmlsdGVyPSd1cmwoI20pJy8+PC9zdmc+");
+    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxODAnIGhlaWdodD0nMTgwJz48ZmlsdGVyIGlkPSdtJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nLjknIG51bU9jdGF2ZXM9JzInIHN0aXRjaFRpbGVzPSdzdGl0Y2gnLz48ZmVDb2xvck1hdHJpeCB2YWx1ZXM9JzAgMCAwIDAgLjMgIDAgMCAwIDAgLjMgIDAgMCAwIDAgLjMgIDAgMCAwIC4xMiAwJy8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9JzEwMCUnIGhlaWdodD0nMTAwJScgZmlsdGVyPSd1cmwoI20pJy8+PC9zdmc+");
   background-repeat: no-repeat, no-repeat, repeat;
 }
 
@@ -45,17 +46,26 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  color: #fff;
+  color: var(--theme-on);
   text-decoration: none;
 
-  &:hover { color: #fff; text-decoration: none; }
+  &:hover { color: var(--theme-on); text-decoration: none; }
 
-  &__logo { display: block; height: 30px; width: auto; }
+  &__org { font-weight: 600; font-size: 1.125rem; line-height: 1; white-space: nowrap; }
 
-  // Logo de Fil rouge, à droite du nom
-  &__mark { display: block; width: 28px; height: 28px; }
+  // Logo de Fil rouge : le fil blanc sur un carré de la couleur du thème, plus soutenue que le cadre
+  &__mark {
+    display: inline-flex;
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: var(--theme-dark);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-on) 35%, transparent);
 
-  &__sep { width: 1px; height: 22px; background: rgba(#fff, .5); }
+    img { width: 100%; height: 100%; display: block; }
+  }
+
+  &__sep { width: 1px; height: 22px; background: color-mix(in srgb, var(--theme-on) 50%, transparent); }
 
   &__name {
     position: relative;
@@ -71,7 +81,7 @@
     bottom: -3px;
     width: calc(100% + 10px);
     height: 8px;
-    color: #fff;
+    color: var(--theme-on);
   }
 }
 
@@ -84,30 +94,30 @@
   height: 38px;
   padding: 0 16px;
   border-radius: 999px;
-  background: rgba(#fff, .1);
-  border: 1px solid rgba(#fff, .45);
-  color: #fff;
+  background: color-mix(in srgb, var(--theme-on) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-on) 45%, transparent);
+  color: var(--theme-on);
 
   input {
     flex: 1;
     min-width: 0;
     background: transparent;
     border: 0;
-    color: #fff;
+    color: var(--theme-on);
     font-size: .875rem;
 
-    &::placeholder { color: #fff; opacity: .9; }
+    &::placeholder { color: var(--theme-on); opacity: .9; }
     &:focus { outline: none; }
   }
 
-  &:focus-within { border-color: #fff; background: rgba(#fff, .18); }
+  &:focus-within { border-color: var(--theme-on); background: color-mix(in srgb, var(--theme-on) 18%, transparent); }
 
   kbd {
     font-family: $body-font;
     font-size: .75rem;
-    color: #fff;
+    color: var(--theme-on);
     background: transparent;
-    border: 1px solid rgba(#fff, .45);
+    border: 1px solid color-mix(in srgb, var(--theme-on) 45%, transparent);
     border-radius: 4px;
     padding: 0 6px;
   }
@@ -118,11 +128,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #fff;
+  color: var(--theme-on);
 
   &__text { display: flex; flex-direction: column; line-height: 1.25; }
   &__name { font-size: .8125rem; font-weight: 600; }
-  &__org { font-size: .75rem; color: #fff; }
+  &__org { font-size: .75rem; color: var(--theme-on); }
 }
 
 .frame__body {
@@ -141,7 +151,7 @@
   gap: 6px;
   padding: 12px 0 20px;
 
-  &__sep { width: 28px; height: 1px; background: rgba(#fff, .3); margin: 8px 0; }
+  &__sep { width: 28px; height: 1px; background: color-mix(in srgb, var(--theme-on) 30%, transparent); margin: 8px 0; }
   &__spacer { flex: 1; }
 }
 
@@ -157,14 +167,14 @@
   border: 0;
   border-radius: 10px;
   background: transparent;
-  color: $lavender;
+  color: var(--theme-on);
   text-decoration: none;
   transition: background .15s, color .15s;
 
   &:hover,
-  &:focus-visible { background: rgba(#fff, .16); color: #fff; }
+  &:focus-visible { background: color-mix(in srgb, var(--theme-on) 16%, transparent); color: var(--theme-on); }
 
-  &[aria-current="page"] { background: #fff; color: $teal; box-shadow: 0 2px 8px rgba($teal, .15); }
+  &[aria-current="page"] { background: #fff; color: var(--theme-dark); box-shadow: 0 2px 8px color-mix(in srgb, var(--theme-dark) 15%, transparent); }
 
   &__tip {
     position: absolute;
@@ -201,8 +211,8 @@
     line-height: 16px;
     text-align: center;
     background: #fff;
-    color: $teal;
-    border: 2px solid $frame;
+    color: var(--theme-dark);
+    border: 2px solid var(--theme);
     box-sizing: content-box;
 
     &--alert { background: $ink; color: #fff; }
@@ -225,7 +235,7 @@
   min-height: 100%;
   border-radius: 24px 24px 0 0;
   background:
-    radial-gradient(900px 420px at 100% 0%, #E6F2F2 0%, rgba(#fff, 0) 70%),
+    radial-gradient(900px 420px at 100% 0%, var(--theme-soft) 0%, rgba(#fff, 0) 70%),
     radial-gradient(700px 360px at 0% 100%, #F1F3F5 0%, rgba(#fff, 0) 70%),
     #fff;
 }
