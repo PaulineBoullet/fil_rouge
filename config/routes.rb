@@ -44,7 +44,6 @@ Rails.application.routes.draw do
     resources :prompts, only: %i[create update destroy] do
       patch :assign, on: :member
     end
-    resources :import_failures, path: "mails-en-erreur", only: :index
   end
 
   get "icone" => "brand_icons#show", as: :brand_icon

@@ -7,17 +7,13 @@
 class EmailImporter
   Result = Struct.new(:status, :email, :error, keyword_init: true)
 
-  # Importe une liste de fichiers ; les échecs sont enregistrés dans import_failures
+  # Importe une liste de fichiers et renvoie un résultat par fichier (importé, doublon ou en erreur)
   def self.import_files(paths, org_domain: Setting.org_domain)
     resolver = AddressResolver.new(org_domain: org_domain)
     paths.map do |path|
-      result = new(File.binread(path), resolver: resolver).call
-      ImportFailure.record(File.basename(path), result.error) if result.status == :failed
-      ImportFailure.where(filename: File.basename(path)).delete_all if result.status == :imported
-      result
+      new(File.binread(path), resolver: resolver).call
     rescue SystemCallError => e
-      ImportFailure.record(File.basename(path), "Fichier illisible : #{e.message}")
-      Result.new(status: :failed, error: e.message)
+      Result.new(status: :failed, error: "#{File.basename(path)} : fichier illisible (#{e.message})")
     end
   end
 

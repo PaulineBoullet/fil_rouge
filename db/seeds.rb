@@ -18,7 +18,7 @@ puts "Suppression des données existantes…"
 # Les catégories et statuts (Paramètres → Réglages de l'IA) ne sont pas effacés :
 # ce qui a été saisi dans l'interface est conservé.
 [EmailParticipant, Email, CompanySummary, Conversation, Contact, Company, Employee,
- Prompt, ImportFailure, Setting].each(&:delete_all)
+ Prompt, Setting].each(&:delete_all)
 
 puts "Création des données de démonstration…"
 
@@ -67,6 +67,7 @@ paths = Dir.glob(Rails.root.join("db/seeds/emails/kelenn_conseil/**/*.eml")).sor
 results = EmailImporter.import_files(paths)
 puts "  #{results.count { |r| r.status == :imported }} mails importés, " \
      "#{results.count { |r| r.status == :duplicate }} doublons, #{results.count { |r| r.status == :failed }} en erreur."
+paths.zip(results).select { |_, r| r.status == :failed }.each { |path, r| puts "  ✗ #{File.basename(path)} : #{r.error}" }
 
 # Validation d'une partie de ce que l'outil a découvert
 

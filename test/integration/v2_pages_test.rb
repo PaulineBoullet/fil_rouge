@@ -73,7 +73,7 @@ class V2PagesTest < ActionDispatch::IntegrationTest
   end
 
   test "pages de paramètres" do
-    [organization_path, companies_path, ai_settings_path, import_failures_path].each do |path|
+    [organization_path, companies_path, ai_settings_path].each do |path|
       get path
       assert_response :success, path
     end

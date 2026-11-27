@@ -6,7 +6,6 @@ module NavigationHelper
     companies: '<circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"></path>',
     contacts: '<rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="9" cy="11" r="2.4"></circle><path d="M5.5 17c.6-1.8 1.9-2.8 3.5-2.8s2.9 1 3.5 2.8M15 10h3M15 14h3"></path>',
     ai: '<path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"></path><circle cx="15" cy="6" r="2"></circle><circle cx="9" cy="12" r="2"></circle><circle cx="17" cy="18" r="2"></circle>',
-    errors: '<path d="M12 4 2.8 19.5h18.4z"></path><path d="M12 10v4.5M12 17.2h.01"></path>',
     logout: '<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 16l-4-4 4-4M6 12h10"></path>',
     search: '<circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path>',
     filter: '<path d="M3 5h18l-7 8v6l-4-2v-4z"></path>',
@@ -22,25 +21,18 @@ module NavigationHelper
   end
 
   # Lien du rail d'icônes, avec infobulle et compteur facultatif
-  def rail_link(label, path, icon_name, active: false, count: nil, alert: false, method: nil)
-    count_tag = count.to_i.positive? ? tag.span(count, class: ["rail-link__count", ("rail-link__count--alert" if alert)], aria: { hidden: true }) : nil
+  def rail_link(label, path, icon_name, active: false, count: nil)
+    count_tag = count.to_i.positive? ? tag.span(count, class: "rail-link__count", aria: { hidden: true }) : nil
     aria_label = count.to_i.positive? ? "#{label} (#{count} à traiter)" : label
     content = safe_join([icon(icon_name), count_tag, tag.span(label, class: "rail-link__tip", aria: { hidden: true })].compact)
-    options = { class: "rail-link", aria: { label: aria_label, current: (active ? "page" : nil) }.compact }
-
-    if method
-      button_to(path, method: method, form_class: "rail-link__form", **options) { content }
-    else
-      link_to(path, **options) { content }
-    end
+    link_to(path, class: "rail-link", aria: { label: aria_label, current: (active ? "page" : nil) }.compact) { content }
   end
 
   # Compteurs du rail : ce qui attend une action dans les paramètres
   def pending_counts
     @pending_counts ||= {
       companies: Company.pending.count,
-      contacts: Contact.pending.joins(:company).merge(Company.validated).count,
-      errors: ImportFailure.count
+      contacts: Contact.pending.joins(:company).merge(Company.validated).count
     }
   end
 

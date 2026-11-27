@@ -40,7 +40,7 @@ Le détail est sur la page [Installation et données de test](https://github.com
 | Requêtes du dashboard, recherche | `app/queries/` |
 | Synthèses et classement par l'IA | `app/services/` (`EmailAnalysisService`, `ConversationSummaryService`, `PromptBuilder`) |
 | Pages de consultation | `pages#dashboard`, `companies#show`, `conversations#show` |
-| Paramètres | `settings`, `companies`, `ai_settings`, `import_failures` |
+| Paramètres | `settings`, `companies`, `ai_settings` |
 | Styles et échelle typographique | `app/assets/stylesheets/` (tailles dans `config/_fonts.scss`) |
 | Traductions | `config/locales/fr.yml` |
 
