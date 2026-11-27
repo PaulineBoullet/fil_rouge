@@ -27,7 +27,7 @@ class V2PagesTest < ActionDispatch::IntegrationTest
     get root_path
     assert_response :success
     assert_select ".company-divider__name", minimum: 1
-    assert_select ".company-group .fil-card", minimum: 1
+    assert_select ".company-groups .company-group .fil-card", minimum: 1
     assert_select ".crumbs__here", "Dashboard"
 
     get root_path(view: "lignes")
@@ -79,6 +79,18 @@ class V2PagesTest < ActionDispatch::IntegrationTest
       get path
       assert_response :success, path
     end
+
+    get ai_settings_path
+    assert_select "table caption", "Prompts de synthèse"
+  end
+
+  test "on se déconnecte depuis le haut de l'écran" do
+    get root_path
+    assert_select ".topbar form[action='#{destroy_user_session_path}'] .topbar-logout"
+
+    delete destroy_user_session_path
+    get root_path
+    assert_redirected_to new_user_session_path
   end
 
   test "le nom de l'organisation et la couleur du thème se règlent dans Mon domaine" do

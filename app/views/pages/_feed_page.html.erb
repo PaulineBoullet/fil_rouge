@@ -11,7 +11,9 @@
           <%= render partial: "pages/company_row", collection: day_cards, as: :card %>
         </div>
       <% else %>
-        <%= render partial: "pages/company_group", collection: day_cards, as: :group %>
+        <div class="company-groups">
+          <%= render partial: "pages/company_group", collection: day_cards, as: :group %>
+        </div>
       <% end %>
     </section>
   <% end %>

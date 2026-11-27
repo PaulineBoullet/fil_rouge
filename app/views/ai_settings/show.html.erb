@@ -90,22 +90,62 @@
 
 <%= render "shared/section_head", id: "prompts", title: "Prompts spécifiques",
            note: "Un domaine tiers peut avoir un prompt spécifique pour ses synthèses. Sans prompt spécifique, l'IA utilise le prompt par défaut." %>
-<div class="prompt-list">
-  <% if @default_prompt %>
-    <%= render "ai_settings/prompt_card", prompt: @default_prompt %>
-  <% end %>
-  <% @prompts.each do |prompt| %>
-    <%= render "ai_settings/prompt_card", prompt: prompt %>
-  <% end %>
-
-  <details class="panel-card">
-    <summary class="btn btn-primary">Ajouter un prompt spécifique</summary>
-    <%= form_with model: Prompt.new, class: "prompt-form" do |f| %>
-      <%= f.label :name, "Nom", class: "form-label" %>
-      <%= f.text_field :name, class: "form-control", required: true %>
-      <%= f.label :content, "Consigne donnée à l'IA", class: "form-label" %>
-      <%= f.text_area :content, rows: 3, class: "form-control", required: true %>
-      <%= f.submit "Ajouter", class: "btn btn-primary btn-sm" %>
-    <% end %>
-  </details>
+<div class="list-table">
+  <table class="table align-middle mb-0">
+    <caption class="visually-hidden">Prompts de synthèse</caption>
+    <thead><tr><th scope="col">Prompt</th><th scope="col">Consigne donnée à l'IA</th><th scope="col">Domaines tiers</th><th scope="col"></th></tr></thead>
+    <tbody>
+      <% [@default_prompt, *@prompts].compact.each do |prompt| %>
+        <% form_id = dom_id(prompt, :form) %>
+        <tr>
+          <td><%= text_field_tag "prompt[name]", prompt.name, form: form_id, class: "form-control", aria: { label: "Nom du prompt #{prompt.name}" } %></td>
+          <td><%= text_area_tag "prompt[content]", prompt.content, form: form_id, rows: 2, class: "form-control",
+                                aria: { label: "Consigne du prompt #{prompt.name}" } %></td>
+          <td>
+            <% if prompt.is_default? %>
+              <span class="muted-small">Tous les autres</span>
+            <% else %>
+              <div class="chip-row">
+                <% prompt.companies.sort_by(&:name).each do |company| %>
+                  <span class="domain-chip domain-chip--neutral domain-chip--small">
+                    <%= company.name %>
+                    <%= button_to "×", company_path(company), method: :patch, params: { company: { prompt_id: "" } },
+                                  class: "domain-chip__remove", form_class: "inline-form", aria: { label: "Retirer #{company.name}" } %>
+                  </span>
+                <% end %>
+                <% others = @companies.reject { |c| c.prompt_id == prompt.id } %>
+                <% if others.any? %>
+                  <%= form_with url: assign_prompt_path(prompt), method: :patch, class: "inline-form", data: { controller: "autosubmit" } do %>
+                    <%= select_tag :company_id, options_from_collection_for_select(others, :id, :name), include_blank: "+ Associer",
+                                   class: "pill-select", aria: { label: "Associer un domaine tiers à #{prompt.name}" },
+                                   data: { action: "change->autosubmit#submit" } %>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+          </td>
+          <td class="text-end">
+            <div class="row-actions">
+              <%= button_tag "Enregistrer", form: form_id, class: "btn btn-sm btn-outline-secondary" %>
+              <% unless prompt.is_default? %>
+                <%= button_to "Supprimer", prompt_path(prompt), method: :delete, class: "btn btn-sm btn-outline-danger",
+                              form: { data: { turbo_confirm: "Supprimer le prompt #{prompt.name} ? Ses domaines tiers utiliseront le prompt par défaut." } } %>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td><%= text_field_tag "prompt[name]", nil, form: "new-prompt", class: "form-control", placeholder: "Nouveau prompt", aria: { label: "Nom du nouveau prompt" } %></td>
+        <td><%= text_area_tag "prompt[content]", nil, form: "new-prompt", rows: 2, class: "form-control",
+                              placeholder: "Consigne donnée à l'IA", aria: { label: "Consigne du nouveau prompt" } %></td>
+        <td></td>
+        <td class="text-end"><%= button_tag "Ajouter", form: "new-prompt", class: "btn btn-sm btn-primary" %></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+<% [@default_prompt, *@prompts].compact.each do |prompt| %>
+  <%= form_with model: prompt, id: dom_id(prompt, :form), class: "d-none" do %><% end %>
+<% end %>
+<%= form_with url: prompts_path, id: "new-prompt", class: "d-none" do %><% end %>

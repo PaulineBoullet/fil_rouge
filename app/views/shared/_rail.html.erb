@@ -6,6 +6,4 @@
   <%= rail_link "Domaines tiers et correspondants", companies_path, :companies, active: (controller_name == "companies" && action_name != "show") || controller_name == "contacts", count: pending_counts[:companies] + pending_counts[:contacts] %>
   <%= rail_link "Réglages de l'IA", ai_settings_path, :ai, active: controller_name.in?(%w[ai_settings categories statuses prompts]) %>
   <%= rail_link "Mails en erreur", import_failures_path, :errors, active: controller_name == "import_failures", count: pending_counts[:errors], alert: true %>
-  <span class="rail__spacer"></span>
-  <%= rail_link "Se déconnecter", destroy_user_session_path, :logout, method: :delete %>
 </nav>

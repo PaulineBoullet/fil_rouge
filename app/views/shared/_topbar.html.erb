@@ -30,6 +30,10 @@
         <span class="topbar-user__name"><%= current_user.email %></span>
         <span class="topbar-user__org"><%= Setting.org_domain.presence || "Domaine à renseigner" %></span>
       </span>
+      <%= button_to destroy_user_session_path, method: :delete, class: "topbar-logout", form_class: "inline-form",
+                    title: "Se déconnecter", aria: { label: "Se déconnecter" } do %>
+        <%= icon(:logout, size: 18) %><span class="topbar-logout__label">Se déconnecter</span>
+      <% end %>
     </div>
   <% end %>
 </header>

@@ -135,6 +135,26 @@
   &__org { font-size: .75rem; color: var(--theme-on); }
 }
 
+// Déconnexion, en haut à droite
+.topbar-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 6px;
+  padding: 6px 12px;
+  border: 1px solid color-mix(in srgb, var(--theme-on) 45%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--theme-on);
+  font-size: .8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+
+  &:hover,
+  &:focus-visible { background: color-mix(in srgb, var(--theme-on) 16%, transparent); }
+}
+
 .frame__body {
   flex: 1;
   display: flex;
@@ -252,6 +272,7 @@
 @include media-breakpoint-down(md) {
   .topbar-search { margin-left: 8px; }
   .topbar-user__text { display: none; }
+  .topbar-logout__label { display: none; }
   .frame__band { padding: 8px 8px 0; }
   .frame__main { padding: 24px 16px; }
 }
