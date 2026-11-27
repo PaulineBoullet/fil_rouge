@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_27_120001) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_27_150001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -67,8 +67,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_27_120001) do
     t.string "title"
     t.boolean "hidden", default: false, null: false
     t.boolean "internal", default: false, null: false
-    t.boolean "status_locked", default: false, null: false
-    t.boolean "category_locked", default: false, null: false
     t.datetime "first_email_at"
     t.datetime "last_email_at"
     t.text "summary"

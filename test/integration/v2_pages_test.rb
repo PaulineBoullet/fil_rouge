@@ -40,7 +40,7 @@ class V2PagesTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select ".synth"
     assert_select "h1.thread-head__title", @conversation.display_title
-    assert_select ".classify select", 2
+    assert_select ".classify select", 0
     assert_select ".chat .message", @conversation.emails.count
     assert_select "details.thread-search"
 
@@ -104,13 +104,5 @@ class V2PagesTest < ActionDispatch::IntegrationTest
     get brand_icon_path(v: "9A5867")
     assert_response :success
     assert_equal "image/png", response.media_type
-  end
-
-  test "modifier le statut d'un fil le verrouille" do
-    urgent = Status.find_by!(name: "Urgent")
-    patch conversation_path(@conversation), params: { conversation: { status_id: urgent.id } }
-    assert_redirected_to conversation_path(@conversation)
-    assert @conversation.reload.status_locked?
-    assert_equal urgent, @conversation.status
   end
 end

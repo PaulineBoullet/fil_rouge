@@ -748,65 +748,10 @@
   }
 
   &__field { display: flex; flex-direction: column; gap: 6px; }
-
-  &__label {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 8px;
-
-    label { font-size: $fs-sm; font-weight: 600; color: $ink; }
-  }
-
-  &__origin { font-size: $fs-xs; font-style: italic; color: $ink-muted; }
-
-  // La valeur affichée comme sur les cartes ; la liste, transparente par-dessus, permet de la changer
-  &__value {
-    position: relative;
-    display: flex;
-    align-items: center;
-    min-height: 40px;
-    padding: 6px 34px 6px 10px;
-    border: 1px solid $line;
-    border-radius: 12px;
-    background: #fff;
-    transition: border-color .15s;
-
-    &::after {
-      content: "";
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      width: 7px;
-      height: 7px;
-      border-right: 1.5px solid $ink-muted;
-      border-bottom: 1.5px solid $ink-muted;
-      transform: translateY(-70%) rotate(45deg);
-      pointer-events: none;
-    }
-
-    &:hover, &:focus-within { border-color: var(--theme); }
-    &:focus-within { box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme) 25%, transparent); }
-  }
-
-  &__select {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    opacity: 0;
-    cursor: pointer;
-  }
-
-  // Sans valeur : on montre la liste elle-même
-  &__value--empty .classify__select {
-    position: static;
-    opacity: 1;
-    border: 0;
-    background: transparent;
-    font-size: $fs-md;
-    color: $ink-muted;
-    appearance: none;
-  }
+  &__label { font-size: $fs-sm; font-weight: 600; color: $ink; }
+  &__value { display: flex; align-items: center; min-height: 28px; }
+  &__empty { font-size: $fs-md; font-style: italic; color: $ink-muted; }
+  &__note { margin: auto 0 0; font-size: $fs-xs; color: $ink-muted; }
 }
 
 // Panneau de lecture d'un mail

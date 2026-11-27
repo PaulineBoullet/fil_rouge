@@ -20,14 +20,6 @@ class ConversationsController < ApplicationController
   end
 
   # Statut ou catégorie choisis à la main : l'IA ne les remplacera plus
-  def update
-    attrs = params.expect(conversation: [:status_id, :category_id])
-    attrs[:status_locked] = true if attrs.key?(:status_id)
-    attrs[:category_locked] = true if attrs.key?(:category_id)
-    @conversation.update!(attrs)
-    redirect_to conversation_path(@conversation), notice: "Fil mis à jour."
-  end
-
   def toggle_hidden
     @conversation.update!(hidden: !@conversation.hidden)
     notice = @conversation.hidden ? "Fil masqué. Le filtre « Fils masqués » permet de le retrouver." : "Le fil n'est plus masqué."

@@ -53,14 +53,4 @@ class ConversationClassifierTest < ActiveSupport::TestCase
     assert_equal @urgent, @conversation.reload.status
     assert_equal @paie, @conversation.category
   end
-
-  test "un statut ou une catégorie choisis à la main ne sont pas remplacés" do
-    @conversation.update!(status: @info, status_locked: true, category: @facturation, category_locked: true)
-    analyse "c@morvan.fr", status: "Urgent", category: "Budget et paie"
-
-    ConversationClassifier.new(@conversation).call
-
-    assert_equal @info, @conversation.reload.status
-    assert_equal @facturation, @conversation.category
-  end
 end

@@ -4,7 +4,7 @@
 # Règles :
 # - statut    : celui du dernier mail analysé, dans l'ordre chronologique (l'état actuel du fil) ;
 # - catégorie : la plus fréquente parmi les mails analysés ; à égalité, la plus récente.
-# Un statut ou une catégorie choisis à la main (status_locked / category_locked) ne sont jamais remplacés.
+# Le classement d'un fil vient uniquement de l'IA : il ne se modifie pas à la main.
 class ConversationClassifier
   def initialize(conversation)
     @conversation = conversation
@@ -14,15 +14,7 @@ class ConversationClassifier
     analyses = @conversation.emails.chronological.where.not(summary: nil).map(&:metadata)
     return if analyses.empty?
 
-    attrs = {}
-    unless @conversation.status_locked?
-      status = latest_status(analyses)
-      attrs[:status] = status if status
-    end
-    unless @conversation.category_locked?
-      category = most_frequent_category(analyses)
-      attrs[:category] = category if category
-    end
+    attrs = { status: latest_status(analyses), category: most_frequent_category(analyses) }.compact
     @conversation.update!(attrs) if attrs.any?
   end
 

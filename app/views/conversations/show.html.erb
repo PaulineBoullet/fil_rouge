@@ -48,29 +48,21 @@
   <section class="classify" aria-labelledby="classify-title">
     <h2 id="classify-title" class="classify__title">Classement</h2>
 
-    <%= form_with model: conversation, class: "classify__field", data: { controller: "autosubmit" } do |f| %>
-      <div class="classify__label">
-        <%= f.label :status_id, "Priorité" %>
-        <span class="classify__origin"><%= conversation.status_locked? ? "choisie par vous" : (conversation.status ? "proposée par l'IA" : "") %></span>
+    <div class="classify__field">
+      <span class="classify__label">Priorité</span>
+      <div class="classify__value">
+        <%= conversation.status ? status_sticker(conversation.status) : tag.span("Pas encore classé", class: "classify__empty") %>
       </div>
-      <div class="classify__value <%= "classify__value--empty" unless conversation.status %>">
-        <%= status_sticker(conversation.status) %>
-        <%= f.collection_select :status_id, Status.ordered, :id, :name, { include_blank: "Sans priorité" },
-                                class: "classify__select", aria: { label: "Changer la priorité" }, data: { action: "change->autosubmit#submit" } %>
-      </div>
-    <% end %>
+    </div>
 
-    <%= form_with model: conversation, class: "classify__field", data: { controller: "autosubmit" } do |f| %>
-      <div class="classify__label">
-        <%= f.label :category_id, "Catégorie" %>
-        <span class="classify__origin"><%= conversation.category_locked? ? "choisie par vous" : (conversation.category ? "proposée par l'IA" : "") %></span>
+    <div class="classify__field">
+      <span class="classify__label">Catégorie</span>
+      <div class="classify__value">
+        <%= conversation.category ? tag.span(conversation.category.name, class: "category-chip") : tag.span("Pas encore classé", class: "classify__empty") %>
       </div>
-      <div class="classify__value <%= "classify__value--empty" unless conversation.category %>">
-        <% if conversation.category %><span class="category-chip"><%= conversation.category.name %></span><% end %>
-        <%= f.collection_select :category_id, Category.ordered, :id, :name, { include_blank: "Sans catégorie" },
-                                class: "classify__select", aria: { label: "Changer la catégorie" }, data: { action: "change->autosubmit#submit" } %>
-      </div>
-    <% end %>
+    </div>
+
+    <p class="classify__note">Proposés par l'IA à partir des mails du fil, et mis à jour à chaque analyse.</p>
   </section>
 </div>
 

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get "domaines-tiers/:id" => "companies#show", as: :company_view
   post "domaines-tiers/:id/synthese" => "companies#analyze_emails", as: :analyze_company
 
-  resources :conversations, path: "fils", only: %i[show update] do
+  resources :conversations, path: "fils", only: :show do
     member do
       patch :toggle_hidden
       post :analyze
