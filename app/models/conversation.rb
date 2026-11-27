@@ -7,11 +7,14 @@ class Conversation < ApplicationRecord
   has_many :emails, dependent: :nullify
 
   # Fils affichables :
+  # - aucun tant que le domaine de l'organisation n'est pas renseigné ;
   # - domaine tiers validé et premier correspondant validé (ni à valider, ni bloqué) ;
   # - les fils internes seulement si on les demande ;
   # - les fils masqués seulement si on les demande ;
   # - au moins un mail affichable (expéditeur collaborateur validé ou extérieur).
   def self.displayable(show_hidden: false, show_internal: false)
+    return none if Setting.org_domain.blank?
+
     external = "conversations.internal = FALSE " \
                "AND conversations.company_id IN (SELECT id FROM companies WHERE state = 'validated') " \
                "AND conversations.origin_contact_id IN (SELECT id FROM contacts WHERE state = 'validated')"

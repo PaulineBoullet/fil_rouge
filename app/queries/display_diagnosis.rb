@@ -1,5 +1,6 @@
 # Explique pourquoi des fils ne s'affichent pas sur le dashboard.
 #
+# Tant que le domaine de l'organisation n'est pas renseigné, aucun fil ne s'affiche.
 # Un fil ne s'affiche que si son domaine tiers et son premier correspondant sont validés,
 # et s'il contient au moins un mail dont l'expéditeur n'est pas un collaborateur à valider.
 # Chaque fil non affiché est compté une seule fois, sous la première condition qui manque.
@@ -9,6 +10,9 @@ class DisplayDiagnosis
   include Rails.application.routes.url_helpers
 
   def reasons
+    # Sans domaine, aucun fil ne s'affiche : c'est la seule raison à donner
+    return @reasons ||= [domain_reason] if Setting.org_domain.blank?
+
     @reasons ||= [
       domain_reason,
       orphan_reason,
@@ -33,6 +37,8 @@ class DisplayDiagnosis
 
   # Fils qu'une validation ferait apparaître (hors masqués et internes)
   def awaiting_validation_count
+    return 0 if Setting.org_domain.blank?
+
     company_pending.count + contact_pending.count + employee_pending.count
   end
 
@@ -42,8 +48,8 @@ class DisplayDiagnosis
     return if Setting.org_domain.present?
 
     Reason.new(key: :no_domain,
-               message: "Aucun domaine n'est renseigné : toutes les adresses, y compris celles de votre organisation, " \
-                        "sont traitées comme des correspondants.",
+               message: "Aucun domaine n'est renseigné : aucun mail ne s'affiche tant que le domaine de votre " \
+                        "organisation n'est pas indiqué.",
                link_label: "Renseigner mon domaine", path: organization_path)
   end
 

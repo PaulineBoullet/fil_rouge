@@ -27,11 +27,18 @@ class DisplayDiagnosisTest < ActiveSupport::TestCase
     assert_equal 1, Conversation.displayable.count
   end
 
-  test "signale l'absence de domaine et les mails sans fil" do
-    Setting.current.update!(org_domain: "")
-    Email.update_all(conversation_id: nil)
+  test "sans domaine, rien ne s'affiche et seule cette raison est donnée" do
+    Company.update_all(state: "validated")
+    Contact.update_all(state: "validated")
+    assert_equal 1, Conversation.displayable.count
 
-    assert_includes keys, :no_domain
+    Setting.current.update!(org_domain: "")
+    assert_empty Conversation.displayable
+    assert_equal [:no_domain], keys
+  end
+
+  test "signale les mails sans fil" do
+    Email.update_all(conversation_id: nil)
     assert_includes keys, :orphans
   end
 end

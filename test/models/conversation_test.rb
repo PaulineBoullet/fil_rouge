@@ -4,6 +4,7 @@ class ConversationTest < ActiveSupport::TestCase
   include EmlFactory
 
   setup do
+    Setting.create!(org_domain: "kelenn.test")
     Status.create!(name: "Information", rank: 1)
     import eml(id: "a@morvan.fr", from: "claire@morvan.fr", to: "camille@kelenn.test", subject: "Facture")
     @conversation = Conversation.first
