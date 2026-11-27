@@ -61,7 +61,11 @@ module NavigationHelper
         parts << link_to(label, path, class: "crumbs__link")
         parts << tag.span("/", class: "crumbs__sep", aria: { hidden: true })
       end
-      parts << tag.h1(title, class: "crumbs__title")
+      if title
+        parts << tag.h1(title, class: "crumbs__title")
+      else
+        parts.pop # pas de titre : la page porte son propre titre
+      end
     end
     tag.nav(safe_join(parts), class: "crumbs", aria: { label: "Fil d'Ariane" })
   end

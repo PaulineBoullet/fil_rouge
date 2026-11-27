@@ -39,6 +39,8 @@ class V2PagesTest < ActionDispatch::IntegrationTest
     get conversation_path(@conversation)
     assert_response :success
     assert_select ".synth"
+    assert_select "h1.thread-head__title", @conversation.display_title
+    assert_select ".classify select", 2
     assert_select ".chat .message", @conversation.emails.count
     assert_select "details.thread-search"
 
