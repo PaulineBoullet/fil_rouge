@@ -1,6 +1,6 @@
-<% content_for :title, "Domaines tiers et collaborateurs – Fil rouge" %>
-<%= render "shared/page_head", title: "Domaines tiers et collaborateurs",
-           subtitle: "Les domaines d'expédition de vos échanges (entreprises, administrations, associations…) et les collaborateurs de votre domaine. Tant qu'un domaine tiers n'est pas validé, ses fils ne s'affichent pas.",
+<% content_for :title, "Domaines tiers et correspondants – Fil rouge" %>
+<%= render "shared/page_head", title: "Domaines tiers et correspondants",
+           subtitle: "Les domaines d'expédition de vos échanges (entreprises, administrations, associations…) et leurs correspondants. Un fil ne s'affiche que si son domaine tiers et son premier correspondant sont validés.",
            actions: link_to("Ajouter un domaine tiers", new_company_path, class: "btn btn-outline-secondary", data: { turbo_frame: "modal" }) %>
 
 <%= render "shared/section_head", title: "À valider", count: @pending.size,
@@ -55,7 +55,7 @@
           </td>
           <td class="text-end">
             <div class="row-actions">
-              <%= link_to "Correspondants", contacts_path(company_id: company.id), class: "btn btn-sm btn-outline-secondary" %>
+              <%= link_to "Correspondants", companies_path(company_id: company.id, anchor: "correspondants"), class: "btn btn-sm btn-outline-secondary" %>
               <%= link_to "Modifier", edit_company_path(company), class: "btn btn-sm btn-outline-secondary", data: { turbo_frame: "modal" } %>
               <%= button_to "Supprimer", company_path(company), method: :delete, class: "btn btn-sm btn-outline-danger",
                             form: { data: { turbo_confirm: "Supprimer #{company.name} ? Ses fils restent en base mais ne s'afficheront plus ; ses correspondants restent, sans domaine tiers." } } %>
@@ -67,4 +67,4 @@
   </table>
 </div>
 
-<%= render "companies/employees", **@employees_overview.locals %>
+<%= render "companies/contacts", overview: @contacts_overview %>

@@ -53,15 +53,22 @@ class V2PagesTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "les collaborateurs sont listés avec les domaines tiers" do
+  test "Mon domaine liste les collaborateurs, Domaines tiers liste les correspondants" do
+    get organization_path
+    assert_response :success
+    assert_select "td", /camille@kelenn.test/
+
     get companies_path
     assert_response :success
-    assert_select ".section-title", /Collaborateurs/
-    assert_select "td", /camille@kelenn.test/
+    assert_select "#correspondants"
+    assert_select "td", /claire@morvan.fr/
+
+    get contacts_path(state: "pending")
+    assert_redirected_to companies_path(state: "pending", anchor: "correspondants")
   end
 
   test "pages de paramètres" do
-    [organization_path, companies_path, contacts_path, ai_settings_path, import_failures_path].each do |path|
+    [organization_path, companies_path, ai_settings_path, import_failures_path].each do |path|
       get path
       assert_response :success, path
     end

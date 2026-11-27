@@ -127,3 +127,5 @@
   input:checked + span,
   input:focus-visible + span { box-shadow: 0 0 0 2px $ink; }
 }
+
+.section-actions { display: flex; gap: 8px; margin-top: -4px; }

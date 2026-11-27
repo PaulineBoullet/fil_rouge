@@ -1,24 +1,26 @@
-<% content_for :title, "Correspondants – Fil rouge" %>
-<%= render "shared/page_head", title: "Correspondants",
-           subtitle: "Les personnes extérieures, regroupées par domaine tiers. On les valide une par une, une fois leur domaine tiers validé. Un expéditeur automatique se bloque : ses fils ne s'affichent plus.",
-           actions: link_to("Ajouter un correspondant", new_contact_path(company_id: params[:company_id]), class: "btn btn-outline-secondary", data: { turbo_frame: "modal" }) %>
+<%# Correspondants regroupés par domaine tiers, dans la page Domaines tiers. locals: (overview:) %>
+<%= render "shared/section_head", id: "correspondants", title: "Correspondants", count: overview.groups.sum { |_, c| c.size },
+           note: "Les personnes extérieures, regroupées par domaine tiers. On les valide une par une, une fois leur domaine tiers validé. Un expéditeur automatique se bloque : ses fils ne s'affichent plus." %>
+<div class="section-actions">
+  <%= link_to "Ajouter un correspondant", new_contact_path(company_id: params[:company_id]), class: "btn btn-sm btn-outline-secondary", data: { turbo_frame: "modal" } %>
+</div>
 
-<%= form_with url: contacts_path, method: :get, class: "filters", data: { controller: "autosubmit" } do %>
+<%= form_with url: companies_path(anchor: "correspondants"), method: :get, class: "filters", data: { controller: "autosubmit" } do %>
   <span class="filters__icon" aria-hidden="true"><%= icon(:filter, size: 16) %></span>
-  <%= select_tag :company_id, options_from_collection_for_select(@companies, :id, :name, params[:company_id]),
+  <%= select_tag :company_id, options_from_collection_for_select(overview.companies, :id, :name, params[:company_id]),
                  include_blank: "Domaine tiers : tous", class: "pill-select", aria: { label: "Domaine tiers" },
                  data: { action: "change->autosubmit#submit" } %>
   <%= select_tag :state, options_for_select([["À valider", "pending"], ["Validés", "validated"], ["Bloqués", "blocked"]], params[:state]),
                  include_blank: "État : tous", class: "pill-select", aria: { label: "État" },
                  data: { action: "change->autosubmit#submit" } %>
-  <%= search_field_tag :query, params[:query], placeholder: "Nom ou adresse…", class: "pill-input", aria: { label: "Rechercher un correspondant" } %>
+  <%= search_field_tag :contact_query, params[:contact_query], placeholder: "Nom ou adresse…", class: "pill-input", aria: { label: "Rechercher un correspondant" } %>
 <% end %>
 
-<% if @groups.empty? %>
+<% if overview.groups.empty? %>
   <div class="empty-state"><p>Aucun correspondant.</p></div>
 <% end %>
 
-<% @groups.each do |company, contacts| %>
+<% overview.groups.each do |company, contacts| %>
   <% contacts.select(&:pending?).each do |contact| %>
     <%= form_with url: validate_contact_path(contact), method: :patch, id: dom_id(contact, :validate), class: "d-none" do %><% end %>
   <% end %>
@@ -31,7 +33,7 @@
           <span class="state-chip state-chip--ok">Domaine validé</span>
         <% else %>
           <span class="state-chip">Domaine à valider</span>
-          <%= link_to "Valider le domaine d'abord", companies_path, class: "muted-small" %>
+          <span class="muted-small">Validez d'abord le domaine ci-dessus.</span>
         <% end %>
       <% end %>
     </div>
@@ -57,8 +59,8 @@
                   <%= { "pending" => "À valider", "validated" => "Validé", "blocked" => "Bloqué" }[contact.state] %>
                 </span>
               </td>
-              <td><%= @email_counts.fetch(contact.id, 0) %></td>
-              <td><%= @last_exchange[contact.id] ? day_label(@last_exchange[contact.id].to_date) : "—" %></td>
+              <td><%= overview.email_counts.fetch(contact.id, 0) %></td>
+              <td><%= overview.last_exchange[contact.id] ? day_label(overview.last_exchange[contact.id].to_date) : "—" %></td>
               <td class="text-end">
                 <div class="row-actions">
                   <% if contact.pending? && contact.validatable? %>

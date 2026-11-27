@@ -6,7 +6,7 @@
   <%= simple_form_for @setting, url: organization_path, method: :patch, html: { data: { controller: "theme-picker" } } do |f| %>
     <%= f.error_notification message: "Merci de corriger le champ signalé." %>
     <%= f.input :org_domain, label: "Domaine de l'organisation", placeholder: "exemple.fr",
-                hint: "Tant qu'il n'est pas renseigné, aucun mail ne s'affiche. Toute adresse de ce domaine est un collaborateur, listé dans Domaines tiers et collaborateurs. Toute adresse d'un autre domaine est regroupée sous ce domaine tiers, créé à sa première apparition : une entreprise, une administration, une association… Un seul domaine en V2. Changer le domaine réattribue les adresses de tous les mails déjà en base ; un collaborateur devenu correspondant est « à valider »." %>
+                hint: "Tant qu'il n'est pas renseigné, aucun mail ne s'affiche. Toute adresse de ce domaine est un collaborateur, listé ci-dessous. Toute adresse d'un autre domaine est regroupée sous ce domaine tiers, créé à sa première apparition : une entreprise, une administration, une association… Un seul domaine en V2. Changer le domaine réattribue les adresses de tous les mails déjà en base ; un collaborateur devenu correspondant est « à valider »." %>
     <%= f.input :org_name, label: "Nom affiché en haut à gauche", placeholder: "Par exemple : Kelenn Conseil",
                 hint: "Le nom de votre organisation, tel qu'il apparaît dans la barre du haut, devant « Fil rouge »." %>
     <div class="mb-3">
@@ -25,6 +25,8 @@
     <%= f.button :submit, "Enregistrer", class: "btn-primary" %>
   <% end %>
 </section>
+
+<%= render "settings/employees", **@employees_overview.locals %>
 
 <section class="panel-card">
   <h2 class="section-title">Relancer l'identification</h2>

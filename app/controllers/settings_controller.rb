@@ -3,6 +3,7 @@
 class SettingsController < ApplicationController
   def show
     @setting = Setting.current
+    @employees_overview = EmployeesOverview.new
   end
 
   def update
@@ -17,6 +18,7 @@ class SettingsController < ApplicationController
       end
       redirect_to organization_path, notice: notice
     else
+      @employees_overview = EmployeesOverview.new
       render :show, status: :unprocessable_entity
     end
   end

@@ -4,7 +4,7 @@
     <%= f.input :display_name, label: "Nom affiché", hint: "Adresse : #{employee.email}" %>
   </div>
   <div class="modal-footer">
-    <%= link_to "Annuler", companies_path, class: "btn btn-outline-secondary", data: { bs_dismiss: "modal" } %>
+    <%= link_to "Annuler", organization_path, class: "btn btn-outline-secondary", data: { bs_dismiss: "modal" } %>
     <%= f.button :submit, "Enregistrer", class: "btn-primary" %>
   </div>
 <% end %>
