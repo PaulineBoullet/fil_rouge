@@ -21,10 +21,10 @@ class OpenaiService
     {{categories}}
 
     Règles de choix de la catégorie :
-    - Commence toujours par la catégorie décrite comme « à rechercher en priorité » :
-      si le mail en relève, choisis-la, même s'il parle aussi d'autre chose.
+    - La description de chaque catégorie indique quand la choisir : appuie-toi uniquement sur elle.
+    - Si une description précise qu'une catégorie est prioritaire, vérifie-la en premier
+      et choisis-la si le mail en relève, même s'il parle aussi d'autre chose.
     - Sinon, choisis la catégorie dont la description correspond le mieux au mail.
-    - Choisis la catégorie « bruit » ou « autres » uniquement si le mail n'apporte rien d'utile à cette personne.
 
     ## Statuts (du plus urgent au moins urgent, recopie le nom exactement)
     {{statuses}}

@@ -14,8 +14,10 @@ if Rails.env.production? && ENV["RESET_SEED"] != "1"
 end
 
 puts "Suppression des données existantes…"
+# Les catégories et statuts (Paramètres → Réglages de l'IA) ne sont pas effacés :
+# ce qui a été saisi dans l'interface est conservé.
 [EmailParticipant, Email, CompanySummary, Conversation, Contact, Company, Employee,
- Category, Status, Prompt, ImportFailure, Setting].each(&:delete_all)
+ Prompt, ImportFailure, Setting].each(&:delete_all)
 
 puts "Création des données de démonstration…"
 
@@ -23,28 +25,19 @@ User.find_or_create_by!(email: "test@filrouge.fr") { |u| u.password = "password"
 
 Setting.create!(org_domain: "kelenn-conseil.example", org_name: "Kelenn Conseil")
 
-# Réglages de l'IA
-statuses = [
-  ["Urgent", "Une échéance tombe dans les 48 heures, ou il manque une pièce qui bloque le dossier."],
-  ["En attente d'action", "Le dernier message demande quelque chose à mon domaine : une vérification, une validation, un envoi."],
-  ["En attente de réponse", "Mon domaine a fait sa part ; on attend un retour du domaine tiers."],
-  ["Information", "Aucune action attendue : confirmation, accusé de réception, simple partage d'information."]
-].each_with_index.to_h { |(name, description), i| [name, Status.create!(name: name, description: description, rank: i + 1)] }
-
-categories = [
-  ["Recrutement", "Offres d'emploi, candidatures, entretiens, promesses d'embauche et intégration des nouveaux salariés."],
-  ["Facturation", "Factures émises ou reçues, devis, relances de paiement, avoirs et litiges sur un montant."],
-  ["Formation", "Inscriptions, plans de développement des compétences, entretiens annuels, prises en charge par l'OPCO."],
-  ["Budget et paie", "Préparation et suivi budgétaire, bulletins de paie, variables du mois, charges sociales."],
-  ["Juridique", "Contrats, avenants, contentieux, mises en demeure et questions de conformité réglementaire."]
-].each_with_index.to_h { |(name, description), i| [name, Category.create!(name: name, description: description, position: i)] }
+# Catégories et statuts : ils se gèrent uniquement dans Paramètres → Réglages de l'IA.
+# Le seed ne les crée pas : l'IA utilise toujours ce qui y est saisi.
+if Category.none? || Status.none?
+  puts "⚠ Aucune catégorie ou aucun statut : renseignez-les dans Paramètres → Réglages de l'IA " \
+       "avant de lancer l'analyse."
+end
 
 Prompt.create!(name: "Prompt par défaut", is_default: true,
                content: "Tu assistes une personne qui doit garder une vue d'ensemble des échanges par mail " \
                         "circulant dans plusieurs boîtes mail. Elle n'a pas le temps de lire chaque mail : " \
                         "pour chacun, elle veut savoir en quelques secondes de quoi il s'agit, dans quelle " \
                         "catégorie il se range et à quel point il est urgent.")
-                        
+
 rh = Prompt.create!(name: "Accompagnement RH",
                     content: "Mets en avant les sujets de recrutement, de paie et de formation. Pour chaque fil, indique l'action attendue du cabinet et son échéance.")
 Prompt.create!(name: "Suivi comptable TPE",

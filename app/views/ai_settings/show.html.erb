@@ -89,7 +89,7 @@
 <%= form_with url: statuses_path, id: "new-status", class: "d-none" do %><% end %>
 
 <%= render "shared/section_head", id: "prompts", title: "Prompts spécifiques",
-           note: "Un domaine tiers peut avoir un prompt spécifique pour ses synthèses. Sans prompt spécifique, l'IA utilise le prompt par défaut." %>
+                      note: "Le prompt par défaut décrit le rôle de l'IA et accompagne toutes les analyses ; le prompt spécifique le complète pour un domaine tiers." %>
 <div class="prompt-list">
   <% if @default_prompt %>
     <%= render "ai_settings/prompt_card", prompt: @default_prompt %>

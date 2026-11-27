@@ -5,13 +5,14 @@
       <%= f.text_field :name, class: "form-control", aria: { label: "Nom du prompt" } %>
       <%= f.submit "Enregistrer", class: "btn btn-sm btn-outline-secondary" %>
     </div>
-    <%= f.label :content, "Consigne donnée à l'IA", class: "form-label", for: dom_id(prompt, :content) %>
+    <%= f.label :content, prompt.is_default? ? "Rôle de l'IA : début de toutes les consignes" : "Consigne complémentaire, ajoutée après le rôle pour ces domaines tiers",
+                class: "form-label", for: dom_id(prompt, :content) %>
     <%= f.text_area :content, rows: 3, class: "form-control", id: dom_id(prompt, :content) %>
   <% end %>
 
   <h3 class="form-label">Domaines tiers associés</h3>
   <% if prompt.is_default? %>
-    <p class="muted-small">Utilisé pour tous les domaines tiers qui n'ont pas de prompt spécifique.</p>
+        <p class="muted-small">Envoyé pour tous les domaines tiers, en tête de chaque consigne. Un prompt spécifique s'ajoute à la suite, sans le remplacer.</p>
   <% else %>
     <div class="chip-row">
       <% prompt.companies.sort_by(&:name).each do |company| %>
@@ -31,6 +32,6 @@
       <% end %>
     </div>
     <%= button_to "Supprimer ce prompt", prompt_path(prompt), method: :delete, class: "btn btn-sm btn-outline-danger",
-                  form: { data: { turbo_confirm: "Supprimer le prompt #{prompt.name} ? Ses domaines tiers utiliseront le prompt par défaut." } } %>
+                  form: { data: { turbo_confirm: "Supprimer le prompt #{prompt.name} ? Ses domaines tiers n'auront plus de consigne complémentaire." } } %>
   <% end %>
 </section>
