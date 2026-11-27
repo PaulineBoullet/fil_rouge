@@ -45,35 +45,41 @@
   </div>
 </section>
 
-<%= form_with url: conversation_path(@conversation), method: :get, class: "filters", role: "search",
-              aria: { label: "Filtres du fil" }, data: { controller: "autosubmit" } do %>
-  <span class="filters__icon" aria-hidden="true"><%= icon(:filter, size: 16) %></span>
-  <%= select_tag :person, options_for_select(@people.map { |p| [p.name, "#{p.model_name.singular}-#{p.id}"] }, params[:person]),
-                 include_blank: "Personne : toutes", class: "pill-select", aria: { label: "Personne" },
-                 data: { action: "change->autosubmit#submit" } %>
-  <%= select_tag :direction, options_for_select([["Reçus et envoyés", ""], ["Reçus", "recus"], ["Envoyés", "envoyes"]], params[:direction]),
-                 class: "pill-select", aria: { label: "Sens" }, data: { action: "change->autosubmit#submit" } %>
-  <label class="pill-toggle">
-    <%= check_box_tag :attachments, "1", params[:attachments] == "1", data: { action: "change->autosubmit#submit" } %> Avec pièces jointes
-  </label>
+<div class="thread-toolbar">
+  <span class="muted-small"><%= pluralize_fr(@total_emails, "message") %></span>
+  <details class="thread-search" <%= "open" if @query.present? %>>
+    <summary class="pill-button"><%= icon(:search, size: 16) %> Rechercher</summary>
+    <%= form_with url: conversation_path(@conversation), method: :get, class: "thread-search__form", role: "search" do %>
+      <%= search_field_tag :q, @query, placeholder: "Mot, nom, montant…", class: "pill-input pill-input--wide",
+                           aria: { label: "Rechercher dans les messages du fil" }, autofocus: @query.present? %>
+      <%= submit_tag "Rechercher", name: nil, class: "btn btn-primary btn-sm" %>
+    <% end %>
+  </details>
+</div>
+
+<% if @query.present? %>
+  <p class="thread-search__result">
+    <%= pluralize_fr(@days.sum { |_, emails| emails.size }, "message correspond", "messages correspondent") %> à « <%= @query %> ».
+    <%= link_to "Afficher tout le fil", conversation_path(@conversation) %>
+  </p>
 <% end %>
 
-<% if @days.empty? %>
-  <div class="empty-state"><p>Aucun mail ne correspond à ces filtres.</p></div>
+<% if @days.empty? && @query.blank? %>
+  <div class="empty-state"><p>Aucun message dans ce fil.</p></div>
 <% end %>
 
-<% @days.each do |date, emails| %>
-  <section class="day" aria-label="<%= day_label(date) %>">
-    <%= render "shared/day_separator", date: date, count: pluralize_fr(emails.size, "mail") %>
-    <div class="mail-list">
-      <%= render partial: "conversations/mail_card", collection: emails, as: :email %>
-    </div>
-  </section>
-<% end %>
-
-<% if @days.any? %>
+<% if @days.any? && @query.blank? %>
   <p class="feed-end">Début du fil<%= " : #{l(@conversation.first_email_at.to_date, format: :long)}" if @conversation.first_email_at %>.</p>
 <% end %>
+
+<div class="chat">
+  <% @days.each do |date, emails| %>
+    <section class="chat__day" aria-label="<%= day_label(date) %>">
+      <div class="chat__date"><span><%= day_label(date) %><%= " · #{day_detail(date)}" if day_detail(date) %></span></div>
+      <%= render partial: "conversations/message", collection: emails, as: :email %>
+    </section>
+  <% end %>
+</div>
 
 <%# Panneau de lecture d'un mail %>
 <%= turbo_frame_tag "mail_panel", src: (email_path(@open_email) if @open_email) %>

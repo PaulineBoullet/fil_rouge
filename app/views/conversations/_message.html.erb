@@ -1,0 +1,24 @@
+<%# Un mail du fil, en bulle de conversation : à droite dans la couleur du thème s'il vient
+    de votre domaine, à gauche en blanc s'il vient d'un domaine tiers. locals: (email:) %>
+<% sender = email.sender %>
+<% mine = email.sent_by_organization? %>
+<% recipients = email.recipients %>
+<div class="message <%= mine ? "message--mine" : "message--theirs" %>">
+  <%= link_to email_path(email), class: "message__bubble",
+              data: { turbo_frame: "mail_panel", turbo_action: "advance" },
+              aria: { label: "#{mine ? 'Envoyé' : 'Reçu'} de #{sender&.display_name}#{", #{l(email.sent_at, format: '%H h %M')}" if email.sent_at}, ouvrir le mail" } do %>
+    <span class="message__head">
+      <strong><%= sender&.display_name || "Expéditeur inconnu" %></strong>
+      <span class="message__time"><%= email.sent_at ? l(email.sent_at, format: "%H h %M") : "" %></span>
+    </span>
+    <span class="message__text">
+      <%= email.summary.presence || email.subject.presence || "(sans objet)" %>
+    </span>
+    <span class="message__foot">
+      <span class="message__to">à <%= recipients.map(&:display_name).join(", ") %></span>
+      <% if email.attachments_count.positive? %>
+        <span class="message__attachments"><%= icon(:clip, size: 13) %> <%= email.attachments_count %></span>
+      <% end %>
+    </span>
+  <% end %>
+</div>

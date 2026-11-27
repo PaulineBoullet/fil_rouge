@@ -43,6 +43,13 @@ class V2PagesTest < ActionDispatch::IntegrationTest
     get conversation_path(@conversation)
     assert_response :success
     assert_select ".synth"
+    assert_select ".chat .message", @conversation.emails.count
+    assert_select "details.thread-search"
+
+    get conversation_path(@conversation, q: "aucun-mot-introuvable")
+    assert_response :success
+    assert_select ".chat .message", 0
+    assert_select ".thread-search__result", /0 message/
 
     email = @conversation.emails.first
     get email_path(email), headers: { "Turbo-Frame" => "mail_panel" }

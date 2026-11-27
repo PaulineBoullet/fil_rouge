@@ -1,12 +1,15 @@
-# Vue d'un fil : synthèse, statut et catégorie modifiables, mails jour par jour.
+# Vue d'un fil : synthèse, statut et catégorie modifiables, puis les mails sous forme de
+# conversation, avec une recherche.
 class ConversationsController < ApplicationController
   before_action :set_conversation
 
   def show
+    @query = params[:q].to_s.strip
     emails = @conversation.emails.includes(email_participants: %i[contact employee])
-    emails = filter_emails(emails)
-    @days = emails.to_a.sort_by { |e| [e.sent_at || Time.at(0), e.id] }.group_by(&:day).sort_by { |day, _| day || Date.new(0) }.reverse
-    @people = @conversation.participants.sort_by(&:name)
+    emails = search(emails, @query) if @query.present?
+    # Comme une conversation : du plus ancien au plus récent
+    @days = emails.to_a.sort_by { |e| [e.sent_at || Time.at(0), e.id] }.group_by(&:day).sort_by { |day, _| day || Date.new(0) }
+    @total_emails = @conversation.emails.count
     @emails_after_summary = if @conversation.summary_generated_at
                               @conversation.emails.where("sent_at > ?", @conversation.summary_generated_at).count
                             else
@@ -45,21 +48,9 @@ class ConversationsController < ApplicationController
     @conversation = Conversation.includes(:company, :status, :category).find(params[:id])
   end
 
-  def filter_emails(emails)
-    if params[:person].present?
-      kind, id = params[:person].split("-", 2)
-      column = kind == "employee" ? :employee_id : :contact_id
-      emails = emails.where(id: EmailParticipant.where(column => id).select(:email_id))
-    end
-    case params[:direction]
-    when "recus" then emails = emails.where.not(id: sent_email_ids)
-    when "envoyes" then emails = emails.where(id: sent_email_ids)
-    end
-    emails = emails.where("emails.attachments_count > 0") if params[:attachments] == "1"
-    emails
-  end
-
-  def sent_email_ids
-    EmailParticipant.role_from.where.not(employee_id: nil).select(:email_id)
+  # Recherche dans les mails du fil : objet, synthèse et texte du mail
+  def search(emails, query)
+    pattern = "%#{ActiveRecord::Base.sanitize_sql_like(query)}%"
+    emails.where("emails.subject ILIKE :q OR emails.summary ILIKE :q OR emails.content ILIKE :q", q: pattern)
   end
 end

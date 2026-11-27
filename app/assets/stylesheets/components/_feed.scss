@@ -334,7 +334,29 @@
   }
 }
 
-.fil-card__tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.fil-card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+
+.count-pill {
+  flex: none;
+  min-width: 26px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--theme-dark);
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.fil-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px dashed $line;
+}
 
 .category-chip {
   display: inline-flex;
@@ -357,10 +379,8 @@
   margin-top: auto;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  align-items: center;
   gap: 6px 12px;
-  padding-top: 10px;
-  border-top: 1px solid $line;
   font-size: .8125rem;
   color: $ink-muted;
 
@@ -370,13 +390,125 @@
 .stat { display: inline-flex; align-items: baseline; gap: 4px; white-space: nowrap; }
 
 .stat__new {
-  margin-left: 4px;
   padding: 0 7px;
   border-radius: 999px;
   background: var(--theme-soft);
   color: var(--theme-dark);
   font-size: .75rem;
   font-weight: 600;
+}
+
+// Vue d'un fil : les mails en conversation
+.thread-toolbar { max-width: 860px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+.thread-search {
+  position: relative;
+
+  > summary { list-style: none; &::-webkit-details-marker { display: none; } }
+
+  &__form {
+    position: absolute;
+    right: 0;
+    top: 44px;
+    z-index: 30;
+    display: flex;
+    gap: 8px;
+    width: 440px;
+    max-width: 90vw;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid $line;
+    border-radius: 16px;
+    box-shadow: 0 18px 40px rgba($ink, .16);
+  }
+
+  &__result { margin: 0; font-size: .875rem; color: $ink-muted; }
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 860px;
+
+  &__day { display: flex; flex-direction: column; gap: 12px; }
+
+  &__date {
+    display: flex;
+    justify-content: center;
+    margin: 8px 0 4px;
+
+    span {
+      padding: 3px 12px;
+      border-radius: 999px;
+      background: $band;
+      font-size: .75rem;
+      font-weight: 600;
+      color: $ink-muted;
+    }
+  }
+}
+
+.message {
+  display: flex;
+
+  &--theirs { justify-content: flex-start; }
+  &--mine { justify-content: flex-end; }
+
+  &__bubble {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 78%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    text-decoration: none;
+    box-shadow: 0 6px 18px -14px rgba($ink, .5);
+    transition: transform .15s ease, box-shadow .15s ease;
+
+    &:hover, &:focus-visible { transform: translateY(-1px); box-shadow: 0 10px 22px -14px rgba($ink, .55); text-decoration: none; }
+  }
+
+  // Mail d'un domaine tiers : bulle blanche, à gauche
+  &--theirs &__bubble {
+    background: #fff;
+    border: 1px solid $line;
+    border-bottom-left-radius: 6px;
+    color: $ink;
+
+    &:hover { color: $ink; }
+  }
+
+  // Mail de votre domaine : bulle dans la couleur du thème, à droite
+  &--mine &__bubble {
+    background: var(--theme-dark);
+    border: 1px solid var(--theme-dark);
+    border-bottom-right-radius: 6px;
+    color: #fff;
+
+    &:hover { color: #fff; }
+  }
+
+  &__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: .8125rem; }
+  &__time { font-size: .75rem; opacity: .75; white-space: nowrap; }
+  &__text { font-size: .9375rem; line-height: 1.5; }
+
+  &__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: .75rem;
+    opacity: .8;
+  }
+
+  &__to { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  &__attachments { display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__bubble { transition: none; }
+    &__bubble:hover { transform: none; }
+  }
 }
 
 .mail-list { display: flex; flex-direction: column; gap: 30px; }
