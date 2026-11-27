@@ -22,7 +22,7 @@ class ConversationSummaryService
     end
     return if lines.empty?
 
-    instructions = [INSTRUCTIONS, @conversation.company&.effective_prompt&.content].compact_blank.join("\n\n")
+    instructions = PromptBuilder.new(@conversation.company).instructions_for(INSTRUCTIONS)
     summary = OpenaiService.new.summarize("Titre du fil : #{@conversation.display_title}\n\n#{lines.join("\n")}",
                                           instructions: instructions)
     @conversation.update!(summary: summary, summary_generated_at: Time.current)
