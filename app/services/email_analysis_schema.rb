@@ -1,18 +1,4 @@
 module EmailAnalysisSchema
-  INSTRUCTIONS = <<~PROMPT
-    Tu es un assistant spécialisé dans l'analyse des emails pour un cabinet comptable.
-
-    Produis un résumé clair en français.
-    Extrais également les métadonnées de l'email et de ses pièces jointes.
-
-    Extrais uniquement les informations explicitement présentes.
-    N'invente jamais de données.
-    Utilise null lorsqu'une information est absente.
-    Les montants doivent être numériques lorsque possible.
-    Les dates doivent être au format YYYY-MM-DD lorsque possible.
-
-    Retourne uniquement le JSON correspondant au schéma demandé.
-  PROMPT
 
   SCHEMA = {
     type: "object",
@@ -50,4 +36,18 @@ module EmailAnalysisSchema
     ],
     additionalProperties: false
   }.freeze
+    # Schéma complet : points saillants + liste fermée des catégories et statuts des Paramètres
+  def self.schema
+    categories = Category.ordered.pluck(:name)
+    statuses = Status.ordered.pluck(:name)
+
+    SCHEMA.deep_merge(
+      properties: {
+        key_points: { type: "array", items: { type: "string" } },
+        category: categories.any? ? { type: "string", enum: categories } : { type: "null" },
+        status: statuses.any? ? { type: "string", enum: statuses } : { type: "null" }
+      },
+      required: SCHEMA[:required] + %w[key_points category status]
+    )
+  end
 end

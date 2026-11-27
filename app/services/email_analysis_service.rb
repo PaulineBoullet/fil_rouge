@@ -6,7 +6,7 @@ class EmailAnalysisService
   def call
     result = OpenaiService.new.analyze_email(
       analysis_content,
-      instructions: company_prompt
+      instructions: PromptBuilder.new(company).email_instructions
     )
 
     save_summary(result)
@@ -90,8 +90,4 @@ class EmailAnalysisService
     ].join("\n")
   end
 
-  # Prompt spécifique du domaine tiers, sinon prompt par défaut
-  def company_prompt
-    (company&.effective_prompt || Prompt.default_prompt)&.content
-  end
 end

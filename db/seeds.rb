@@ -7,6 +7,12 @@
 #
 # Les statuts et catégories des fils sont posés ici en attendant que l'IA les propose.
 
+# En production, on refuse de tout effacer sans autorisation explicite
+if Rails.env.production? && ENV["RESET_SEED"] != "1"
+  abort "Seed bloquée en production : elle efface toutes les données. " \
+        "Relance avec RESET_SEED=1 si c'est voulu."
+end
+
 puts "Suppression des données existantes…"
 [EmailParticipant, Email, CompanySummary, Conversation, Contact, Company, Employee,
  Category, Status, Prompt, ImportFailure, Setting].each(&:delete_all)
@@ -34,7 +40,11 @@ categories = [
 ].each_with_index.to_h { |(name, description), i| [name, Category.create!(name: name, description: description, position: i)] }
 
 Prompt.create!(name: "Prompt par défaut", is_default: true,
-               content: "Résume les échanges avec ce domaine tiers en quatre phrases au plus. Indique les demandes en attente, les décisions prises, les échéances et les pièces reçues ou manquantes.")
+               content: "Tu assistes une personne qui doit garder une vue d'ensemble des échanges par mail " \
+                        "circulant dans plusieurs boîtes mail. Elle n'a pas le temps de lire chaque mail : " \
+                        "pour chacun, elle veut savoir en quelques secondes de quoi il s'agit, dans quelle " \
+                        "catégorie il se range et à quel point il est urgent.")
+                        
 rh = Prompt.create!(name: "Accompagnement RH",
                     content: "Mets en avant les sujets de recrutement, de paie et de formation. Pour chaque fil, indique l'action attendue du cabinet et son échéance.")
 Prompt.create!(name: "Suivi comptable TPE",
