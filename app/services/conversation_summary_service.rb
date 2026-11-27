@@ -3,7 +3,8 @@
 class ConversationSummaryService
   INSTRUCTIONS = <<~PROMPT
     Tu résumes un fil de conversation par mail entre une organisation et un domaine tiers.
-    On te donne, dans l'ordre chronologique, la synthèse de chaque mail du fil.
+    On te donne, dans l'ordre chronologique, la synthèse de chaque mail du fil, suivie de ses
+    points saillants (échéances, montants, pièces manquantes, incohérences) : tiens-en compte.
     Rédige en français une synthèse de quatre phrases au plus : l'objet du fil, où il en est,
     et ce qui est attendu, de qui, avec l'échéance si elle est connue.
     N'invente rien qui ne figure pas dans les synthèses.
@@ -18,7 +19,8 @@ class ConversationSummaryService
       next if email.summary.blank?
 
       date = email.sent_at ? I18n.l(email.sent_at, format: "%d/%m/%Y %H:%M") : "date inconnue"
-      "- #{date}, de #{email.sender&.display_name || 'expéditeur inconnu'} : #{email.summary}"
+      points = Array(email.metadata["key_points"]).map { |point| "\n  · #{point}" }.join
+      "- #{date}, de #{email.sender&.display_name || 'expéditeur inconnu'} : #{email.summary}#{points}"
     end
     return if lines.empty?
 

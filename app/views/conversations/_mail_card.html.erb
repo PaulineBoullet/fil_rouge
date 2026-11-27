@@ -16,6 +16,12 @@
     <p class="fil-card__text">
       <%= email.summary.presence || tag.span("Synthèse à venir.", class: "muted") %>
     </p>
+    <% points = Array(email.metadata["key_points"]) %>
+    <% if points.any? %>
+      <ul class="key-points">
+        <% points.each do |point| %><li><%= point %></li><% end %>
+      </ul>
+    <% end %>
     <div class="fil-card__foot">
       <% recipients = email.recipients %>
       <%= avatar_row(recipients.filter_map(&:person)) %>
