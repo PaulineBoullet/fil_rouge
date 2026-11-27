@@ -3,14 +3,9 @@
 <%= breadcrumb %>
 <%= render "shared/filters", selected_companies: Company.where(id: selected_domain_ids).order(:name).to_a %>
 
-<% if @feed.empty? %>
-  <div class="empty-state">
-    <p>Aucun échange à afficher.</p>
-    <p class="muted-small">
-      Les fils n'apparaissent qu'une fois leur domaine tiers et leur premier correspondant validés
-      (<%= link_to "domaines tiers", companies_path %>, <%= link_to "correspondants", contacts_path %>).
-    </p>
-  </div>
-<% else %>
+<% diagnosis = DisplayDiagnosis.new %>
+<%= render "pages/diagnosis", diagnosis: diagnosis, empty: @feed.empty? %>
+
+<% unless @feed.empty? %>
   <%= render "pages/feed_page", feed: @feed, cards: @cards %>
 <% end %>

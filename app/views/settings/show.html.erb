@@ -10,3 +10,13 @@
     <%= f.button :submit, "Enregistrer", class: "btn-primary" %>
   <% end %>
 </section>
+
+<section class="panel-card">
+  <h2 class="section-title">Relancer l'identification</h2>
+  <p class="muted-small">
+    Relit tous les mails déjà en base avec le domaine ci-dessus : chaque adresse est rattachée à un collaborateur ou
+    à un correspondant, et les mails sans fil (repris de la V1) sont rattachés à un fil. Les validations sont conservées.
+  </p>
+  <%= button_to "Relancer l'identification", reidentify_organization_path, class: "btn btn-outline-secondary",
+                form: { data: { turbo_confirm: "Relire tous les mails en base ? Cela peut prendre quelques secondes." } } %>
+</section>

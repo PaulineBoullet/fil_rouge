@@ -401,6 +401,48 @@
   border-radius: 20px;
 }
 
+.empty-state--diagnosis {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.empty-state__title { margin: 0; font-size: 1.125rem; font-weight: 500; color: $ink; }
+
+.diagnosis-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: .875rem;
+  color: $ink;
+
+  li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 16px;
+    padding: 10px 14px;
+    background: #fff;
+    border: 1px solid $line;
+    border-radius: 12px;
+  }
+
+  a { font-weight: 600; white-space: nowrap; }
+}
+
+.diagnosis-note {
+  font-size: .8125rem;
+  color: $ink-muted;
+
+  > summary { cursor: pointer; width: fit-content; }
+  .diagnosis-list { margin-top: 10px; }
+}
+
 .notice-panel {
   padding: 14px 18px;
   border-radius: 20px;

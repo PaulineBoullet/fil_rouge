@@ -22,7 +22,9 @@ Rails.application.routes.draw do
 
   # Paramètres
   scope "parametres" do
-    resource :organization, path: "mon-domaine", only: %i[show update], controller: "settings"
+    resource :organization, path: "mon-domaine", only: %i[show update], controller: "settings" do
+      post :reidentify, on: :member
+    end
     resources :employees, path: "collaborateurs", except: :show do
       patch :validate, on: :member
     end

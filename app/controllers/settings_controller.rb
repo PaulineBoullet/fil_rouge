@@ -20,4 +20,11 @@ class SettingsController < ApplicationController
       render :show, status: :unprocessable_entity
     end
   end
+
+  # Relance l'identification sans changer de domaine (mails repris de la V1, données incohérentes)
+  def reidentify
+    Reidentification.new.call
+    redirect_to organization_path, notice: "Identification relancée : #{Employee.pending.count} collaborateurs et " \
+                                           "#{Contact.pending.count} correspondants sont à valider."
+  end
 end
