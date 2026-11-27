@@ -11,6 +11,7 @@ class EmailAnalysisService
 
     save_summary(result)
     save_metadata(result)
+    ConversationClassifier.new(@email.conversation).call if @email.conversation
 
     @email.summary
   end

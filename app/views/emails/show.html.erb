@@ -26,6 +26,12 @@
         <section class="synth synth--compact">
           <span class="synth__label">Synthèse du mail</span>
           <p class="synth__text"><%= @email.summary %></p>
+          <% points = Array(@email.metadata["key_points"]) %>
+          <% if points.any? %>
+            <ul class="key-points">
+              <% points.each do |point| %><li><%= point %></li><% end %>
+            </ul>
+          <% end %>
         </section>
       <% end %>
 
