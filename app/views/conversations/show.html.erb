@@ -68,10 +68,6 @@
   <div class="empty-state"><p>Aucun message dans ce fil.</p></div>
 <% end %>
 
-<% if @days.any? && @query.blank? %>
-  <p class="feed-end">Début du fil<%= " : #{l(@conversation.first_email_at.to_date, format: :long)}" if @conversation.first_email_at %>.</p>
-<% end %>
-
 <div class="chat">
   <% @days.each do |date, emails| %>
     <section class="chat__day" aria-label="<%= day_label(date) %>">
@@ -80,6 +76,10 @@
     </section>
   <% end %>
 </div>
+
+<% if @days.any? && @query.blank? %>
+  <p class="feed-end">Début du fil<%= " : #{l(@conversation.first_email_at.to_date, format: :long)}" if @conversation.first_email_at %>.</p>
+<% end %>
 
 <%# Panneau de lecture d'un mail %>
 <%= turbo_frame_tag "mail_panel", src: (email_path(@open_email) if @open_email) %>

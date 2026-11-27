@@ -7,8 +7,8 @@ class ConversationsController < ApplicationController
     @query = params[:q].to_s.strip
     emails = @conversation.emails.includes(email_participants: %i[contact employee])
     emails = search(emails, @query) if @query.present?
-    # Comme une conversation : du plus ancien au plus récent
-    @days = emails.to_a.sort_by { |e| [e.sent_at || Time.at(0), e.id] }.group_by(&:day).sort_by { |day, _| day || Date.new(0) }
+    # Du plus récent au plus ancien, jours comme mails
+    @days = emails.to_a.sort_by { |e| [e.sent_at || Time.at(0), e.id] }.reverse.group_by(&:day).sort_by { |day, _| day || Date.new(0) }.reverse
     @total_emails = @conversation.emails.count
     @emails_after_summary = if @conversation.summary_generated_at
                               @conversation.emails.where("sent_at > ?", @conversation.summary_generated_at).count
