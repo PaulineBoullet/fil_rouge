@@ -1,0 +1,17 @@
+<%# Un domaine tiers dans la journée : une ligne intercalaire avec son nom, puis les cartes
+    de ses fils du jour. locals: (group:) %>
+<% path = group.company ? company_view_path(group.company, **filter_params.except(:view, :from)) : root_path(internal: "1") %>
+<section class="company-group <%= "is-stale" if group.stale? %>" aria-label="<%= group.name %>">
+  <div class="company-divider">
+    <%= link_to group.name, path, class: "company-divider__name" %>
+    <span class="company-divider__count"><%= pluralize_fr(group.conversation_cards.size, "fil") %></span>
+    <span class="company-divider__line" aria-hidden="true"></span>
+    <% if group.stale? %><span class="company-divider__later"><%= later_label(group.later_day).capitalize %></span><% end %>
+  </div>
+  <% if group.summary %>
+    <p class="company-group__summary"><%= group.summary.summary %></p>
+  <% end %>
+  <div class="card-grid">
+    <%= render partial: "conversations/card", collection: group.conversation_cards, as: :card %>
+  </div>
+</section>

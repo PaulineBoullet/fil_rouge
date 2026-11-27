@@ -252,95 +252,46 @@
   &.is-stale:focus-visible &__body { filter: none; opacity: 1; }
 }
 
-// Carte d'un domaine tiers sur le dashboard : le nom, puis la liste des fils du jour
-.card-grid--companies {
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 18px;
-  align-items: start;
-}
-
-.company-card {
+// Dashboard : dans chaque journée, un domaine tiers par bloc, annoncé par une ligne
+// intercalaire, avec les cartes de ses fils du jour
+.company-group {
   display: flex;
   flex-direction: column;
-  background: #fff;
-  border: 1px solid $line;
-  border-radius: 16px;
-  box-shadow: 0 10px 24px -18px color-mix(in srgb, var(--theme-dark) 30%, transparent);
-  overflow: hidden;
+  gap: 18px;
 
-  &__head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 14px 16px 10px;
+  & + & { margin-top: 10px; }
+
+  &__summary {
+    margin: -6px 0 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--theme-blush);
+    font-size: .8125rem;
+    line-height: 1.55;
+    color: $ink;
+    max-width: 90ch;
   }
+
+  &.is-stale .company-divider { opacity: .55; }
+}
+
+.company-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
   &__name {
     font-size: 1rem;
     font-weight: 600;
     color: $ink;
     text-decoration: none;
+    white-space: nowrap;
 
     &:hover { color: var(--theme-dark); text-decoration: underline; }
   }
 
+  &__count { font-size: .75rem; color: $ink-muted; white-space: nowrap; }
+  &__line { flex: 1; height: 1px; background: $line; }
   &__later { font-size: .75rem; font-style: italic; color: $ink-muted; white-space: nowrap; }
-
-  &__list { list-style: none; margin: 0; padding: 0; }
-
-  &__more {
-    padding: 10px 16px 12px;
-    border-top: 1px solid $line;
-    font-size: .8125rem;
-    font-weight: 600;
-    color: var(--theme-dark);
-    text-decoration: none;
-
-    &:hover { text-decoration: underline; }
-  }
-
-  // Domaine tiers qui réapparaît à une date plus récente
-  &.is-stale { opacity: .55; filter: grayscale(1); }
-  &.is-stale:hover, &.is-stale:focus-within { opacity: 1; filter: none; }
-}
-
-.conv-row {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 10px 16px;
-  border-top: 1px solid $line;
-  color: $ink;
-  text-decoration: none;
-
-  &:hover, &:focus-visible { background: var(--theme-soft); color: $ink; text-decoration: none; }
-
-  &__title {
-    font-size: .875rem;
-    line-height: 1.35;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  &__meta { display: flex; align-items: center; gap: 8px; min-width: 0; }
-  &__category { font-size: .75rem; color: $ink-muted; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-}
-
-// Priorité d'un fil : petite étiquette, la plus urgente en couleur pleine
-.prio {
-  flex: none;
-  padding: 1px 8px;
-  border-radius: 999px;
-  font-size: .6875rem;
-  font-weight: 600;
-  line-height: 1.5;
-
-  &--1 { background: var(--theme-dark); color: #fff; }
-  &--2 { background: var(--theme-soft); color: var(--theme-dark); }
-  &--3 { background: $sticker-bg-3; color: $sticker-fg-3; }
-  &--4 { background: $sticker-bg-4; color: $sticker-fg-4; }
 }
 
 .mail-list { display: flex; flex-direction: column; gap: 30px; }
