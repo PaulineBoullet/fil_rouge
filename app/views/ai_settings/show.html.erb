@@ -89,7 +89,7 @@
 <%= form_with url: statuses_path, id: "new-status", class: "d-none" do %><% end %>
 
 <%= render "shared/section_head", id: "prompts", title: "Prompts spécifiques",
-           note: "Un domaine tiers peut avoir un prompt spécifique pour ses synthèses. Sans prompt spécifique, l'IA utilise le prompt par défaut." %>
+           note: "Le prompt par défaut décrit le rôle de l'IA et accompagne toutes les analyses. Un prompt spécifique s'ajoute à la suite, pour les domaines tiers associés, sans le remplacer." %>
 <div class="list-table">
   <table class="table align-middle mb-0">
     <caption class="visually-hidden">Prompts de synthèse</caption>
@@ -100,10 +100,11 @@
         <tr>
           <td><%= text_field_tag "prompt[name]", prompt.name, form: form_id, class: "form-control", aria: { label: "Nom du prompt #{prompt.name}" } %></td>
           <td><%= text_area_tag "prompt[content]", prompt.content, form: form_id, rows: 2, class: "form-control",
+                                placeholder: (prompt.is_default? ? "Rôle de l'IA" : "Consigne complémentaire"),
                                 aria: { label: "Consigne du prompt #{prompt.name}" } %></td>
           <td>
             <% if prompt.is_default? %>
-              <span class="muted-small">Tous les autres</span>
+              <span class="muted-small">Tous, en tête de chaque consigne</span>
             <% else %>
               <div class="chip-row">
                 <% prompt.companies.sort_by(&:name).each do |company| %>
@@ -129,7 +130,7 @@
               <%= button_tag "Enregistrer", form: form_id, class: "btn btn-sm btn-outline-secondary" %>
               <% unless prompt.is_default? %>
                 <%= button_to "Supprimer", prompt_path(prompt), method: :delete, class: "btn btn-sm btn-outline-danger",
-                              form: { data: { turbo_confirm: "Supprimer le prompt #{prompt.name} ? Ses domaines tiers utiliseront le prompt par défaut." } } %>
+                              form: { data: { turbo_confirm: "Supprimer le prompt #{prompt.name} ? Ses domaines tiers n'auront plus de consigne complémentaire." } } %>
               <% end %>
             </div>
           </td>

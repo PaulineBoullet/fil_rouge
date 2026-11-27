@@ -31,7 +31,7 @@ class ConversationClassifier
   # Statut du dernier mail analysé (un nom qui n'existe plus dans les Paramètres est ignoré)
   def latest_status(analyses)
     name = analyses.filter_map { |metadata| metadata["status"] }.last
-    Status.find_by(name: name) if name
+    find_by_name(Status.all, name) if name
   end
 
   # Catégorie la plus fréquente ; à égalité, celle du mail le plus récent
@@ -40,7 +40,14 @@ class ConversationClassifier
     return if names.empty?
 
     counts = names.tally
-    winner = names.reverse.find { |name| counts[name] == counts.values.max }
-    Category.find_by(name: winner)
+    top = counts.values.max
+    winner = names.reverse.find { |name| counts[name] == top }
+    find_by_name(Category.all, winner)
+  end
+
+  # L'IA recopie le nom, mais peut changer une majuscule ou un accent : on compare sans eux
+  def find_by_name(records, name)
+    wanted = TextSearch.normalize(name).strip
+    records.find { |record| TextSearch.normalize(record.name).strip == wanted }
   end
 end

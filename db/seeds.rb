@@ -5,7 +5,8 @@
 # partie de ce que l'outil a découvert. Le reste est laissé « à valider » pour que les
 # écrans de paramètres aient de quoi montrer.
 #
-# Les statuts et catégories des fils sont posés ici en attendant que l'IA les propose.
+# Les catégories et les statuts se gèrent dans Paramètres → Réglages de l'IA : le seed ne les
+# efface pas et ne crée que ceux qui manquent, pour qu'une installation neuve fonctionne.
 
 # En production, on refuse de tout effacer sans autorisation explicite
 if Rails.env.production? && ENV["RESET_SEED"] != "1"
@@ -25,12 +26,30 @@ User.find_or_create_by!(email: "test@filrouge.fr") { |u| u.password = "password"
 
 Setting.create!(org_domain: "kelenn-conseil.example", org_name: "Kelenn Conseil")
 
-# Catégories et statuts : ils se gèrent uniquement dans Paramètres → Réglages de l'IA.
-# Le seed ne les crée pas : l'IA utilise toujours ce qui y est saisi.
-if Category.none? || Status.none?
-  puts "⚠ Aucune catégorie ou aucun statut : renseignez-les dans Paramètres → Réglages de l'IA " \
-       "avant de lancer l'analyse."
+# Catégories et statuts par défaut, créés seulement s'il n'y en a aucun
+if Status.none?
+  [
+    ["Urgent", "Une échéance tombe dans les 48 heures, ou il manque une pièce qui bloque le dossier."],
+    ["En attente d'action", "Le dernier message demande quelque chose à mon domaine : une vérification, une validation, un envoi."],
+    ["En attente de réponse", "Mon domaine a fait sa part ; on attend un retour du domaine tiers."],
+    ["Information", "Aucune action attendue : confirmation, accusé de réception, simple partage d'information."]
+  ].each_with_index { |(name, description), i| Status.create!(name: name, description: description, rank: i + 1) }
 end
+
+if Category.none?
+  [
+    ["Recrutement", "Offres d'emploi, candidatures, entretiens, promesses d'embauche et intégration des nouveaux salariés."],
+    ["Facturation", "Factures émises ou reçues, devis, relances de paiement, avoirs et litiges sur un montant."],
+    ["Formation", "Inscriptions, plans de développement des compétences, entretiens annuels, prises en charge par l'OPCO."],
+    ["Budget et paie", "Préparation et suivi budgétaire, bulletins de paie, variables du mois, charges sociales."],
+    ["Juridique", "Contrats, avenants, contentieux, mises en demeure et questions de conformité réglementaire."]
+  ].each_with_index { |(name, description), i| Category.create!(name: name, description: description, position: i) }
+end
+
+# Les classements de démonstration ci-dessous visent ces noms ; un nom renommé ou supprimé
+# dans les Paramètres est simplement ignoré.
+statuses = Status.all.index_by(&:name)
+categories = Category.all.index_by(&:name)
 
 Prompt.create!(name: "Prompt par défaut", is_default: true,
                content: "Tu assistes une personne qui doit garder une vue d'ensemble des échanges par mail " \
@@ -74,7 +93,7 @@ Contact.where(email: %w[d.roux@clinique-des-pins.fr g.lefloch@hotel-les-embruns.
   "cvp-01@kelenn-conseil.example" => ["En attente de réponse", "Formation"]
 }.each do |message_id, (status, category)|
   conversation = Email.find_by(message_id: message_id)&.conversation
-  conversation&.update!(status: statuses.fetch(status), category: categories.fetch(category))
+  conversation&.update!(status: statuses[status], category: categories[category])
 end
 
 # Synthèses, statuts et catégories du jeu de démonstration, comme les rédigerait l'IA
@@ -84,8 +103,7 @@ demo["conversations"].each do |message_id, attrs|
   conversation = Email.find_by(message_id: message_id)&.conversation
   next unless conversation
 
-  conversation.update!(status: attrs["status"] && statuses.fetch(attrs["status"]),
-                       category: attrs["category"] && categories.fetch(attrs["category"]),
+  conversation.update!(status: statuses[attrs["status"]], category: categories[attrs["category"]],
                        summary: attrs["summary"], summary_generated_at: (attrs["summary"] && Time.zone.parse("2026-11-27 07:00")))
 end
 

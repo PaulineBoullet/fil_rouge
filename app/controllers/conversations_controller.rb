@@ -36,7 +36,8 @@ class ConversationsController < ApplicationController
 
   # Synthèses des mails du fil, puis synthèse du fil (fait appel à l'IA)
   def analyze
-    @conversation.emails.where(summary: nil).find_each { |email| EmailAnalysisService.new(email).call }
+    @conversation.emails.where(summary: nil).find_each { |email| EmailAnalysisService.new(email, classify: false).call }
+    ConversationClassifier.new(@conversation).call
     ConversationSummaryService.new(@conversation).call
     redirect_to conversation_path(@conversation), notice: "Synthèse du fil mise à jour."
   rescue StandardError => e
