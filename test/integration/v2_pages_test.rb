@@ -26,7 +26,7 @@ class V2PagesTest < ActionDispatch::IntegrationTest
   test "pages de consultation" do
     get root_path
     assert_response :success
-    assert_select ".fil-card", minimum: 1
+    assert_select ".company-card .conv-row", minimum: 1
     assert_select ".crumbs__here", "Dashboard"
 
     get root_path(view: "lignes")

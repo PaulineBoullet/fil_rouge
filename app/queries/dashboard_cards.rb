@@ -1,6 +1,8 @@
 # Cartes du dashboard pour un jour : une carte par domaine tiers ayant échangé ce jour-là,
 # classées selon le statut le plus urgent de leurs fils.
 class DashboardCards
+  MAX_ROWS = 4 # fils listés sur une carte ; au-delà, un lien vers la vue du domaine tiers
+
   Card = Struct.new(:company, :conversations, :top_status, :contacts, :summary, :later_day, keyword_init: true) do
     def stale? = later_day.present?
     def internal? = company.nil?

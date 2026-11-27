@@ -1,22 +1,35 @@
-<%# locals: (card:, date:) %>
+<%# Carte d'un domaine tiers pour un jour : son nom, puis la liste de ses fils du jour,
+    chacun avec sa priorité et sa catégorie. locals: (card:, date:) %>
 <% path = card.company ? company_view_path(card.company, **filter_params.except(:view, :from)) : root_path(internal: "1") %>
-<%= link_to path, class: ["fil-card", ("is-stale" if card.stale?)],
-            aria: { label: "#{card.name}, #{pluralize_fr(card.conversations.size, 'fil')}#{", priorité : #{card.top_status.name}" if card.top_status}#{", échanges plus récents #{later_label(card.later_day).delete_prefix('suite ')}" if card.stale?}" } do %>
-  <% if card.conversations.size > 1 %><span class="fil-card__sheet" aria-hidden="true"></span><% end %>
-  <div class="fil-card__body">
-    <%= status_sticker(card.top_status) %>
-    <%= count_bubble(card.conversations.size, label: pluralize_fr(card.conversations.size, "fil")) %>
-    <span class="fil-card__title"><%= card.name %></span>
-    <p class="fil-card__text">
-      <% if card.summary %>
-        <%= card.summary.summary %>
-      <% else %>
-        <span class="muted"><%= card.conversations.map(&:display_title).first(3).join(" · ") %></span>
-      <% end %>
-    </p>
-    <div class="fil-card__foot">
-      <%= people_line(card.contacts) %>
-      <% if card.stale? %><span class="fil-card__later"><%= later_label(card.later_day).capitalize %></span><% end %>
-    </div>
-  </div>
-<% end %>
+<% conversations = card.conversations.sort_by { |c| [c.priority_rank, c.display_title.downcase] } %>
+<% shown = conversations.first(DashboardCards::MAX_ROWS) %>
+<article class="company-card <%= "is-stale" if card.stale? %>" aria-label="<%= card.name %>">
+  <header class="company-card__head">
+    <%= link_to card.name, path, class: "company-card__name" %>
+    <% if card.stale? %>
+      <span class="company-card__later"><%= later_label(card.later_day).capitalize %></span>
+    <% end %>
+  </header>
+
+  <ul class="company-card__list">
+    <% shown.each do |conversation| %>
+      <li>
+        <%= link_to conversation_path(conversation), class: "conv-row" do %>
+          <span class="conv-row__title"><%= conversation.display_title %></span>
+          <span class="conv-row__meta">
+            <% if conversation.status %>
+              <span class="prio prio--<%= [conversation.status.rank.to_i, 4].min.clamp(1, 4) %>"><%= conversation.status.name %></span>
+            <% end %>
+            <% if conversation.category %>
+              <span class="conv-row__category"><%= conversation.category.name %></span>
+            <% end %>
+          </span>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+
+  <% if conversations.size > shown.size %>
+    <%= link_to "+ #{pluralize_fr(conversations.size - shown.size, 'autre fil', 'autres fils')}", path, class: "company-card__more" %>
+  <% end %>
+</article>
