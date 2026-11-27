@@ -115,27 +115,6 @@
   }
 }
 
-.view-switch {
-  display: inline-flex;
-  border: 1px solid $line-strong;
-  border-radius: 999px;
-  overflow: hidden;
-
-  &__item {
-    display: inline-flex;
-    align-items: center;
-    height: 34px;
-    padding: 0 14px;
-    font-size: .8125rem;
-    font-weight: 600;
-    color: $ink;
-    background: #fff;
-    text-decoration: none;
-
-    &.is-on { background: var(--theme-dark); color: #fff; }
-  }
-}
-
 .goto-date {
   position: relative;
 
@@ -597,10 +576,6 @@
   &--sent { background: var(--theme-soft); color: var(--theme-dark); border: 1px solid color-mix(in srgb, var(--theme-dark) 33%, transparent); }
 }
 
-.row-link__status .sticker__dot.sticker--1 { color: var(--theme-dark); }
-.row-link__status .sticker__dot.sticker--2 { color: var(--theme-dark); }
-.row-link__status .sticker__dot.sticker--3 { color: $sticker-fg-3; }
-.row-link__status .sticker__dot.sticker--4 { color: $sticker-fg-4; }
 
 .bubble {
   position: absolute;
@@ -644,37 +619,6 @@
   &--1 { background: #ECEDF2; color: #39364E; }
   &--2 { background: #E6F2F2; color: #226160; }
   &--3 { background: #F4F4F4; color: #4F4F4F; }
-}
-
-// Vue en lignes
-.rows {
-  background: #fff;
-  border: 1px solid #DCE7E7;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.row-link {
-  display: grid;
-  grid-template-columns: 190px 220px minmax(0, 1fr) 56px;
-  align-items: center;
-  gap: 16px;
-  padding: 0 16px;
-  min-height: 52px;
-  border-top: 1px solid $line;
-  color: $ink;
-  text-decoration: none;
-
-  &:first-child { border-top: 0; }
-  &:hover, &:focus-visible { background: var(--theme-soft); color: $ink; text-decoration: none; }
-
-  &__status { display: inline-flex; align-items: center; gap: 8px; font-size: .8125rem; }
-  &__name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  &__text { font-size: .8125rem; color: $ink-muted; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  &__count { font-size: .8125rem; text-align: right; }
-
-  &.is-stale > * { opacity: .5; filter: grayscale(1); }
-  &.is-stale:hover > * { opacity: 1; filter: none; }
 }
 
 // Chargement des jours précédents

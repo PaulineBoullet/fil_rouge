@@ -6,15 +6,9 @@
     <section class="day" aria-label="<%= day_label(date) %>">
       <%= render "shared/day_separator", date: date,
                  count: "#{pluralize_fr(day_cards.size, 'domaine tiers', 'domaines tiers')} · #{pluralize_fr(day_cards.sum { |c| c.conversations.size }, 'fil')}" %>
-      <% if list_view == "lignes" %>
-        <div class="rows">
-          <%= render partial: "pages/company_row", collection: day_cards, as: :card %>
-        </div>
-      <% else %>
-        <div class="company-groups">
-          <%= render partial: "pages/company_group", collection: day_cards, as: :group %>
-        </div>
-      <% end %>
+      <div class="company-groups">
+        <%= render partial: "pages/company_group", collection: day_cards, as: :group %>
+      </div>
     </section>
   <% end %>
   <%= render "shared/load_more", next_before: feed.next_before,

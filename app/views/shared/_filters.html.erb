@@ -1,7 +1,7 @@
 <%# Barre de filtres du dashboard et de la vue d'un domaine tiers.
     Le formulaire envoie toujours vers le dashboard : avec un seul domaine tiers sélectionné,
     le dashboard redirige vers la vue de ce domaine. %>
-<%# locals: (selected_companies:, show_view_switch: true) %>
+<%# locals: (selected_companies:) %>
 <%= form_with url: root_path, method: :get, class: "filters", role: "search", aria: { label: "Filtres" },
               data: { controller: "autosubmit" } do |f| %>
   <span class="filters__icon" aria-hidden="true"><%= icon(:filter, size: 16) %></span>
@@ -39,18 +39,7 @@
     <%= check_box_tag :internal, "1", show_internal?, data: { action: "change->autosubmit#submit" } %> Fils internes
   </label>
 
-  <%= hidden_field_tag :view, list_view if show_view_switch && list_view == "lignes" %>
-
   <span class="filters__end">
-    <% if show_view_switch %>
-      <span class="view-switch" role="group" aria-label="Affichage">
-        <%= link_to "Cartes", root_path(domains: selected_companies.map(&:id), **filter_params.except(:view)),
-                    class: ["view-switch__item", ("is-on" if list_view == "cartes")], aria: { current: (list_view == "cartes" ? "page" : nil) } %>
-        <%= link_to "Lignes", root_path(domains: selected_companies.map(&:id), **filter_params.merge(view: "lignes")),
-                    class: ["view-switch__item", ("is-on" if list_view == "lignes")], aria: { current: (list_view == "lignes" ? "page" : nil) } %>
-      </span>
-    <% end %>
-
     <details class="goto-date">
       <summary class="pill-button"><%= icon(:calendar, size: 16) %> Aller à une date</summary>
       <div class="goto-date__panel">

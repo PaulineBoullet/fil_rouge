@@ -3,10 +3,10 @@
 module ConversationFilters
   extend ActiveSupport::Concern
 
-  FILTER_KEYS = %i[status category address hidden internal view from].freeze
+  FILTER_KEYS = %i[status category address hidden internal from].freeze
 
   included do
-    helper_method :filter_params, :selected_domain_ids, :show_hidden?, :show_internal?, :list_view
+    helper_method :filter_params, :selected_domain_ids, :show_hidden?, :show_internal?
   end
 
   private
@@ -35,10 +35,6 @@ module ConversationFilters
 
   def show_internal?
     params[:internal] == "1"
-  end
-
-  def list_view
-    params[:view] == "lignes" ? "lignes" : "cartes"
   end
 
   # Filtres en cours (sans les domaines tiers), à reporter dans les liens
