@@ -58,13 +58,6 @@ class OpenaiService
     @client = OpenAI::Client.new(api_key: api_key)
   end
 
-  def test_connection
-    @client.responses.create(
-      model: MODEL,
-      input: "Réponds simplement : Bonjour, la connexion fonctionne !"
-    )
-  end
-
   # instructions : consignes complètes, assemblées par PromptBuilder
   def analyze_email(content, instructions: PromptBuilder.new.email_instructions)
     response = @client.responses.create(
@@ -79,6 +72,18 @@ class OpenaiService
 
   # Synthèse libre d'un texte (synthèse d'un fil à partir des synthèses de ses mails,
   # synthèse d'un domaine tiers pour un jour à partir des synthèses de ses fils)
+  # Réponse JSON conforme au schéma donné (sortie structurée)
+  def structured(content, instructions:, name:, schema:)
+    response = @client.responses.create(
+      model: MODEL,
+      instructions: instructions,
+      input: content,
+      text: { format: { type: "json_schema", name: name, strict: true, schema: schema } }
+    )
+
+    JSON.parse(response.output_text)
+  end
+
   def summarize(content, instructions:)
     response = @client.responses.create(
       model: MODEL,

@@ -1,11 +1,11 @@
 <% content_for :title, "Dashboard – Fil rouge" %>
 
 <%= breadcrumb %>
-<%= render "shared/filters", selected_companies: Company.where(id: selected_domain_ids).order(:name).to_a %>
+<%= render "shared/filters", selected_companies: Company.where(id: selected_domain_ids).order(:name).to_a,
+           show_view_switch: true %>
 
-<% diagnosis = DisplayDiagnosis.new %>
-<%= render "pages/diagnosis", diagnosis: diagnosis, empty: @feed.empty? %>
-
-<% unless @feed.empty? %>
+<% if @feed.empty? %>
+  <%= render "pages/diagnosis", diagnosis: DisplayDiagnosis.new %>
+<% else %>
   <%= render "pages/feed_page", feed: @feed, cards: @cards %>
 <% end %>

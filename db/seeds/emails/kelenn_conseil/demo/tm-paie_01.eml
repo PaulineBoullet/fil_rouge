@@ -1,0 +1,32 @@
+From: Claire DUBOIS <claire.dubois@transports-morvan.fr>
+To: Thomas GARNIER <thomas.garnier@kelenn-conseil.example>
+Subject: Variables de paie de novembre
+Date: Mon, 23 Nov 2026 08:47:00 +0100
+Message-ID: <demo-tm-paie-01@transports-morvan.fr>
+X-Jeu-De-Test: Fil Rouge =?utf-8?b?4oCT?= email fictif
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============6633673487515305008=="
+
+--===============6633673487515305008==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Bonjour Thomas,
+
+Vous trouverez ci-joint le fichier des variables de novembre : heures suppl=
+=C3=A9mentaires, primes de nuit et absences.
+Pouvez-vous nous confirmer que les bulletins seront pr=C3=AAts pour le 27 ?
+
+Bien cordialement,
+Claire Dubois
+
+--===============6633673487515305008==
+Content-Type: text/csv
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="variables_paie_novembre.csv"
+MIME-Version: 1.0
+
+UGnDqGNlIGpvaW50ZSBmaWN0aXZlIDogdmFyaWFibGVzX3BhaWVfbm92ZW1icmUuY3N2CkpldSBk
+ZSBkw6ltb25zdHJhdGlvbiBGaWwgcm91Z2UuCg==
+
+--===============6633673487515305008==--

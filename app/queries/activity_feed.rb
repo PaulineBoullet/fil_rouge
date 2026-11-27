@@ -61,7 +61,24 @@ class ActivityFeed
     @latest_day_by_conversation ||= emails.group(:conversation_id).maximum(Arel.sql(self.class.day_sql))
   end
 
+  # Nombre total de mails de chaque fil affiché dans ce paquet de jours
+  def total_emails_by_conversation
+    @total_emails_by_conversation ||= Email.where(conversation_id: shown_conversation_ids).group(:conversation_id).count
+  end
+
+  # Nombre de participants (adresses distinctes) de chaque fil affiché dans ce paquet de jours
+  def participants_by_conversation
+    @participants_by_conversation ||= EmailParticipant.joins(:email)
+                                                      .where(emails: { conversation_id: shown_conversation_ids })
+                                                      .group("emails.conversation_id")
+                                                      .distinct.count(:address)
+  end
+
   private
+
+  def shown_conversation_ids
+    emails_by_date.values.flatten.map(&:conversation_id).uniq
+  end
 
   def emails_by_date
     @emails_by_date ||= emails.where("#{self.class.day_sql} IN (?)", dates)

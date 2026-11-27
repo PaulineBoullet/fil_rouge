@@ -1,21 +1,12 @@
-<%# Pourquoi des fils ne s'affichent pas. locals: (diagnosis:, empty:) %>
-<% if empty %>
-  <div class="empty-state empty-state--diagnosis">
-    <p class="empty-state__title">Aucun fil à afficher pour l'instant.</p>
-    <% if diagnosis.any? %>
-      <p class="muted-small">Voici pourquoi :</p>
-      <%= render "pages/diagnosis_list", diagnosis: diagnosis %>
-    <% elsif filter_params.except(:view).any? || selected_domain_ids.any? %>
-      <p class="muted-small">Aucun fil ne correspond aux filtres choisis. <%= link_to "Retirer les filtres", root_path %></p>
-    <% else %>
-      <p class="muted-small">Aucun mail n'a encore été importé.</p>
-    <% end %>
-  </div>
-<% elsif diagnosis.awaiting_validation_count.positive? %>
-  <details class="diagnosis-note">
-    <summary>
-      <%= pluralize_fr(diagnosis.awaiting_validation_count, "fil attend", "fils attendent") %> une validation pour s'afficher.
-    </summary>
+<%# Dashboard vide : pourquoi aucun fil ne s'affiche. locals: (diagnosis:) %>
+<div class="empty-state empty-state--diagnosis">
+  <p class="empty-state__title">Aucun fil à afficher pour l'instant.</p>
+  <% if diagnosis.any? %>
+    <p class="muted-small">Voici pourquoi :</p>
     <%= render "pages/diagnosis_list", diagnosis: diagnosis %>
-  </details>
-<% end %>
+  <% elsif filter_params.except(:view).any? || selected_domain_ids.any? %>
+    <p class="muted-small">Aucun fil ne correspond aux filtres choisis. <%= link_to "Retirer les filtres", root_path %></p>
+  <% else %>
+    <p class="muted-small">Aucun mail n'a encore été importé.</p>
+  <% end %>
+</div>

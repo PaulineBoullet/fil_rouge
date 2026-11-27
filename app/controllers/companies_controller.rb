@@ -14,6 +14,7 @@ class CompaniesController < ApplicationController
     @first_seen = Email.joins(:conversation).where(conversations: { company_id: @pending.map(&:id) })
                        .group("conversations.company_id").minimum(:sent_at)
     @prompts = Prompt.specific
+    @contacts_overview = ContactsOverview.new(params)
   end
 
   # Fils du domaine tiers, jour par jour

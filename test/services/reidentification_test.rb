@@ -28,6 +28,15 @@ class ReidentificationTest < ActiveSupport::TestCase
     assert_equal "morvan.fr", conversation.company.domain
   end
 
+  test "le domaine de l'organisation quitte les domaines tiers, même si un correspondant n'a pas de domaine" do
+    import_without_domain eml(id: "a@kelenn.test", from: "Camille TANGUY <camille@kelenn.test>", to: "claire@morvan.fr", subject: "Facture")
+    Contact.find_by!(email: "claire@morvan.fr").update_column(:company_id, nil)
+
+    Reidentification.new(org_domain: "kelenn.test").call
+
+    assert_not Company.exists?(domain: "kelenn.test")
+  end
+
   test "retirer le domaine transforme les collaborateurs en correspondants à valider" do
     import eml(id: "a@kelenn.test", from: "camille@kelenn.test", to: "claire@morvan.fr", subject: "Facture")
     Contact.find_by!(email: "claire@morvan.fr").validated!

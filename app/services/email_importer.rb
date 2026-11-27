@@ -7,17 +7,17 @@
 class EmailImporter
   Result = Struct.new(:status, :email, :error, keyword_init: true)
 
-  # Importe une liste de fichiers ; les échecs sont enregistrés dans import_failures
+  # Importe une liste de fichiers et renvoie un résultat par fichier (importé, doublon ou en erreur)
   def self.import_files(paths, org_domain: Setting.org_domain)
     resolver = AddressResolver.new(org_domain: org_domain)
     paths.map do |path|
-      result = new(File.binread(path), resolver: resolver).call
-      ImportFailure.record(File.basename(path), result.error) if result.status == :failed
-      ImportFailure.where(filename: File.basename(path)).delete_all if result.status == :imported
+      result = begin
+        new(File.binread(path), resolver: resolver).call
+      rescue SystemCallError => e
+        Result.new(status: :failed, error: "fichier illisible (#{e.message})")
+      end
+      Rails.logger.warn("Import impossible de #{File.basename(path)} : #{result.error}") if result.status == :failed
       result
-    rescue SystemCallError => e
-      ImportFailure.record(File.basename(path), "Fichier illisible : #{e.message}")
-      Result.new(status: :failed, error: e.message)
     end
   end
 
@@ -40,6 +40,7 @@ class EmailImporter
         message_id: message_id,
         subject: mail.subject,
         content: @raw,
+        body_text: EmlReader.body_text(mail),
         sent_at: mail.date,
         in_reply_to: ids_from(mail.in_reply_to).last,
         reference_ids: ids_from(mail.references),
@@ -60,6 +61,7 @@ class EmailImporter
   def refresh(email)
     mail = Mail.new(@raw)
     email.update!(
+      body_text: EmlReader.body_text(mail),
       in_reply_to: ids_from(mail.in_reply_to).last,
       reference_ids: ids_from(mail.references),
       attachments_count: mail.attachments.size

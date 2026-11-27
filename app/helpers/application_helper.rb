@@ -28,18 +28,13 @@ module ApplicationHelper
   end
 
   # Gommette de statut : la couleur dépend du rang (1 = le plus urgent)
-  def status_sticker(status, floating: true)
+  def status_sticker(status)
     return "".html_safe if status.nil?
 
     tone = [status.rank.to_i, 4].min.clamp(1, 4)
-    tag.span(class: ["sticker", "sticker--#{tone}", ("sticker--floating" if floating)]) do
+    tag.span(class: ["sticker", "sticker--#{tone}"]) do
       safe_join([tag.span(class: "sticker__dot", aria: { hidden: true }), status.name])
     end
-  end
-
-  # Bulle en haut à droite d'une carte (nombre de fils, de pièces jointes…)
-  def count_bubble(content, label: nil)
-    tag.span(content, class: "bubble", title: label, aria: { label: label }.compact)
   end
 
   # Avatar à initiales sur fond pastel
@@ -49,18 +44,6 @@ module ApplicationHelper
     tone = name.to_s.sum % 4
     tag.span(initials, class: "avatar-initials avatar-initials--#{tone}", role: "img", aria: { label: name },
                        style: "--size: #{size}px")
-  end
-
-  def avatar_row(people, size: 26, max: 4)
-    tag.span(class: "avatar-row") { safe_join(people.first(max).map { |p| initials_avatar(p, size: size) }) }
-  end
-
-  # « Yann Guivarch » pour un seul correspondant, sinon avatars + « 3 correspondants »
-  def people_line(people)
-    return tag.span("Aucun correspondant validé", class: "muted-small") if people.empty?
-    return tag.span(people.first.name, class: "muted-small") if people.one?
-
-    safe_join([avatar_row(people), tag.span("#{people.size} correspondants", class: "muted-small")])
   end
 
   def pluralize_fr(count, singular, plural = "#{singular}s")

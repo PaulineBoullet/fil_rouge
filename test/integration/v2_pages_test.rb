@@ -26,7 +26,8 @@ class V2PagesTest < ActionDispatch::IntegrationTest
   test "pages de consultation" do
     get root_path
     assert_response :success
-    assert_select ".fil-card", minimum: 1
+    assert_select ".company-divider__name", minimum: 1
+    assert_select ".company-groups .company-group .fil-card", minimum: 1
     assert_select ".crumbs__here", "Dashboard"
 
     get root_path(view: "lignes")
@@ -42,6 +43,15 @@ class V2PagesTest < ActionDispatch::IntegrationTest
     get conversation_path(@conversation)
     assert_response :success
     assert_select ".synth"
+    assert_select "h1.thread-head__title", @conversation.display_title
+    assert_select ".classify select", 0
+    assert_select ".chat .message", @conversation.emails.count
+    assert_select "details.thread-search"
+
+    get conversation_path(@conversation, q: "aucun-mot-introuvable")
+    assert_response :success
+    assert_select ".chat .message", 0
+    assert_select ".thread-search__result", /0 message/
 
     email = @conversation.emails.first
     get email_path(email), headers: { "Turbo-Frame" => "mail_panel" }
@@ -52,11 +62,37 @@ class V2PagesTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "Mon domaine liste les collaborateurs, Domaines tiers liste les correspondants" do
+    get organization_path
+    assert_response :success
+    assert_select "td", /camille@kelenn.test/
+
+    get companies_path
+    assert_response :success
+    assert_select "#correspondants"
+    assert_select "td", /claire@morvan.fr/
+
+    get contacts_path(state: "pending")
+    assert_redirected_to companies_path(state: "pending", anchor: "correspondants")
+  end
+
   test "pages de paramètres" do
-    [organization_path, companies_path, contacts_path, ai_settings_path, import_failures_path].each do |path|
+    [organization_path, companies_path, ai_settings_path].each do |path|
       get path
       assert_response :success, path
     end
+
+    get ai_settings_path
+    assert_select "table caption", "Prompts de synthèse"
+  end
+
+  test "on se déconnecte depuis le haut de l'écran" do
+    get root_path
+    assert_select ".topbar form[action='#{destroy_user_session_path}'] .topbar-logout"
+
+    delete destroy_user_session_path
+    get root_path
+    assert_redirected_to new_user_session_path
   end
 
   test "le nom de l'organisation et la couleur du thème se règlent dans Mon domaine" do
@@ -72,13 +108,5 @@ class V2PagesTest < ActionDispatch::IntegrationTest
     get brand_icon_path(v: "9A5867")
     assert_response :success
     assert_equal "image/png", response.media_type
-  end
-
-  test "modifier le statut d'un fil le verrouille" do
-    urgent = Status.find_by!(name: "Urgent")
-    patch conversation_path(@conversation), params: { conversation: { status_id: urgent.id } }
-    assert_redirected_to conversation_path(@conversation)
-    assert @conversation.reload.status_locked?
-    assert_equal urgent, @conversation.status
   end
 end

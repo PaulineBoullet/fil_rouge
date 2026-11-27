@@ -1,0 +1,32 @@
+From: Thomas GARNIER <thomas.garnier@kelenn-conseil.example>
+To: Yann PRIGENT <compta@hotel-des-trois-goelands.example>
+Subject: Relance facture =?utf-8?q?n=C2=B0?= 2026-118
+Date: Wed, 25 Nov 2026 09:00:00 +0100
+Message-ID: <demo-hle-relance-01@kelenn-conseil.example>
+X-Jeu-De-Test: Fil Rouge =?utf-8?b?4oCT?= email fictif
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============0625074180144582344=="
+
+--===============0625074180144582344==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Bonjour,
+
+Sauf erreur de notre part, la facture n=C2=B0 2026-118 de 1 280 =E2=82=AC HT,=
+ =C3=A9chue le 31 octobre, reste impay=C3=A9e. Pouvez-vous en v=C3=A9rifier l=
+e r=C3=A8glement ?
+
+Thomas Garnier
+Gestionnaire paie =E2=80=93 Kelenn Conseil
+
+--===============0625074180144582344==
+Content-Type: text/plain
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="facture_2026-118.txt"
+MIME-Version: 1.0
+
+UGnDqGNlIGpvaW50ZSBmaWN0aXZlIDogZmFjdHVyZV8yMDI2LTExOC50eHQKSmV1IGRlIGTDqW1v
+bnN0cmF0aW9uIEZpbCByb3VnZS4K
+
+--===============0625074180144582344==--

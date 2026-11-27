@@ -1,0 +1,34 @@
+From: Camille TANGUY <camille.tanguy@kelenn-conseil.example>
+To: Soizic =?utf-8?q?QU=C3=89M=C3=89NER?=
+ <s.quemener@ateliers-du-grand-lavoir.example>
+Subject: RE: Devis accompagnement recrutement
+Date: Thu, 26 Nov 2026 15:30:00 +0100
+Message-ID: <demo-aq-devis-02@kelenn-conseil.example>
+In-Reply-To: <demo-aq-devis-01@ateliers-du-grand-lavoir.example>
+References: <demo-aq-devis-01@ateliers-du-grand-lavoir.example>
+X-Jeu-De-Test: Fil Rouge =?utf-8?b?4oCT?= email fictif
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============1475814281160600771=="
+
+--===============1475814281160600771==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Bonjour Soizic,
+
+Voici notre devis : 4 200 =E2=82=AC HT, de la d=C3=A9finition du poste =C3=A0=
+ la fin de la p=C3=A9riode d'essai.
+
+Camille Tanguy
+Consultante RH =E2=80=93 Kelenn Conseil
+
+--===============1475814281160600771==
+Content-Type: text/plain
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="devis_recrutement.txt"
+MIME-Version: 1.0
+
+UGnDqGNlIGpvaW50ZSBmaWN0aXZlIDogZGV2aXNfcmVjcnV0ZW1lbnQudHh0CkpldSBkZSBkw6lt
+b25zdHJhdGlvbiBGaWwgcm91Z2UuCg==
+
+--===============1475814281160600771==--

@@ -11,14 +11,14 @@
           <%= render partial: "pages/company_row", collection: day_cards, as: :card %>
         </div>
       <% else %>
-        <div class="card-grid">
-          <%= render partial: "pages/company_card", collection: day_cards, as: :card, locals: { date: date } %>
+        <div class="company-groups">
+          <%= render partial: "pages/company_group", collection: day_cards, as: :group %>
         </div>
       <% end %>
     </section>
   <% end %>
   <%= render "shared/load_more", next_before: feed.next_before,
-             url: root_path(domains: selected_domain_ids, before: feed.next_before, **filter_params.except(:from)),
+             url: root_path(domains: selected_domain_ids, before: feed.next_before, **filter_params),
              end_label: "Début des échanges." %>
 <% end %>
 

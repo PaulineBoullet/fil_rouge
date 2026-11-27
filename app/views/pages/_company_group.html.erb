@@ -1,0 +1,19 @@
+<%# Un domaine tiers dans la journée : son nom, puis les cartes de ses fils du jour. Le bloc
+    prend autant de colonnes que de cartes (quatre au plus), pour que plusieurs domaines
+    tiers tiennent sur une même ligne. locals: (group:) %>
+<% path = group.company ? company_view_path(group.company, **filter_params.except(:view)) : root_path(internal: "1") %>
+<% span = group.conversation_cards.size.clamp(1, 4) %>
+<section class="company-group company-group--span-<%= span %> <%= "is-stale" if group.stale? %>" aria-label="<%= group.name %>">
+  <div class="company-divider">
+    <%= link_to group.name, path, class: "company-divider__name" %>
+    <span class="company-divider__count"><%= pluralize_fr(group.conversation_cards.size, "fil") %></span>
+    <span class="company-divider__line" aria-hidden="true"></span>
+    <% if group.stale? %><span class="company-divider__later"><%= later_label(group.later_day).capitalize %></span><% end %>
+  </div>
+  <% if group.summary %>
+    <p class="company-group__summary"><%= group.summary.summary %></p>
+  <% end %>
+  <div class="card-grid">
+    <%= render partial: "conversations/card", collection: group.conversation_cards, as: :card %>
+  </div>
+</section>

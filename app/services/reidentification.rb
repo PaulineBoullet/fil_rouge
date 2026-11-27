@@ -66,7 +66,7 @@ class Reidentification
     if @org_domain.present?
       # Adresses de l'organisation qui étaient des correspondants
       Contact.where("email LIKE ?", "%@#{@org_domain}").where.not(id: used_contacts).delete_all
-      Company.where(domain: @org_domain).where.not(id: Contact.select(:company_id)).destroy_all
+      Company.where(domain: @org_domain).where.not(id: Contact.where.not(company_id: nil).select(:company_id)).destroy_all
     end
 
     # Collaborateurs qui ne sont plus dans le domaine de l'organisation

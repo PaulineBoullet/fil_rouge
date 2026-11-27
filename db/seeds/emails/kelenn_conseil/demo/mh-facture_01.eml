@@ -1,0 +1,31 @@
+From: Thomas GARNIER <thomas.garnier@kelenn-conseil.example>
+To: Julien HAMON <j.hamon@menuiserie-hamon.fr>
+Subject: Facture d'honoraires octobre
+Date: Fri, 20 Nov 2026 10:00:00 +0100
+Message-ID: <demo-mh-facture-01@kelenn-conseil.example>
+X-Jeu-De-Test: Fil Rouge =?utf-8?b?4oCT?= email fictif
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============3117300857043834084=="
+
+--===============3117300857043834084==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Bonjour Julien,
+
+Veuillez trouver ci-joint notre facture n=C2=B0 2026-131 pour les prestations=
+ d'octobre, d'un montant de 640 =E2=82=AC HT.
+
+Thomas Garnier
+Gestionnaire paie =E2=80=93 Kelenn Conseil
+
+--===============3117300857043834084==
+Content-Type: text/plain
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="facture_2026-131.txt"
+MIME-Version: 1.0
+
+UGnDqGNlIGpvaW50ZSBmaWN0aXZlIDogZmFjdHVyZV8yMDI2LTEzMS50eHQKSmV1IGRlIGTDqW1v
+bnN0cmF0aW9uIEZpbCByb3VnZS4K
+
+--===============3117300857043834084==--

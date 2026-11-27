@@ -1,77 +1,112 @@
 <% content_for :title, "#{@conversation.display_title} – Fil rouge" %>
 
 <% crumbs = @conversation.company ? [[@conversation.company.name, company_view_path(@conversation.company)]] : [["Fils internes", root_path(internal: "1")]] %>
-<%= breadcrumb(*crumbs, title: @conversation.display_title) %>
+<%= breadcrumb(*crumbs) %>
 
-<section class="synth" aria-label="Synthèse du fil">
-  <div class="synth__head">
-    <span class="synth__label">
-      Synthèse
-      <span class="muted">
-        <% if @conversation.summary_generated_at %>
-          · rédigée le <%= l(@conversation.summary_generated_at, format: "%-d %B à %H h %M") %>
-        <% else %>
-          · pas encore rédigée
-        <% end %>
-      </span>
-    </span>
-
-    <div class="synth__actions">
-      <%= form_with model: @conversation, class: "inline-form", data: { controller: "autosubmit" } do |f| %>
-        <%= f.collection_select :status_id, Status.ordered, :id, :name, { include_blank: "Sans statut" },
-                                class: "pill-select", aria: { label: "Statut du fil" }, data: { action: "change->autosubmit#submit" } %>
+<% conversation = @conversation %>
+<header class="thread-head">
+  <div class="thread-head__main">
+    <h1 class="thread-head__title"><%= conversation.display_title %></h1>
+    <p class="thread-head__meta">
+      <% if conversation.company %><%= link_to conversation.company.name, company_view_path(conversation.company) %> · <% end %>
+      <%= pluralize_fr(@total_emails, "message") %> · <%= pluralize_fr(@participants_count, "participant") %>
+      <% if conversation.first_email_at && conversation.last_email_at %>
+        · du <%= l(conversation.first_email_at.to_date, format: "%-d %B") %> au <%= l(conversation.last_email_at.to_date, format: "%-d %B %Y") %>
       <% end %>
-      <%= form_with model: @conversation, class: "inline-form", data: { controller: "autosubmit" } do |f| %>
-        <%= f.collection_select :category_id, Category.ordered, :id, :name, { include_blank: "Sans catégorie" },
-                                class: "pill-select", aria: { label: "Catégorie du fil" }, data: { action: "change->autosubmit#submit" } %>
-      <% end %>
-      <%= button_to toggle_hidden_conversation_path(@conversation), method: :patch, class: "pill-button", form_class: "inline-form" do %>
-        <%= icon(:eye_off, size: 16) %> <%= @conversation.hidden? ? "Ne plus masquer" : "Masquer" %>
-      <% end %>
-    </div>
+    </p>
   </div>
-
-  <% if @conversation.summary.present? %>
-    <p class="synth__text"><%= @conversation.summary %></p>
-  <% else %>
-    <p class="synth__text muted">La synthèse du fil sera rédigée par l'IA après le traitement de nuit.</p>
+  <%= button_to toggle_hidden_conversation_path(conversation), method: :patch, class: "pill-button", form_class: "inline-form" do %>
+    <%= icon(:eye_off, size: 16) %> <%= conversation.hidden? ? "Ne plus masquer" : "Masquer ce fil" %>
   <% end %>
+</header>
 
-  <div class="synth__foot">
-    <% if @emails_after_summary.positive? %>
-      <span class="muted-small"><%= pluralize_fr(@emails_after_summary, "mail arrivé", "mails arrivés") %> depuis, pas encore pris en compte.</span>
+<div class="thread-overview">
+  <section class="synth" aria-labelledby="synth-title">
+    <div class="synth__head">
+      <h2 id="synth-title" class="synth__label"><%= icon(:ai, size: 16) %> Synthèse de l'IA</h2>
+      <span class="muted-small">
+        <%= conversation.summary_generated_at ? "Rédigée le #{l(conversation.summary_generated_at, format: "%-d %B à %H h %M")}" : "Pas encore rédigée" %>
+      </span>
+    </div>
+
+    <% if conversation.summary.present? %>
+      <p class="synth__text"><%= conversation.summary %></p>
+      <% if conversation.key_points.any? %>
+        <div class="synth__points">
+          <h3 class="synth__points-title"><%= icon(:alert, size: 15) %> À retenir</h3>
+          <ul>
+            <% conversation.key_points.each do |point| %><li><%= point %></li><% end %>
+          </ul>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="synth__text synth__text--empty">La synthèse sera rédigée par l'IA lors de sa prochaine analyse, toutes les 15 minutes. Vous pouvez aussi la demander dès maintenant.</p>
     <% end %>
-    <%= button_to "Mettre à jour avec l'IA", analyze_conversation_path(@conversation), class: "btn btn-link btn-sm", form_class: "inline-form" %>
-  </div>
-</section>
 
-<%= form_with url: conversation_path(@conversation), method: :get, class: "filters", role: "search",
-              aria: { label: "Filtres du fil" }, data: { controller: "autosubmit" } do %>
-  <span class="filters__icon" aria-hidden="true"><%= icon(:filter, size: 16) %></span>
-  <%= select_tag :person, options_for_select(@people.map { |p| [p.name, "#{p.model_name.singular}-#{p.id}"] }, params[:person]),
-                 include_blank: "Personne : toutes", class: "pill-select", aria: { label: "Personne" },
-                 data: { action: "change->autosubmit#submit" } %>
-  <%= select_tag :direction, options_for_select([["Reçus et envoyés", ""], ["Reçus", "recus"], ["Envoyés", "envoyes"]], params[:direction]),
-                 class: "pill-select", aria: { label: "Sens" }, data: { action: "change->autosubmit#submit" } %>
-  <label class="pill-toggle">
-    <%= check_box_tag :attachments, "1", params[:attachments] == "1", data: { action: "change->autosubmit#submit" } %> Avec pièces jointes
-  </label>
-<% end %>
-
-<% if @days.empty? %>
-  <div class="empty-state"><p>Aucun mail ne correspond à ces filtres.</p></div>
-<% end %>
-
-<% @days.each do |date, emails| %>
-  <section class="day" aria-label="<%= day_label(date) %>">
-    <%= render "shared/day_separator", date: date, count: pluralize_fr(emails.size, "mail") %>
-    <div class="mail-list">
-      <%= render partial: "conversations/mail_card", collection: emails, as: :email %>
+    <div class="synth__foot <%= "synth__foot--stale" if @emails_after_summary.positive? %>">
+      <% if @emails_after_summary.positive? %>
+        <span><%= pluralize_fr(@emails_after_summary, "mail arrivé", "mails arrivés") %> depuis n'<%= @emails_after_summary == 1 ? "est" : "sont" %> pas encore pris en compte.</span>
+      <% end %>
+      <%= button_to analyze_conversation_path(conversation), class: "btn btn-sm #{@emails_after_summary.positive? || conversation.summary.blank? ? "btn-primary" : "btn-outline-secondary"}", form_class: "inline-form" do %>
+        <%= conversation.summary.present? ? "Mettre à jour la synthèse" : "Rédiger la synthèse" %>
+      <% end %>
     </div>
   </section>
+
+  <section class="classify" aria-labelledby="classify-title">
+    <h2 id="classify-title" class="classify__title">Classement</h2>
+
+    <div class="classify__field">
+      <span class="classify__label">Priorité</span>
+      <div class="classify__value">
+        <%= conversation.status ? status_sticker(conversation.status) : tag.span("Pas encore classé", class: "classify__empty") %>
+      </div>
+    </div>
+
+    <div class="classify__field">
+      <span class="classify__label">Catégorie</span>
+      <div class="classify__value">
+        <%= conversation.category ? tag.span(conversation.category.name, class: "category-chip") : tag.span("Pas encore classé", class: "classify__empty") %>
+      </div>
+    </div>
+
+    <p class="classify__note">Proposés par l'IA à partir des mails du fil, et mis à jour à chaque analyse.</p>
+  </section>
+</div>
+
+<div class="thread-toolbar">
+  <span class="muted-small"><%= pluralize_fr(@total_emails, "message") %></span>
+  <details class="thread-search" <%= "open" if @query.present? %>>
+    <summary class="pill-button"><%= icon(:search, size: 16) %> Rechercher</summary>
+    <%= form_with url: conversation_path(@conversation), method: :get, class: "thread-search__form", role: "search" do %>
+      <%= search_field_tag :q, @query, placeholder: "Mot, nom, montant…", class: "pill-input pill-input--wide",
+                           aria: { label: "Rechercher dans les messages du fil" }, autofocus: @query.present? %>
+      <%= submit_tag "Rechercher", name: nil, class: "btn btn-primary btn-sm" %>
+    <% end %>
+  </details>
+</div>
+
+<% if @query.present? %>
+  <p class="thread-search__result">
+    <%= pluralize_fr(@days.sum { |_, emails| emails.size }, "message correspond", "messages correspondent") %> à « <%= @query %> ».
+    <%= link_to "Afficher tout le fil", conversation_path(@conversation) %>
+  </p>
 <% end %>
 
-<% if @days.any? %>
+<% if @days.empty? && @query.blank? %>
+  <div class="empty-state"><p>Aucun message dans ce fil.</p></div>
+<% end %>
+
+<div class="chat">
+  <% @days.each do |date, emails| %>
+    <section class="chat__day" aria-label="<%= day_label(date) %>">
+      <div class="chat__date"><span><%= day_label(date) %><%= " · #{day_detail(date)}" if day_detail(date) %></span></div>
+      <%= render partial: "conversations/message", collection: emails, as: :email %>
+    </section>
+  <% end %>
+</div>
+
+<% if @days.any? && @query.blank? %>
   <p class="feed-end">Début du fil<%= " : #{l(@conversation.first_email_at.to_date, format: :long)}" if @conversation.first_email_at %>.</p>
 <% end %>
 

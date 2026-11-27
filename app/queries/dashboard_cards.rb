@@ -1,14 +1,16 @@
-# Cartes du dashboard pour un jour : une carte par domaine tiers ayant échangé ce jour-là,
-# classées selon le statut le plus urgent de leurs fils.
+# Dashboard pour un jour : les domaines tiers qui ont échangé ce jour-là, classés selon le
+# statut le plus urgent de leurs fils, et pour chacun les cartes de ses fils du jour.
 class DashboardCards
-  Card = Struct.new(:company, :conversations, :top_status, :contacts, :summary, :later_day, keyword_init: true) do
+  Group = Struct.new(:company, :conversation_cards, :top_status, :summary, :later_day, keyword_init: true) do
     def stale? = later_day.present?
     def internal? = company.nil?
     def name = company&.name || "Fils internes"
+    def conversations = conversation_cards.map(&:conversation)
   end
 
   def initialize(feed)
     @feed = feed
+    @conversation_cards = ConversationCards.new(feed)
   end
 
   def for(date)
@@ -16,20 +18,25 @@ class DashboardCards
     summaries = summaries_for(date, emails)
 
     emails.group_by { |e| e.conversation.company }.map do |company, company_emails|
-      conversations = company_emails.map(&:conversation).uniq
+      cards = conversation_cards(company_emails, date)
       latest = @feed.latest_day_by_company[company&.id]
-      Card.new(
+      Group.new(
         company: company,
-        conversations: conversations,
-        top_status: conversations.filter_map(&:status).min_by(&:rank),
-        contacts: company_emails.flat_map(&:email_participants).filter_map(&:contact).select(&:validated?).uniq,
+        conversation_cards: cards,
+        top_status: cards.filter_map(&:status).min_by(&:rank),
         summary: company && summaries[company.id],
         later_day: latest && latest > date ? latest : nil
       )
-    end.sort_by { |card| [card.top_status&.rank || Float::INFINITY, card.name.downcase] }
+    end.sort_by { |group| [group.top_status&.rank || Float::INFINITY, group.name.downcase] }
   end
 
   private
+
+  def conversation_cards(emails, date)
+    @conversation_cards.sorted(emails.group_by(&:conversation).map { |conversation, conversation_emails|
+      @conversation_cards.card(conversation, conversation_emails, date)
+    })
+  end
 
   def summaries_for(date, emails)
     ids = emails.filter_map { |e| e.conversation.company_id }.uniq

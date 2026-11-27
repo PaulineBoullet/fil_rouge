@@ -3,3 +3,17 @@
 
 $body-font: "Lexend Deca", system-ui, sans-serif;
 $headers-font: "Lexend Deca", system-ui, sans-serif;
+
+// Échelle typographique : six tailles pour toute l'application.
+//   2xl  titre de page (dashboard, fil, paramètres)
+//   xl   titre de section (journée, rubrique des paramètres, panneau d'un mail)
+//   lg   titre de carte, texte mis en avant (synthèse)
+//   md   texte courant, champs, tableaux, messages
+//   sm   libellés, informations secondaires
+//   xs   étiquettes, compteurs, mentions
+$fs-2xl: 1.5rem;
+$fs-xl:  1.25rem;
+$fs-lg:  1rem;
+$fs-md:  .875rem;
+$fs-sm:  .8125rem;
+$fs-xs:  .75rem;

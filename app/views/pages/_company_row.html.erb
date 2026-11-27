@@ -1,5 +1,5 @@
 <%# locals: (card:) %>
-<% path = card.company ? company_view_path(card.company, **filter_params.except(:view, :from)) : root_path(internal: "1") %>
+<% path = card.company ? company_view_path(card.company, **filter_params.except(:view)) : root_path(internal: "1") %>
 <%= link_to path, class: ["row-link", ("is-stale" if card.stale?)] do %>
   <span class="row-link__status">
     <% if card.top_status %>

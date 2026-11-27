@@ -3,7 +3,7 @@
 module ConversationFilters
   extend ActiveSupport::Concern
 
-  FILTER_KEYS = %i[status category address hidden internal view from].freeze
+  FILTER_KEYS = %i[status category address hidden internal view].freeze
 
   included do
     helper_method :filter_params, :selected_domain_ids, :show_hidden?, :show_internal?, :list_view
@@ -37,6 +37,7 @@ module ConversationFilters
     params[:internal] == "1"
   end
 
+  # Affichage du dashboard : cartes regroupées par domaine tiers (par défaut) ou lignes
   def list_view
     params[:view] == "lignes" ? "lignes" : "cartes"
   end
@@ -46,13 +47,9 @@ module ConversationFilters
     params.permit(*FILTER_KEYS).to_h.compact_blank.symbolize_keys
   end
 
-  # Premier jour à afficher : la veille du paquet suivant, ou la date choisie avec « Aller à une date »
+  # Premier jour à afficher : la veille du paquet suivant (défilement vers l'historique)
   def feed_before
-    if params[:before].present?
-      parse_date(params[:before])
-    elsif params[:from].present? && (from = parse_date(params[:from]))
-      from + 1
-    end
+    parse_date(params[:before]) if params[:before].present?
   end
 
   def parse_date(value)

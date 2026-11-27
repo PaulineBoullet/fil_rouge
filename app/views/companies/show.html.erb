@@ -1,7 +1,7 @@
 <% content_for :title, "#{@company.name} – Fil rouge" %>
 
 <%= breadcrumb title: @company.name %>
-<%= render "shared/filters", selected_companies: [@company], show_view_switch: false %>
+<%= render "shared/filters", selected_companies: [@company] %>
 
 <% if @company.pending? %>
   <div class="notice-panel">

@@ -1,0 +1,34 @@
+<%# Carte d'un fil pour un jour (vue d'un domaine tiers et dashboard) : le titre en haut avec le
+    nombre de messages sur une pastille, les nouveaux du jour et les participants, puis la
+    priorité et la catégorie en bas.
+    locals: (card:) %>
+<%= link_to conversation_path(card.conversation), class: ["fil-card", "fil-card--compact", ("fil-card--stacked" if card.total_count > 1), ("is-stale" if card.stale?)],
+            aria: { label: [card.conversation.display_title, card.status&.name, card.category&.name,
+                             pluralize_fr(card.total_count, "message"), "#{card.new_count} ce jour",
+                             pluralize_fr(card.participants_count, "participant")].compact.join(", ") } do %>
+  <%# Feuilles empilées derrière la carte : une pour 2 messages, deux à partir de 3 %>
+  <% sheets = [card.total_count - 1, 2].min %>
+  <% sheets.times do |i| %><span class="fil-card__sheet fil-card__sheet--<%= i + 1 %>" aria-hidden="true"></span><% end %>
+  <div class="fil-card__body">
+    <div class="fil-card__head">
+      <span class="fil-card__title fil-card__title--clamp"><%= card.conversation.display_title %></span>
+      <span class="count-pill" title="<%= pluralize_fr(card.total_count, "message") %>"><%= card.total_count %></span>
+    </div>
+
+    <div class="fil-card__stats">
+      <% if card.new_count.positive? %>
+        <span class="stat__new"><%= card.new_count %> <%= card.new_count == 1 ? "nouveau" : "nouveaux" %></span>
+      <% end %>
+      <span class="stat"><strong><%= card.participants_count %></strong> <%= card.participants_count == 1 ? "participant" : "participants" %></span>
+    </div>
+
+    <% if card.status || card.category %>
+      <div class="fil-card__tags">
+        <%= status_sticker(card.status) %>
+        <% if card.category %><span class="category-chip"><%= card.category.name %></span><% end %>
+      </div>
+    <% end %>
+
+    <% if card.stale? %><span class="fil-card__later"><%= later_label(card.later_day).capitalize %></span><% end %>
+  </div>
+<% end %>

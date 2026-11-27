@@ -1,7 +1,7 @@
 // Consultation : fil d'Ariane, filtres, séparateurs de jour, cartes, lignes, fil, mail.
 
 .muted { color: $ink-muted; }
-.muted-small { font-size: .75rem; color: $ink-muted; }
+.muted-small { font-size: $fs-xs; color: $ink-muted; }
 
 // Fil d'Ariane de hauteur fixe
 .crumbs {
@@ -13,7 +13,7 @@
 
   &__link, &__here {
     margin: 0;
-    font-size: .875rem;
+    font-size: $fs-md;
     font-weight: 600;
     line-height: 1;
     color: var(--theme-dark);
@@ -25,9 +25,9 @@
 
   &__title {
     margin: 0;
-    font-size: 1.5rem;
-    font-weight: 500;
-    line-height: 1;
+    font-size: $fs-2xl;
+    font-weight: 600;
+    line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -46,6 +46,29 @@
   &__end { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; }
 }
 
+.view-switch {
+  display: inline-flex;
+  gap: 0;
+  border: 1px solid $line-strong;
+  border-radius: 999px;
+  overflow: hidden;
+
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    height: 34px;
+    padding: 0 14px;
+    font-size: $fs-sm;
+    font-weight: 600;
+    color: $ink;
+    background: #fff;
+    text-decoration: none;
+
+    &:hover { color: $ink; background: var(--theme-soft); text-decoration: none; }
+    &.is-on { background: var(--theme-dark); color: #fff; }
+  }
+}
+
 %pill {
   height: 36px;
   padding: 0 14px;
@@ -53,7 +76,7 @@
   border-radius: 999px;
   background: #fff;
   color: $ink;
-  font-size: .8125rem;
+  font-size: $fs-sm;
 }
 
 .pill-select { @extend %pill; padding-right: 28px; cursor: pointer; }
@@ -92,7 +115,7 @@
   background: var(--theme-soft);
   color: var(--theme-dark);
   border: 1px solid color-mix(in srgb, var(--theme) 40%, transparent);
-  font-size: .8125rem;
+  font-size: $fs-sm;
   font-weight: 600;
   white-space: nowrap;
 
@@ -109,50 +132,9 @@
     background: transparent;
     color: inherit;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: $fs-lg;
 
     &:hover { background: color-mix(in srgb, var(--theme) 12%, transparent); }
-  }
-}
-
-.view-switch {
-  display: inline-flex;
-  border: 1px solid $line-strong;
-  border-radius: 999px;
-  overflow: hidden;
-
-  &__item {
-    display: inline-flex;
-    align-items: center;
-    height: 34px;
-    padding: 0 14px;
-    font-size: .8125rem;
-    font-weight: 600;
-    color: $ink;
-    background: #fff;
-    text-decoration: none;
-
-    &.is-on { background: var(--theme-dark); color: #fff; }
-  }
-}
-
-.goto-date {
-  position: relative;
-
-  &__panel {
-    position: absolute;
-    right: 0;
-    top: 44px;
-    z-index: 30;
-    width: 280px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 16px;
-    background: #fff;
-    border: 1px solid $line;
-    border-radius: 20px;
-    box-shadow: 0 24px 60px rgba($ink, .18);
   }
 }
 
@@ -167,10 +149,10 @@
   gap: 14px;
   padding-top: 8px;
 
-  &__title { margin: 0; font-size: 1.75rem; font-weight: 500; line-height: 1.2; white-space: nowrap; }
-  &__date { font-size: .9375rem; font-weight: 400; color: $ink-muted; }
+  &__title { margin: 0; font-size: $fs-xl; font-weight: 600; line-height: 1.2; white-space: nowrap; }
+  &__date { font-size: $fs-md; font-weight: 400; color: $ink-muted; }
   &__line { flex: 1; height: 1px; background: $line; }
-  &__count { font-size: .8125rem; color: $ink-muted; white-space: nowrap; }
+  &__count { font-size: $fs-sm; color: $ink-muted; white-space: nowrap; }
 }
 
 // Cartes
@@ -217,32 +199,9 @@
   &:hover &__body,
   &:focus-visible &__body { box-shadow: 0 18px 36px -16px color-mix(in srgb, var(--theme-dark) 35%, transparent); border-color: #B9D6D5; }
 
-  &__title { font-size: 1rem; font-weight: 600; line-height: 1.3; }
+  &__title { font-size: $fs-lg; font-weight: 600; line-height: 1.3; }
 
-  &__text {
-    margin: 0;
-    padding-left: 10px;
-    border-left: 3px solid var(--theme-blush);
-    font-size: .8125rem;
-    line-height: 1.55;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
-    overflow: hidden;
-  }
-
-  &__foot {
-    margin-top: auto;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding-top: 8px;
-    border-top: 1px solid $line;
-    min-width: 0;
-  }
-
-  &__later { margin-left: auto; font-size: .75rem; font-style: italic; color: $ink-muted; white-space: nowrap; }
-  &__ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  &__later { margin-left: auto; font-size: $fs-xs; font-style: italic; color: $ink-muted; white-space: nowrap; }
 
   // Domaine tiers ou fil qui réapparaît à une date plus récente
   &.is-stale &__body,
@@ -252,7 +211,322 @@
   &.is-stale:focus-visible &__body { filter: none; opacity: 1; }
 }
 
-.mail-list { display: flex; flex-direction: column; gap: 30px; }
+// Dashboard : les domaines tiers d'une journée se rangent côte à côte sur une grille de
+// quatre colonnes ; chaque bloc prend autant de colonnes que de cartes, et la grille comble
+// les trous pour limiter le nombre de lignes.
+.company-groups {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-flow: row dense;
+  gap: 18px;
+}
+
+.company-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px 14px 16px;
+  background: rgba($white, .6);
+  border: 1px solid $line;
+  border-radius: 20px;
+
+  .card-grid { gap: 28px 14px; padding-top: 6px; }
+
+  &__summary {
+    margin: 0;
+    padding-left: 10px;
+    border-left: 3px solid var(--theme-blush);
+    font-size: $fs-sm;
+    line-height: 1.5;
+    color: $ink;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  &.is-stale .company-divider { opacity: .55; }
+}
+
+@for $n from 1 through 4 {
+  .company-group--span-#{$n} {
+    grid-column: span $n;
+
+    .card-grid { grid-template-columns: repeat($n, minmax(0, 1fr)); }
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .company-groups { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  .company-group--span-4 {
+    grid-column: span 3;
+
+    .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+}
+
+@media (max-width: 899.98px) {
+  .company-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .company-group--span-3,
+  .company-group--span-4 {
+    grid-column: span 2;
+
+    .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+}
+
+@media (max-width: 599.98px) {
+  .company-groups { grid-template-columns: minmax(0, 1fr); }
+
+  .company-group[class*="--span-"] {
+    grid-column: auto;
+
+    .card-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+}
+
+.company-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &__name {
+    font-size: $fs-lg;
+    font-weight: 600;
+    color: $ink;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+
+    &:hover { color: var(--theme-dark); text-decoration: underline; }
+  }
+
+  &__count { font-size: $fs-xs; color: $ink-muted; white-space: nowrap; }
+  &__line { flex: 1; height: 1px; background: $line; }
+  &__later { font-size: $fs-xs; font-style: italic; color: $ink-muted; white-space: nowrap; }
+}
+
+// Carte de fil compacte : étiquettes, titre, chiffres ; pas de contenu
+.fil-card--compact {
+
+  .fil-card__body { padding: 14px 16px; gap: 12px; transition: transform .2s ease, box-shadow .2s ease, border-color .15s; }
+  .fil-card__later { margin-left: 0; margin-top: -4px; }
+
+  // Empilement : les messages du fil, en feuilles derrière la carte.
+  // Toutes les cartes gardent la même marge haute, empilées ou non, pour rester alignées.
+  padding-top: 14px;
+
+  .fil-card__sheet {
+    inset: auto;
+    top: 7px;
+    left: 10px;
+    right: 10px;
+    height: 44px;
+    border-radius: 16px;
+    border-color: $line-strong;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba($ink, .06);
+    transition: transform .2s ease;
+  }
+
+  .fil-card__sheet--1 { z-index: 1; }
+  .fil-card__body { z-index: 2; }
+  .fil-card__sheet--2 { z-index: 0; top: 0; left: 20px; right: 20px; background: var(--theme-soft); }
+
+  // Un peu de mouvement au survol : la carte se soulève, les feuilles s'écartent
+  &:hover, &:focus-visible {
+    .fil-card__body { transform: translateY(-2px); }
+    .fil-card__sheet--1 { transform: translateY(-4px) rotate(-1.5deg); }
+    .fil-card__sheet--2 { transform: translateY(-8px) rotate(2deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fil-card__body, .fil-card__sheet { transition: none; }
+    &:hover .fil-card__body, &:hover .fil-card__sheet { transform: none; }
+  }
+}
+
+.fil-card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+
+.count-pill {
+  flex: none;
+  min-width: 26px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--theme-dark);
+  color: #fff;
+  font-size: $fs-xs;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.fil-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px dashed $line;
+}
+
+.category-chip {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid $line-strong;
+  font-size: $fs-xs;
+  color: $ink-muted;
+  white-space: nowrap;
+}
+
+.fil-card__title--clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.fil-card__stats {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  font-size: $fs-sm;
+  color: $ink-muted;
+
+  strong { color: $ink; font-weight: 600; }
+}
+
+.stat { display: inline-flex; align-items: baseline; gap: 4px; white-space: nowrap; }
+
+.stat__new {
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--theme-soft);
+  color: var(--theme-dark);
+  font-size: $fs-xs;
+  font-weight: 600;
+}
+
+// Vue d'un fil : les mails en conversation
+.thread-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+.thread-search {
+  position: relative;
+
+  > summary { list-style: none; &::-webkit-details-marker { display: none; } }
+
+  &__form {
+    position: absolute;
+    right: 0;
+    top: 44px;
+    z-index: 30;
+    display: flex;
+    gap: 8px;
+    width: 440px;
+    max-width: 90vw;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid $line;
+    border-radius: 16px;
+    box-shadow: 0 18px 40px rgba($ink, .16);
+  }
+
+  &__result { margin: 0; font-size: $fs-md; color: $ink-muted; }
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  &__day { display: flex; flex-direction: column; gap: 12px; }
+
+  &__date {
+    display: flex;
+    justify-content: center;
+    margin: 8px 0 4px;
+
+    span {
+      padding: 3px 12px;
+      border-radius: 999px;
+      background: $band;
+      font-size: $fs-xs;
+      font-weight: 600;
+      color: $ink-muted;
+    }
+  }
+}
+
+.message {
+  display: flex;
+
+  // Reçus calés à gauche du bloc, envoyés calés à droite
+  &--theirs { justify-content: flex-start; }
+  &--mine { justify-content: flex-end; }
+
+  &__bubble {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 72%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    text-decoration: none;
+    box-shadow: 0 6px 18px -14px rgba($ink, .5);
+    transition: transform .15s ease, box-shadow .15s ease;
+
+    &:hover, &:focus-visible { transform: translateY(-1px); box-shadow: 0 10px 22px -14px rgba($ink, .55); text-decoration: none; }
+  }
+
+  // Mail d'un domaine tiers : bulle blanche, à gauche
+  &--theirs &__bubble {
+    background: #fff;
+    border: 1px solid $line;
+    border-bottom-left-radius: 6px;
+    color: $ink;
+
+    &:hover { color: $ink; }
+  }
+
+  // Mail de votre domaine : bulle dans la couleur du thème, à droite
+  &--mine &__bubble {
+    background: var(--theme-dark);
+    border: 1px solid var(--theme-dark);
+    border-bottom-right-radius: 6px;
+    color: #fff;
+
+    &:hover { color: #fff; }
+  }
+
+  &__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: $fs-sm; }
+  &__time { font-size: $fs-xs; opacity: .75; white-space: nowrap; }
+  &__text { font-size: $fs-md; line-height: 1.5; }
+
+  &__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: $fs-xs;
+    opacity: .8;
+  }
+
+  &__to { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  &__attachments { display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__bubble { transition: none; }
+    &__bubble:hover { transform: none; }
+  }
+}
 
 // Gommettes de statut et bulles
 .sticker {
@@ -261,12 +535,10 @@
   gap: 6px;
   padding: 3px 11px;
   border-radius: 999px;
-  font-size: .75rem;
+  font-size: $fs-xs;
   font-weight: 500;
   white-space: nowrap;
   width: fit-content;
-
-  &--floating { position: absolute; top: -11px; left: 14px; z-index: 2; }
 
   &__dot { flex: none; width: 7px; height: 7px; border-radius: 999px; background: currentColor; display: inline-block; }
 
@@ -274,40 +546,9 @@
   &--2 { background: var(--theme-soft); color: var(--theme-dark); border: 1px solid color-mix(in srgb, var(--theme-dark) 33%, transparent); }
   &--3 { background: $sticker-bg-3; color: $sticker-fg-3; border: 1px solid rgba($sticker-fg-3, .33); }
   &--4 { background: $sticker-bg-4; color: $sticker-fg-4; border: 1px solid rgba($sticker-fg-4, .33); }
-  &--received { background: $sticker-bg-3; color: $sticker-fg-3; border: 1px solid rgba($sticker-fg-3, .33); }
-  &--sent { background: var(--theme-soft); color: var(--theme-dark); border: 1px solid color-mix(in srgb, var(--theme-dark) 33%, transparent); }
 }
-
-.row-link__status .sticker__dot.sticker--1 { color: var(--theme-dark); }
-.row-link__status .sticker__dot.sticker--2 { color: var(--theme-dark); }
-.row-link__status .sticker__dot.sticker--3 { color: $sticker-fg-3; }
-.row-link__status .sticker__dot.sticker--4 { color: $sticker-fg-4; }
-
-.bubble {
-  position: absolute;
-  top: -12px;
-  right: 14px;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  min-width: 26px;
-  height: 24px;
-  padding: 0 7px;
-  border-radius: 999px;
-  background: #fff;
-  color: $ink;
-  border: 1px solid $line-strong;
-  font-size: .75rem;
-  font-weight: 600;
-}
-
-.category-tag { font-size: .75rem; color: $ink-muted; margin-top: -6px; }
 
 // Avatars à initiales
-.avatar-row { display: inline-flex; align-items: center; > * + * { margin-left: -5px; } }
-
 .avatar-initials {
   flex: none;
   display: inline-flex;
@@ -327,7 +568,7 @@
   &--3 { background: #F4F4F4; color: #4F4F4F; }
 }
 
-// Vue en lignes
+// Dashboard en lignes : un domaine tiers par ligne, avec sa priorité la plus haute du jour
 .rows {
   background: #fff;
   border: 1px solid #DCE7E7;
@@ -349,13 +590,25 @@
   &:first-child { border-top: 0; }
   &:hover, &:focus-visible { background: var(--theme-soft); color: $ink; text-decoration: none; }
 
-  &__status { display: inline-flex; align-items: center; gap: 8px; font-size: .8125rem; }
+  &__status { display: inline-flex; align-items: center; gap: 8px; font-size: $fs-sm; }
   &__name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  &__text { font-size: .8125rem; color: $ink-muted; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  &__count { font-size: .8125rem; text-align: right; }
+  &__text { font-size: $fs-sm; color: $ink-muted; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  &__count { font-size: $fs-sm; text-align: right; }
 
   &.is-stale > * { opacity: .5; filter: grayscale(1); }
   &.is-stale:hover > * { opacity: 1; filter: none; }
+
+  .sticker__dot.sticker--1,
+  .sticker__dot.sticker--2 { color: var(--theme-dark); }
+  .sticker__dot.sticker--3 { color: $sticker-fg-3; }
+  .sticker__dot.sticker--4 { color: $sticker-fg-4; }
+
+  @media (max-width: 767.98px) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 10px 16px;
+
+    &__status, &__text { display: none; }
+  }
 }
 
 // Chargement des jours précédents
@@ -368,7 +621,7 @@
   gap: 10px;
   padding: 12px 0 24px;
   color: $ink-muted;
-  font-size: .875rem;
+  font-size: $fs-md;
 
   &__skeleton {
     display: flex;
@@ -390,7 +643,7 @@
 
 @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 
-.feed-end { text-align: center; color: $ink-muted; font-size: .875rem; padding: 12px 0 24px; margin: 0; }
+.feed-end { text-align: center; color: $ink-muted; font-size: $fs-md; padding: 12px 0 24px; margin: 0; }
 
 .empty-state {
   padding: 32px;
@@ -408,7 +661,7 @@
   gap: 8px;
 }
 
-.empty-state__title { margin: 0; font-size: 1.125rem; font-weight: 500; color: $ink; }
+.empty-state__title { margin: 0; font-size: $fs-lg; font-weight: 500; color: $ink; }
 
 .diagnosis-list {
   margin: 0;
@@ -417,7 +670,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: .875rem;
+  font-size: $fs-md;
   color: $ink;
 
   li {
@@ -435,39 +688,133 @@
   a { font-weight: 600; white-space: nowrap; }
 }
 
-.diagnosis-note {
-  font-size: .8125rem;
-  color: $ink-muted;
-
-  > summary { cursor: pointer; width: fit-content; }
-  .diagnosis-list { margin-top: 10px; }
-}
-
 .notice-panel {
   padding: 14px 18px;
   border-radius: 20px;
   background: var(--theme-soft);
   color: var(--theme-dark);
-  font-size: .875rem;
+  font-size: $fs-md;
 }
 
 // Synthèse d'un fil
+// Vue d'un fil : en-tête, synthèse et classement
+.thread-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  &__title { margin: 0; font-size: $fs-2xl; font-weight: 600; line-height: 1.3; color: $ink; }
+  &__meta { margin: 6px 0 0; font-size: $fs-md; color: $ink-muted; a { color: var(--theme-dark); font-weight: 600; } }
+}
+
+.thread-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 16px;
+  align-items: stretch;
+
+  @media (max-width: 899.98px) { grid-template-columns: minmax(0, 1fr); }
+}
+
 .synth {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   padding: 18px 22px;
+  background: linear-gradient(180deg, var(--theme-soft), #fff 70%);
+  border: 1px solid $line-strong;
+  border-radius: 20px;
+
+  &__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: $fs-sm;
+    font-weight: 700;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: var(--theme-dark);
+  }
+
+  &__text { margin: 0; font-size: $fs-lg; line-height: 1.65; color: $ink; max-width: 80ch; }
+  &__text--empty { font-size: $fs-md; color: $ink-muted; font-style: italic; }
+
+  // Points clés du fil : échéances, montants, pièces manquantes encore d'actualité
+  &__points {
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid var(--theme-blush);
+    border-left: 4px solid var(--theme-dark);
+
+    ul { display: flex; flex-direction: column; gap: 6px; margin: 0; padding-left: 18px; }
+    li { font-size: $fs-md; font-weight: 600; line-height: 1.45; color: $ink; }
+    li::marker { color: var(--theme-dark); }
+  }
+
+  &__points-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 8px;
+    font-size: $fs-xs;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--theme-dark);
+  }
+
+  &__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: auto;
+    font-size: $fs-sm;
+  }
+
+  // Des mails sont arrivés depuis la synthèse : on le signale avant le bouton
+  &__foot--stale {
+    justify-content: space-between;
+    padding: 8px 8px 8px 14px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px dashed var(--theme-blush);
+    color: var(--theme-dark);
+    font-weight: 600;
+  }
+
+  &--compact { padding: 14px 16px; }
+}
+
+.classify {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px 20px;
   background: #fff;
   border: 1px solid $line-strong;
   border-radius: 20px;
 
-  &__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
-  &__label { font-size: .8125rem; font-weight: 600; color: var(--theme-dark); }
-  &__actions { display: flex; flex-wrap: wrap; gap: 8px; }
-  &__text { margin: 0; padding-left: 12px; border-left: 3px solid var(--theme-blush); font-size: .875rem; line-height: 1.6; max-width: 90ch; }
-  &__foot { display: flex; align-items: center; gap: 12px; }
+  &__title {
+    margin: 0;
+    font-size: $fs-sm;
+    font-weight: 700;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: $ink-muted;
+  }
 
-  &--compact { padding: 14px 16px; }
+  &__field { display: flex; flex-direction: column; gap: 6px; }
+  &__label { font-size: $fs-sm; font-weight: 600; color: $ink; }
+  &__value { display: flex; align-items: center; min-height: 28px; }
+  &__empty { font-size: $fs-md; font-style: italic; color: $ink-muted; }
+  &__note { margin: auto 0 0; font-size: $fs-xs; color: $ink-muted; }
 }
 
 // Panneau de lecture d'un mail
@@ -495,20 +842,20 @@
   }
 
   &__head { display: flex; justify-content: space-between; gap: 16px; }
-  &__title { margin: 4px 0 0; font-size: 1.375rem; font-weight: 500; }
-  &__subtitle { margin: 8px 0 0; font-size: 1rem; font-weight: 600; }
+  &__title { margin: 4px 0 0; font-size: $fs-xl; font-weight: 600; }
+  &__subtitle { margin: 8px 0 0; font-size: $fs-lg; font-weight: 600; }
 
   &__people {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 4px 12px;
     margin: 0;
-    font-size: .8125rem;
+    font-size: $fs-sm;
     dt { color: $ink-muted; font-weight: 500; }
     dd { margin: 0; overflow-wrap: anywhere; }
   }
 
-  &__body { font-size: .875rem; line-height: 1.6; overflow-wrap: anywhere; }
+  &__body { font-size: $fs-md; line-height: 1.6; overflow-wrap: anywhere; }
 }
 
 .icon-button {
@@ -543,10 +890,11 @@
   gap: 10px;
   li { display: flex; align-items: center; gap: 10px; }
 }
+
 // Points saillants d'un mail (0 à 3 phrases courtes rédigées par l'IA)
 .key-points {
   margin: 4px 0 0;
   padding-left: 18px;
-  font-size: .8125rem;
+  font-size: $fs-sm;
   line-height: 1.45;
 }

@@ -1,6 +1,8 @@
 class EmailAnalysisService
-  def initialize(email)
+  # classify: false quand on analyse tout un fil, pour ne reclasser le fil qu'une fois à la fin
+  def initialize(email, classify: true)
     @email = email
+    @classify = classify
   end
 
   def call
@@ -11,7 +13,7 @@ class EmailAnalysisService
 
     save_summary(result)
     save_metadata(result)
-    ConversationClassifier.new(@email.conversation).call if @email.conversation
+    ConversationClassifier.new(@email.conversation).call if @classify && @email.conversation
 
     @email.summary
   end

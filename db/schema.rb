@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_27_120001) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_27_180001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -67,14 +67,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_27_120001) do
     t.string "title"
     t.boolean "hidden", default: false, null: false
     t.boolean "internal", default: false, null: false
-    t.boolean "status_locked", default: false, null: false
-    t.boolean "category_locked", default: false, null: false
     t.datetime "first_email_at"
     t.datetime "last_email_at"
     t.text "summary"
     t.datetime "summary_generated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "key_points", default: [], null: false
     t.index ["category_id"], name: "index_conversations_on_category_id"
     t.index ["company_id"], name: "index_conversations_on_company_id"
     t.index ["last_email_at"], name: "index_conversations_on_last_email_at"
@@ -111,6 +110,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_27_120001) do
     t.string "in_reply_to"
     t.string "reference_ids", default: [], null: false, array: true
     t.integer "attachments_count", default: 0, null: false
+    t.text "body_text"
     t.index ["conversation_id"], name: "index_emails_on_conversation_id"
     t.index ["in_reply_to"], name: "index_emails_on_in_reply_to"
     t.index ["message_id"], name: "index_emails_on_message_id", unique: true
@@ -126,16 +126,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_27_120001) do
     t.datetime "updated_at", null: false
     t.string "display_name"
     t.index ["email"], name: "index_employees_on_email", unique: true
-  end
-
-  create_table "import_failures", force: :cascade do |t|
-    t.string "filename", null: false
-    t.text "reason"
-    t.integer "attempts", default: 1, null: false
-    t.datetime "last_attempt_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["filename"], name: "index_import_failures_on_filename", unique: true
   end
 
   create_table "prompts", force: :cascade do |t|
