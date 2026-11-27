@@ -1,16 +1,17 @@
 From: Sarah LEMOINE <sarah.lemoine@kelenn-conseil.example>
-To: Soizic =?utf-8?q?QU=C3=89M=C3=89NER?= <s.quemener@ateliers-quemener.fr>
+To: Soizic =?utf-8?q?QU=C3=89M=C3=89NER?=
+ <s.quemener@ateliers-du-grand-lavoir.example>
 Subject: RE: Mise =?utf-8?q?=C3=A0?= jour du DUERP
 Date: Mon, 23 Nov 2026 14:35:00 +0100
 Message-ID: <demo-aq-duerp-03@kelenn-conseil.example>
-In-Reply-To: <demo-aq-duerp-02@ateliers-quemener.fr>
+In-Reply-To: <demo-aq-duerp-02@ateliers-du-grand-lavoir.example>
 References: <demo-aq-duerp-01@kelenn-conseil.example>
- <demo-aq-duerp-02@ateliers-quemener.fr>
+ <demo-aq-duerp-02@ateliers-du-grand-lavoir.example>
 X-Jeu-De-Test: Fil Rouge =?utf-8?b?4oCT?= email fictif
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5429231602561131706=="
+Content-Type: multipart/mixed; boundary="===============5900078858620565398=="
 
---===============5429231602561131706==
+--===============5900078858620565398==
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -23,7 +24,7 @@ il.
 Sarah Lemoine
 Juriste en droit social =E2=80=93 Kelenn Conseil
 
---===============5429231602561131706==
+--===============5900078858620565398==
 Content-Type: text/plain
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="duerp_2026.txt"
@@ -32,4 +33,4 @@ MIME-Version: 1.0
 UGnDqGNlIGpvaW50ZSBmaWN0aXZlIDogZHVlcnBfMjAyNi50eHQKSmV1IGRlIGTDqW1vbnN0cmF0
 aW9uIEZpbCByb3VnZS4K
 
---===============5429231602561131706==--
+--===============5900078858620565398==--

@@ -1,5 +1,5 @@
 # Recherche plein texte simple, insensible à la casse et aux accents : « hôtel » trouve
-# « Hotel les Embruns », « quemener » trouve « Quéméner ». La requête est découpée en mots ;
+# « Hôtel des Goélands », « quemener » trouve « Quéméner ». La requête est découpée en mots ;
 # chaque mot doit apparaître dans au moins une des colonnes, dans n'importe quel ordre.
 class TextSearch
   ACCENTED = "àáâäãåçèéêëìíîïñòóôöõùúûüýÿœæ".freeze

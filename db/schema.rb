@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_27_170001) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_27_180001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -110,6 +110,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_27_170001) do
     t.string "in_reply_to"
     t.string "reference_ids", default: [], null: false, array: true
     t.integer "attachments_count", default: 0, null: false
+    t.text "body_text"
     t.index ["conversation_id"], name: "index_emails_on_conversation_id"
     t.index ["in_reply_to"], name: "index_emails_on_in_reply_to"
     t.index ["message_id"], name: "index_emails_on_message_id", unique: true

@@ -1,15 +1,15 @@
 From: Thomas GARNIER <thomas.garnier@kelenn-conseil.example>
-To: Erwan LE DU <erwan@garage-le-du.fr>
+To: Erwan LE DU <erwan@garage-des-rochers-bleus.example>
 Subject: RE: Budget 2027 et augmentations de salaire
 Date: Tue, 24 Nov 2026 11:00:00 +0100
 Message-ID: <demo-gld-budget-02@kelenn-conseil.example>
-In-Reply-To: <demo-gld-budget-01@garage-le-du.fr>
-References: <demo-gld-budget-01@garage-le-du.fr>
+In-Reply-To: <demo-gld-budget-01@garage-des-rochers-bleus.example>
+References: <demo-gld-budget-01@garage-des-rochers-bleus.example>
 X-Jeu-De-Test: Fil Rouge =?utf-8?b?4oCT?= email fictif
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2247928491573355218=="
+Content-Type: multipart/mixed; boundary="===============1097200354212870748=="
 
---===============2247928491573355218==
+--===============1097200354212870748==
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -22,7 +22,7 @@ prises.
 Thomas Garnier
 Gestionnaire paie =E2=80=93 Kelenn Conseil
 
---===============2247928491573355218==
+--===============1097200354212870748==
 Content-Type: text/csv
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="scenarios_augmentation_2027.csv"
@@ -31,4 +31,4 @@ MIME-Version: 1.0
 UGnDqGNlIGpvaW50ZSBmaWN0aXZlIDogc2NlbmFyaW9zX2F1Z21lbnRhdGlvbl8yMDI3LmNzdgpK
 ZXUgZGUgZMOpbW9uc3RyYXRpb24gRmlsIHJvdWdlLgo=
 
---===============2247928491573355218==--
+--===============1097200354212870748==--

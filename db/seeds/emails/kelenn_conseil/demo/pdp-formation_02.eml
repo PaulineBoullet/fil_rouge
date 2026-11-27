@@ -1,15 +1,15 @@
 From: Camille TANGUY <camille.tanguy@kelenn-conseil.example>
-To: Anne-Sophie KERBRAT <as.kerbrat@pharmacie-du-port.fr>
+To: Anne-Sophie KERBRAT <as.kerbrat@pharmacie-du-quai-vert.example>
 Subject: RE: Inscription formation vaccination
 Date: Mon, 23 Nov 2026 09:25:00 +0100
 Message-ID: <demo-pdp-formation-02@kelenn-conseil.example>
-In-Reply-To: <demo-pdp-formation-01@pharmacie-du-port.fr>
-References: <demo-pdp-formation-01@pharmacie-du-port.fr>
+In-Reply-To: <demo-pdp-formation-01@pharmacie-du-quai-vert.example>
+References: <demo-pdp-formation-01@pharmacie-du-quai-vert.example>
 X-Jeu-De-Test: Fil Rouge =?utf-8?b?4oCT?= email fictif
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6800183987227470249=="
+Content-Type: multipart/mixed; boundary="===============0986906024682223343=="
 
---===============6800183987227470249==
+--===============0986906024682223343==
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -21,7 +21,7 @@ n est jointe.
 Camille Tanguy
 Consultante RH =E2=80=93 Kelenn Conseil
 
---===============6800183987227470249==
+--===============0986906024682223343==
 Content-Type: text/plain
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="convocation_14_janvier.txt"
@@ -30,4 +30,4 @@ MIME-Version: 1.0
 UGnDqGNlIGpvaW50ZSBmaWN0aXZlIDogY29udm9jYXRpb25fMTRfamFudmllci50eHQKSmV1IGRl
 IGTDqW1vbnN0cmF0aW9uIEZpbCByb3VnZS4K
 
---===============6800183987227470249==--
+--===============0986906024682223343==--

@@ -6,9 +6,9 @@ Date: Tue, 24 Nov 2026 09:05:00 +0100
 Message-ID: <demo-cdp-entretiens-01@kelenn-conseil.example>
 X-Jeu-De-Test: Fil Rouge =?utf-8?b?4oCT?= email fictif
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6250639264804486658=="
+Content-Type: multipart/mixed; boundary="===============1118531131529768915=="
 
---===============6250639264804486658==
+--===============1118531131529768915==
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -21,7 +21,7 @@ Les trames d'entretien sont jointes.
 Camille Tanguy
 Consultante RH =E2=80=93 Kelenn Conseil
 
---===============6250639264804486658==
+--===============1118531131529768915==
 Content-Type: text/csv
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="calendrier_entretiens_2027.csv"
@@ -30,4 +30,4 @@ MIME-Version: 1.0
 UGnDqGNlIGpvaW50ZSBmaWN0aXZlIDogY2FsZW5kcmllcl9lbnRyZXRpZW5zXzIwMjcuY3N2Ckpl
 dSBkZSBkw6ltb25zdHJhdGlvbiBGaWwgcm91Z2UuCg==
 
---===============6250639264804486658==--
+--===============1118531131529768915==--

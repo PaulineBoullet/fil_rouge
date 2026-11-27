@@ -73,11 +73,14 @@ Contact.where(email: %w[claire.dubois@transports-morvan.fr marc.morvan@transport
                         j.hamon@menuiserie-hamon.fr h.marchand@clinique-des-pins.fr]).update_all(state: "validated")
 
 # Jeu de démonstration supplémentaire (db/seeds/emails/kelenn_conseil/demo) : quatre autres
-# domaines tiers validés avec leurs correspondants. Biocoop Landerneau reste « à valider ».
-Company.where(domain: %w[hotel-les-embruns.fr pharmacie-du-port.fr garage-le-du.fr ateliers-quemener.fr])
+# domaines tiers validés avec leurs correspondants ; l'Épicerie Ty Douar reste « à valider ».
+# Noms et domaines inventés, en .example, pour ne rien attribuer à une vraie entreprise.
+Company.where(domain: %w[hotel-des-trois-goelands.example pharmacie-du-quai-vert.example
+                         garage-des-rochers-bleus.example ateliers-du-grand-lavoir.example])
        .update_all(state: "validated")
-Contact.where(email: %w[d.roux@clinique-des-pins.fr g.lefloch@hotel-les-embruns.fr compta@hotel-les-embruns.fr
-                        as.kerbrat@pharmacie-du-port.fr erwan@garage-le-du.fr s.quemener@ateliers-quemener.fr])
+Contact.where(email: %w[d.roux@clinique-des-pins.fr g.lefloch@hotel-des-trois-goelands.example
+                        compta@hotel-des-trois-goelands.example as.kerbrat@pharmacie-du-quai-vert.example
+                        erwan@garage-des-rochers-bleus.example s.quemener@ateliers-du-grand-lavoir.example])
        .update_all(state: "validated")
 
 puts "Terminé : #{Employee.count} collaborateurs, #{Company.count} domaines tiers, #{Contact.count} correspondants, " \

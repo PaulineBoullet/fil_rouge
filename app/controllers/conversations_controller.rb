@@ -40,8 +40,8 @@ class ConversationsController < ApplicationController
     @conversation = Conversation.includes(:company, :status, :category).find(params[:id])
   end
 
-  # Recherche dans les mails du fil : objet, synthèse et texte du mail, sans tenir compte des accents
+  # Recherche dans les mails du fil : objet, synthèse et texte du mail (sans les pièces jointes), sans tenir compte des accents
   def search(emails, query)
-    TextSearch.new(query).apply(emails, TextSearch.matching("emails.subject", "emails.summary", "emails.content"))
+    TextSearch.new(query).apply(emails, TextSearch.matching("emails.subject", "emails.summary", "emails.body_text"))
   end
 end

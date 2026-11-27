@@ -8,9 +8,9 @@ References: <demo-mh-apprenti-01@menuiserie-hamon.fr>
  <demo-mh-apprenti-02@kelenn-conseil.example>
 X-Jeu-De-Test: Fil Rouge =?utf-8?b?4oCT?= email fictif
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============9163142080234314054=="
+Content-Type: multipart/mixed; boundary="===============6080694051614706346=="
 
---===============9163142080234314054==
+--===============6080694051614706346==
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -20,7 +20,7 @@ Ci-joint la pi=C3=A8ce d'identit=C3=A9. Le CFA m'envoie la convention lundi.
 
 Julien
 
---===============9163142080234314054==
+--===============6080694051614706346==
 Content-Type: text/plain
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="piece_identite_lucas.txt"
@@ -29,4 +29,4 @@ MIME-Version: 1.0
 UGnDqGNlIGpvaW50ZSBmaWN0aXZlIDogcGllY2VfaWRlbnRpdGVfbHVjYXMudHh0CkpldSBkZSBk
 w6ltb25zdHJhdGlvbiBGaWwgcm91Z2UuCg==
 
---===============9163142080234314054==--
+--===============6080694051614706346==--

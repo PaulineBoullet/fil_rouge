@@ -1,17 +1,18 @@
-From: =?utf-8?q?Ga=C3=ABlle?= LE FLOCH <g.lefloch@hotel-les-embruns.fr>
+From:
+ =?utf-8?q?Ga=C3=ABlle?= LE FLOCH <g.lefloch@hotel-des-trois-goelands.example>
 To: Camille TANGUY <camille.tanguy@kelenn-conseil.example>
-Cc: Yann PRIGENT <compta@hotel-les-embruns.fr>
+Cc: Yann PRIGENT <compta@hotel-des-trois-goelands.example>
 Subject: RE: Saisonniers =?utf-8?b?w6l0w6k=?= 2027 : contrats
 Date: Tue, 24 Nov 2026 19:20:00 +0100
-Message-ID: <demo-hle-saison-03@hotel-les-embruns.fr>
+Message-ID: <demo-hle-saison-03@hotel-des-trois-goelands.example>
 In-Reply-To: <demo-hle-saison-02@kelenn-conseil.example>
-References: <demo-hle-saison-01@hotel-les-embruns.fr>
+References: <demo-hle-saison-01@hotel-des-trois-goelands.example>
  <demo-hle-saison-02@kelenn-conseil.example>
 X-Jeu-De-Test: Fil Rouge =?utf-8?b?4oCT?= email fictif
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2072961681606591523=="
+Content-Type: multipart/mixed; boundary="===============5552603469125866942=="
 
---===============2072961681606591523==
+--===============5552603469125866942==
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -20,7 +21,7 @@ Bonjour Camille,
 Voici la liste des postes. Yann, notre comptable, vous enverra les grilles de=
  salaire.
 
---===============2072961681606591523==
+--===============5552603469125866942==
 Content-Type: text/csv
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="postes_saison_2027.csv"
@@ -29,4 +30,4 @@ MIME-Version: 1.0
 UGnDqGNlIGpvaW50ZSBmaWN0aXZlIDogcG9zdGVzX3NhaXNvbl8yMDI3LmNzdgpKZXUgZGUgZMOp
 bW9uc3RyYXRpb24gRmlsIHJvdWdlLgo=
 
---===============2072961681606591523==--
+--===============5552603469125866942==--
