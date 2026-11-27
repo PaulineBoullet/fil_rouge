@@ -3,10 +3,62 @@
            subtitle: "Le seul réglage à renseigner : le domaine de votre organisation. L'outil en déduit le reste." %>
 
 <section class="panel-card">
-  <%= simple_form_for @setting, url: organization_path, method: :patch do |f| %>
+  <%= simple_form_for @setting, url: organization_path, method: :patch, html: { data: { controller: "theme-picker" } } do |f| %>
     <%= f.error_notification message: "Merci de corriger le champ signalé." %>
     <%= f.input :org_domain, label: "Domaine de l'organisation", placeholder: "exemple.fr",
-                hint: "Toute adresse de ce domaine est proposée comme collaborateur. Toute adresse d'un autre domaine est regroupée sous ce domaine tiers, créé à sa première apparition : une entreprise, une administration, une association… Un seul domaine en V2." %>
+                hint: "Tant qu'il n'est pas renseigné, aucun mail ne s'affiche. Toute adresse de ce domaine est un collaborateur, listé ci-dessous. Toute adresse d'un autre domaine est regroupée sous ce domaine tiers, créé à sa première apparition : une entreprise, une administration, une association… Un seul domaine en V2. Changer le domaine réattribue les adresses de tous les mails déjà en base ; un collaborateur devenu correspondant est « à valider »." %>
+    <%= f.input :org_name, label: "Nom affiché en haut à gauche", placeholder: "Par exemple : Kelenn Conseil",
+                hint: "Le nom de votre organisation, tel qu'il apparaît dans la barre du haut, devant « Fil rouge »." %>
+    <div class="mb-3">
+      <%= f.label :theme_color, "Couleur du thème", class: "form-label" %>
+      <div class="theme-picker">
+        <%= f.color_field :theme_color, class: "form-control form-control-color", title: "Choisir la couleur du thème" %>
+        <% { "Bleu canard" => "#3A908F", "Bordeaux" => "#9A5867", "Bleu nuit" => "#39364E", "Vert sapin" => "#3F6B4F", "Ardoise" => "#5A6470" }.each do |label, color| %>
+          <label class="theme-swatch" title="<%= label %>">
+            <input type="radio" name="theme_preset" value="<%= color %>" data-action="theme-picker#pick" aria-label="<%= label %>">
+            <span style="background: <%= color %>"></span>
+          </label>
+        <% end %>
+      </div>
+      <div class="form-text">La couleur du cadre, des boutons et de l'icône de l'onglet. Les textes s'adaptent pour rester lisibles.</div>
+    </div>
     <%= f.button :submit, "Enregistrer", class: "btn-primary" %>
   <% end %>
+</section>
+
+<%= render "shared/section_head", title: "Collaborateurs identifiés", count: @employees.size,
+           note: "Toutes les adresses du domaine #{@setting.org_domain.presence || "de l'organisation"} trouvées dans les mails. Il n'y a rien à valider." %>
+<% if @employees.any? %>
+  <div class="list-table">
+    <table class="table align-middle mb-0">
+      <caption class="visually-hidden">Collaborateurs identifiés</caption>
+      <thead><tr><th scope="col">Collaborateur</th><th scope="col">Fils</th><th scope="col">Dernier échange</th><th scope="col"></th></tr></thead>
+      <tbody>
+        <% @employees.each do |employee| %>
+          <tr>
+            <td>
+              <span class="person-cell"><%= initials_avatar(employee, size: 32) %>
+                <span><strong><%= employee.name %></strong><br><span class="muted-small"><%= employee.email %></span></span>
+              </span>
+            </td>
+            <td><%= @conversation_counts.fetch(employee.id, 0) %></td>
+            <td><%= @last_exchange[employee.id] ? day_label(@last_exchange[employee.id].to_date) : "—" %></td>
+            <td class="text-end"><%= link_to "Modifier le nom", edit_employee_path(employee), class: "btn btn-sm btn-outline-secondary", data: { turbo_frame: "modal" } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p class="muted-small">Aucun collaborateur identifié pour l'instant<%= " : renseignez d'abord le domaine" if @setting.org_domain.blank? %>.</p>
+<% end %>
+
+<section class="panel-card">
+  <h2 class="section-title">Relancer l'identification</h2>
+  <p class="muted-small">
+    Relit tous les mails déjà en base avec le domaine ci-dessus : chaque adresse est rattachée à un collaborateur ou
+    à un correspondant, et les mails sans fil (repris de la V1) sont rattachés à un fil. Un collaborateur devenu correspondant est « à valider » ; les correspondants gardent leur état.
+  </p>
+  <%= button_to "Relancer l'identification", reidentify_organization_path, class: "btn btn-outline-secondary",
+                form: { data: { turbo_confirm: "Relire tous les mails en base ? Cela peut prendre quelques secondes." } } %>
 </section>

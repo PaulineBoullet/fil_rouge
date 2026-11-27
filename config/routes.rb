@@ -22,10 +22,10 @@ Rails.application.routes.draw do
 
   # Paramètres
   scope "parametres" do
-    resource :organization, path: "mon-domaine", only: %i[show update], controller: "settings"
-    resources :employees, path: "collaborateurs", except: :show do
-      patch :validate, on: :member
+    resource :organization, path: "mon-domaine", only: %i[show update], controller: "settings" do
+      post :reidentify, on: :member
     end
+    resources :employees, path: "collaborateurs", only: %i[edit update]
     resources :companies, path: "domaines-tiers", except: :show do
       patch :validate, on: :member
     end
@@ -46,6 +46,8 @@ Rails.application.routes.draw do
     end
     resources :import_failures, path: "mails-en-erreur", only: :index
   end
+
+  get "icone" => "brand_icons#show", as: :brand_icon
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

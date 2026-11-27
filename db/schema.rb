@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_26_160008) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_27_120001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -124,10 +124,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_26_160008) do
     t.string "last_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "state", default: "pending", null: false
     t.string "display_name"
     t.index ["email"], name: "index_employees_on_email", unique: true
-    t.index ["state"], name: "index_employees_on_state"
   end
 
   create_table "import_failures", force: :cascade do |t|
@@ -152,6 +150,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_26_160008) do
     t.string "org_domain"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "org_name"
+    t.string "theme_color", default: "#3A908F", null: false
   end
 
   create_table "solid_cable_messages", force: :cascade do |t|

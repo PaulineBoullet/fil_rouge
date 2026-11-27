@@ -3,7 +3,7 @@ class ConversationsController < ApplicationController
   before_action :set_conversation
 
   def show
-    emails = @conversation.emails.displayable.includes(email_participants: %i[contact employee])
+    emails = @conversation.emails.includes(email_participants: %i[contact employee])
     emails = filter_emails(emails)
     @days = emails.to_a.sort_by { |e| [e.sent_at || Time.at(0), e.id] }.group_by(&:day).sort_by { |day, _| day || Date.new(0) }.reverse
     @people = @conversation.participants.sort_by(&:name)

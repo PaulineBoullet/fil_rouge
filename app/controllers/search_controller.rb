@@ -11,7 +11,7 @@ class SearchController < ApplicationController
     @contacts = Contact.validated.includes(:company)
                        .where("display_name ILIKE :q OR first_name ILIKE :q OR last_name ILIKE :q OR email ILIKE :q", q: pattern)
                        .by_name.limit(LIMIT)
-    @employees = Employee.validated
+    @employees = Employee
                          .where("display_name ILIKE :q OR first_name ILIKE :q OR last_name ILIKE :q OR email ILIKE :q", q: pattern)
                          .by_name.limit(LIMIT)
     subjects = Email.where("subject ILIKE ?", pattern).select(:conversation_id)

@@ -1,0 +1,30 @@
+// Couleur du thème, choisie dans Mon domaine.
+// Le layout pose les valeurs calculées (ThemeColors) sur l'élément <body> ; celles-ci ne
+// servent que si elles manquent. --theme-on est la couleur du texte posé sur le cadre.
+:root {
+  --theme: #3A908F;
+  --theme-dark: #226160;
+  --theme-soft: #E6F2F2;
+  --theme-blush: #A9D3D2;
+  --theme-on: #FFFFFF;
+}
+
+// Boutons principaux et champs actifs dans la couleur du thème
+.btn-primary {
+  --bs-btn-bg: var(--theme-dark);
+  --bs-btn-border-color: var(--theme-dark);
+  --bs-btn-hover-bg: color-mix(in srgb, var(--theme-dark) 85%, #000);
+  --bs-btn-hover-border-color: color-mix(in srgb, var(--theme-dark) 85%, #000);
+  --bs-btn-active-bg: color-mix(in srgb, var(--theme-dark) 75%, #000);
+  --bs-btn-active-border-color: color-mix(in srgb, var(--theme-dark) 75%, #000);
+  --bs-btn-disabled-bg: var(--theme-dark);
+  --bs-btn-disabled-border-color: var(--theme-dark);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--theme);
+  box-shadow: 0 0 0 .25rem color-mix(in srgb, var(--theme) 25%, transparent);
+}
+
+.form-check-input:checked { background-color: var(--theme-dark); border-color: var(--theme-dark); }

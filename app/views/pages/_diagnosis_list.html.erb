@@ -1,0 +1,9 @@
+<%# locals: (diagnosis:) %>
+<ul class="diagnosis-list">
+  <% diagnosis.reasons.each do |reason| %>
+    <li>
+      <span><%= reason.message %></span>
+      <%= link_to reason.link_label, reason.path %>
+    </li>
+  <% end %>
+</ul>
