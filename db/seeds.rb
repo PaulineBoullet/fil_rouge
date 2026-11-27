@@ -40,7 +40,11 @@ categories = [
 ].each_with_index.to_h { |(name, description), i| [name, Category.create!(name: name, description: description, position: i)] }
 
 Prompt.create!(name: "Prompt par défaut", is_default: true,
-               content: "Résume les échanges avec ce domaine tiers en quatre phrases au plus. Indique les demandes en attente, les décisions prises, les échéances et les pièces reçues ou manquantes.")
+               content: "Tu assistes une personne qui doit garder une vue d'ensemble des échanges par mail " \
+                        "circulant dans plusieurs boîtes mail. Elle n'a pas le temps de lire chaque mail : " \
+                        "pour chacun, elle veut savoir en quelques secondes de quoi il s'agit, dans quelle " \
+                        "catégorie il se range et à quel point il est urgent.")
+                        
 rh = Prompt.create!(name: "Accompagnement RH",
                     content: "Mets en avant les sujets de recrutement, de paie et de formation. Pour chaque fil, indique l'action attendue du cabinet et son échéance.")
 Prompt.create!(name: "Suivi comptable TPE",

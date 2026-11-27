@@ -22,7 +22,7 @@ class CompanyDaySummaryService
     end
     return if lines.empty?
 
-    instructions = [INSTRUCTIONS, @company.effective_prompt&.content].compact_blank.join("\n\n")
+    instructions = PromptBuilder.new(@company).instructions_for(INSTRUCTIONS)
     text = OpenaiService.new.summarize("Domaine tiers : #{@company.name}\nJour : #{I18n.l(@day, format: :long)}\n\n#{lines.join("\n")}",
                                        instructions: instructions)
     summary = CompanySummary.find_or_initialize_by(company: @company, day: @day)
