@@ -451,16 +451,15 @@
 .message {
   display: flex;
 
-  // Toute la largeur du bloc, avec un léger retrait du côté opposé pour garder le sens
-  &--theirs { padding-right: 48px; }
-  &--mine { padding-left: 48px; }
+  // Reçus calés à gauche du bloc, envoyés calés à droite
+  &--theirs { justify-content: flex-start; }
+  &--mine { justify-content: flex-end; }
 
   &__bubble {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    flex: 1;
-    min-width: 0;
+    max-width: 72%;
     padding: 12px 16px;
     border-radius: 18px;
     text-decoration: none;
