@@ -24,7 +24,7 @@
 
     <% if card.status || card.category %>
       <div class="fil-card__tags">
-        <%= status_sticker(card.status, floating: false) %>
+        <%= status_sticker(card.status) %>
         <% if card.category %><span class="category-chip"><%= card.category.name %></span><% end %>
       </div>
     <% end %>

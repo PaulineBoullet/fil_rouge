@@ -52,7 +52,7 @@
         <tr>
           <td class="fw-semibold"><%= index + 1 %></td>
           <td><%= text_field_tag "status[name]", status.name, form: form_id, class: "form-control", aria: { label: "Nom du statut #{status.name}" } %></td>
-          <td><%= status_sticker(status, floating: false) %></td>
+          <td><%= status_sticker(status) %></td>
           <td><%= text_area_tag "status[description]", status.description, form: form_id, rows: 3, class: "form-control",
                                 placeholder: "Décrivez quand l'IA doit choisir cette valeur", aria: { label: "Description du statut #{status.name}" } %></td>
           <td><%= @status_counts.fetch(status.id, 0) %></td>

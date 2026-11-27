@@ -14,11 +14,6 @@ class Company < ApplicationRecord
   validates :domain, uniqueness: true
   validates :domain, format: { with: Setting::DOMAIN_FORMAT, message: "doit être un nom de domaine, par exemple exemple.fr" }
 
-  # Prompt utilisé pour les synthèses : le prompt spécifique, sinon le prompt par défaut
-  def effective_prompt
-    prompt || Prompt.default_prompt
-  end
-
   def initials
     name.to_s.split(/[\s-]+/).reject { |w| w.length < 3 }.first(2).map { |w| w[0] }.join.upcase.presence ||
       name.to_s.first(2).upcase

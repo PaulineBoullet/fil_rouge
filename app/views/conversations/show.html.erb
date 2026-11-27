@@ -54,7 +54,7 @@
         <span class="classify__origin"><%= conversation.status_locked? ? "choisie par vous" : (conversation.status ? "proposée par l'IA" : "") %></span>
       </div>
       <div class="classify__value <%= "classify__value--empty" unless conversation.status %>">
-        <%= status_sticker(conversation.status, floating: false) %>
+        <%= status_sticker(conversation.status) %>
         <%= f.collection_select :status_id, Status.ordered, :id, :name, { include_blank: "Sans priorité" },
                                 class: "classify__select", aria: { label: "Changer la priorité" }, data: { action: "change->autosubmit#submit" } %>
       </div>

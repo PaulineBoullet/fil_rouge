@@ -58,13 +58,6 @@ class OpenaiService
     @client = OpenAI::Client.new(api_key: api_key)
   end
 
-  def test_connection
-    @client.responses.create(
-      model: MODEL,
-      input: "Réponds simplement : Bonjour, la connexion fonctionne !"
-    )
-  end
-
   # instructions : consignes complètes, assemblées par PromptBuilder
   def analyze_email(content, instructions: PromptBuilder.new.email_instructions)
     response = @client.responses.create(

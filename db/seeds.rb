@@ -44,7 +44,7 @@ Prompt.create!(name: "Suivi comptable TPE",
                content: "Liste les pièces comptables reçues et celles qui manquent. Signale tout écart entre un montant annoncé dans le mail et celui d'une pièce jointe.")
 
 # Import des mails, comme le ferait l'import nocturne
-paths = Dir.glob(Rails.root.join("db/seeds/emails/{kelenn_conseil,volumineux}/**/*.eml")).sort
+paths = Dir.glob(Rails.root.join("db/seeds/emails/kelenn_conseil/**/*.eml")).sort
 results = EmailImporter.import_files(paths)
 puts "  #{results.count { |r| r.status == :imported }} mails importés, " \
      "#{results.count { |r| r.status == :duplicate }} doublons, #{results.count { |r| r.status == :failed }} en erreur."
