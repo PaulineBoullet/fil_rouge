@@ -17,6 +17,7 @@ class DocumentExtractor
     return analyze_visual if %w[.jpg .jpeg .png].include?(extension)
     return extract_docx if extension == ".docx"
     return extract_xlsx if extension == ".xlsx"
+    return extract_text_file if %w[.txt .csv .md].include?(extension)
 
     "Format non pris en charge : #{extension}"
   end
@@ -29,6 +30,11 @@ class DocumentExtractor
   def extract_pdf
     reader = PDF::Reader.new(StringIO.new(@attachment[:content]))
     reader.pages.map(&:text).join("\n")
+  end
+
+  # Fichiers texte (notes, exports CSV) : lus tels quels, en UTF-8
+  def extract_text_file
+    @attachment[:content].to_s.dup.force_encoding("UTF-8").scrub.strip
   end
 
   def extract_docx

@@ -32,9 +32,12 @@
     <% if conversation.summary.present? %>
       <p class="synth__text"><%= conversation.summary %></p>
       <% if conversation.key_points.any? %>
-        <ul class="synth__points" aria-label="Points clés du fil">
-          <% conversation.key_points.each do |point| %><li><%= point %></li><% end %>
-        </ul>
+        <div class="synth__points">
+          <h3 class="synth__points-title"><%= icon(:alert, size: 15) %> À retenir</h3>
+          <ul>
+            <% conversation.key_points.each do |point| %><li><%= point %></li><% end %>
+          </ul>
+        </div>
       <% end %>
     <% else %>
       <p class="synth__text synth__text--empty">La synthèse sera rédigée par l'IA lors de sa prochaine analyse, toutes les 15 minutes. Vous pouvez aussi la demander dès maintenant.</p>

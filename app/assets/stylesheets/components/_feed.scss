@@ -745,22 +745,27 @@
 
   // Points clés du fil : échéances, montants, pièces manquantes encore d'actualité
   &__points {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid var(--theme-blush);
+    border-left: 4px solid var(--theme-dark);
 
-    li {
-      padding: 5px 12px;
-      border-radius: 999px;
-      background: #fff;
-      border: 1px solid var(--theme-blush);
-      font-size: $fs-sm;
-      font-weight: 600;
-      color: var(--theme-dark);
-    }
+    ul { display: flex; flex-direction: column; gap: 6px; margin: 0; padding-left: 18px; }
+    li { font-size: $fs-md; font-weight: 600; line-height: 1.45; color: $ink; }
+    li::marker { color: var(--theme-dark); }
+  }
+
+  &__points-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 8px;
+    font-size: $fs-xs;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--theme-dark);
   }
 
   &__foot {
