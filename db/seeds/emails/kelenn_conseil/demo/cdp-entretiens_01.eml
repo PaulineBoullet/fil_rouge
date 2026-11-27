@@ -1,0 +1,33 @@
+From: Camille TANGUY <camille.tanguy@kelenn-conseil.example>
+To: Dr =?utf-8?q?H=C3=A9l=C3=A8ne?= MARCHAND <h.marchand@clinique-des-pins.fr>
+Cc: Damien ROUX <d.roux@clinique-des-pins.fr>
+Subject: Planning des entretiens annuels 2027
+Date: Tue, 24 Nov 2026 09:05:00 +0100
+Message-ID: <demo-cdp-entretiens-01@kelenn-conseil.example>
+X-Jeu-De-Test: Fil Rouge =?utf-8?b?4oCT?= email fictif
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============6250639264804486658=="
+
+--===============6250639264804486658==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Bonjour Docteur,
+
+Comme convenu, voici le calendrier des entretiens annuels : du 11 au 22 janvi=
+er, deux demi-journ=C3=A9es par semaine.
+Les trames d'entretien sont jointes.
+
+Camille Tanguy
+Consultante RH =E2=80=93 Kelenn Conseil
+
+--===============6250639264804486658==
+Content-Type: text/csv
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="calendrier_entretiens_2027.csv"
+MIME-Version: 1.0
+
+UGnDqGNlIGpvaW50ZSBmaWN0aXZlIDogY2FsZW5kcmllcl9lbnRyZXRpZW5zXzIwMjcuY3N2Ckpl
+dSBkZSBkw6ltb25zdHJhdGlvbiBGaWwgcm91Z2UuCg==
+
+--===============6250639264804486658==--

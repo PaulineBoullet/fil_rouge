@@ -64,6 +64,14 @@ Company.where(domain: %w[transports-morvan.fr menuiserie-hamon.fr clinique-des-p
 Contact.where(email: %w[claire.dubois@transports-morvan.fr marc.morvan@transports-morvan.fr
                         j.hamon@menuiserie-hamon.fr h.marchand@clinique-des-pins.fr]).update_all(state: "validated")
 
+# Jeu de démonstration supplémentaire (db/seeds/emails/kelenn_conseil/demo) : quatre autres
+# domaines tiers validés avec leurs correspondants. Biocoop Landerneau reste « à valider ».
+Company.where(domain: %w[hotel-les-embruns.fr pharmacie-du-port.fr garage-le-du.fr ateliers-quemener.fr])
+       .update_all(state: "validated")
+Contact.where(email: %w[d.roux@clinique-des-pins.fr g.lefloch@hotel-les-embruns.fr compta@hotel-les-embruns.fr
+                        as.kerbrat@pharmacie-du-port.fr erwan@garage-le-du.fr s.quemener@ateliers-quemener.fr])
+       .update_all(state: "validated")
+
 # Statuts et catégories de démonstration, en attendant l'IA
 {
   "09_mail_avec_incoherences@fictif.test" => ["Urgent", "Facturation"],
@@ -74,6 +82,18 @@ Contact.where(email: %w[claire.dubois@transports-morvan.fr marc.morvan@transport
 }.each do |message_id, (status, category)|
   conversation = Email.find_by(message_id: message_id)&.conversation
   conversation&.update!(status: statuses.fetch(status), category: categories.fetch(category))
+end
+
+# Synthèses, statuts et catégories du jeu de démonstration, comme les rédigerait l'IA
+demo = JSON.parse(File.read(Rails.root.join("db/seeds/emails/kelenn_conseil/demo/syntheses.json")))
+demo["emails"].each { |message_id, summary| Email.where(message_id: message_id).update_all(summary: summary) }
+demo["conversations"].each do |message_id, attrs|
+  conversation = Email.find_by(message_id: message_id)&.conversation
+  next unless conversation
+
+  conversation.update!(status: attrs["status"] && statuses.fetch(attrs["status"]),
+                       category: attrs["category"] && categories.fetch(attrs["category"]),
+                       summary: attrs["summary"], summary_generated_at: (attrs["summary"] && Time.zone.parse("2026-11-27 07:00")))
 end
 
 puts "Terminé : #{Employee.count} collaborateurs, #{Company.count} domaines tiers, #{Contact.count} correspondants, " \
