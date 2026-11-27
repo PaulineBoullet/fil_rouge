@@ -294,6 +294,59 @@
   &__later { font-size: .75rem; font-style: italic; color: $ink-muted; white-space: nowrap; }
 }
 
+// Carte de fil compacte : étiquettes, titre, chiffres ; pas de contenu
+.fil-card--compact {
+  padding-top: 0;
+
+  .fil-card__body { padding: 14px 16px; gap: 12px; }
+  .fil-card__later { margin-left: 0; margin-top: -4px; }
+}
+
+.fil-card__tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+
+.category-chip {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid $line-strong;
+  font-size: .75rem;
+  color: $ink-muted;
+  white-space: nowrap;
+}
+
+.fil-card__title--clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.fil-card__stats {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 12px;
+  padding-top: 10px;
+  border-top: 1px solid $line;
+  font-size: .8125rem;
+  color: $ink-muted;
+
+  strong { color: $ink; font-weight: 600; }
+}
+
+.stat { display: inline-flex; align-items: baseline; gap: 4px; white-space: nowrap; }
+
+.stat__new {
+  margin-left: 4px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--theme-soft);
+  color: var(--theme-dark);
+  font-size: .75rem;
+  font-weight: 600;
+}
+
 .mail-list { display: flex; flex-direction: column; gap: 30px; }
 
 // Gommettes de statut et bulles

@@ -1,19 +1,26 @@
-<%# Carte d'un fil pour un jour (vue d'un domaine tiers et dashboard). locals: (card:) %>
-<%= link_to conversation_path(card.conversation), class: ["fil-card", ("is-stale" if card.stale?)] do %>
-  <% if card.emails_count > 1 %><span class="fil-card__sheet" aria-hidden="true"></span><% end %>
+<%# Carte d'un fil pour un jour (vue d'un domaine tiers et dashboard) : titre, priorité,
+    catégorie, nombre de messages et de nouveaux messages du jour, nombre de participants.
+    locals: (card:) %>
+<%= link_to conversation_path(card.conversation), class: ["fil-card", "fil-card--compact", ("is-stale" if card.stale?)],
+            aria: { label: [card.conversation.display_title, card.status&.name, card.category&.name,
+                             pluralize_fr(card.total_count, "message"), "#{card.new_count} ce jour",
+                             pluralize_fr(card.participants_count, "participant")].compact.join(", ") } do %>
   <div class="fil-card__body">
-    <%= status_sticker(card.status) %>
-    <%= count_bubble(card.emails_count, label: "#{pluralize_fr(card.emails_count, 'mail')} ce jour") %>
-    <span class="fil-card__title"><%= card.conversation.display_title %></span>
-    <% if card.conversation.category %>
-      <span class="category-tag"><%= card.conversation.category.name %></span>
-    <% end %>
-    <p class="fil-card__text">
-      <%= card.conversation.summary.presence || tag.span("Synthèse à venir.", class: "muted") %>
-    </p>
-    <div class="fil-card__foot">
-      <%= people_line(card.people) %>
-      <% if card.stale? %><span class="fil-card__later"><%= later_label(card.later_day).capitalize %></span><% end %>
+    <div class="fil-card__tags">
+      <%= status_sticker(card.status, floating: false) %>
+      <% if card.category %><span class="category-chip"><%= card.category.name %></span><% end %>
     </div>
+
+    <span class="fil-card__title fil-card__title--clamp"><%= card.conversation.display_title %></span>
+
+    <div class="fil-card__stats">
+      <span class="stat">
+        <strong><%= card.total_count %></strong> <%= card.total_count == 1 ? "message" : "messages" %>
+        <span class="stat__new"><%= card.new_count %> <%= card.new_count == 1 ? "nouveau" : "nouveaux" %></span>
+      </span>
+      <span class="stat"><strong><%= card.participants_count %></strong> <%= card.participants_count == 1 ? "participant" : "participants" %></span>
+    </div>
+
+    <% if card.stale? %><span class="fil-card__later"><%= later_label(card.later_day).capitalize %></span><% end %>
   </div>
 <% end %>

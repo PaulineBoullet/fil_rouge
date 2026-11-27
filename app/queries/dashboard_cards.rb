@@ -10,6 +10,7 @@ class DashboardCards
 
   def initialize(feed)
     @feed = feed
+    @conversation_cards = ConversationCards.new(feed)
   end
 
   def for(date)
@@ -32,15 +33,9 @@ class DashboardCards
   private
 
   def conversation_cards(emails, date)
-    emails.group_by(&:conversation).map do |conversation, conversation_emails|
-      latest = @feed.latest_day_by_conversation[conversation.id]
-      ConversationCards::Card.new(
-        conversation: conversation,
-        emails_count: conversation_emails.size,
-        people: conversation_emails.flat_map(&:email_participants).filter_map(&:contact).uniq,
-        later_day: latest && latest > date ? latest : nil
-      )
-    end.sort_by { |card| [card.conversation.priority_rank, card.conversation.display_title.downcase] }
+    @conversation_cards.sorted(emails.group_by(&:conversation).map { |conversation, conversation_emails|
+      @conversation_cards.card(conversation, conversation_emails, date)
+    })
   end
 
   def summaries_for(date, emails)
