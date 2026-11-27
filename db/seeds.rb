@@ -1,7 +1,7 @@
 # Données de démonstration de la V2.
 #
 # Les personnes et les domaines tiers ne sont plus créés à la main : on importe les
-# mails du jeu Kelenn Conseil, comme le ferait l'import nocturne, puis on valide une
+# mails du jeu Kelenn Conseil, comme le ferait un import automatique, puis on valide une
 # partie de ce que l'outil a découvert. Le reste est laissé « à valider » pour que les
 # écrans de paramètres aient de quoi montrer.
 #
@@ -46,11 +46,6 @@ if Category.none?
   ].each_with_index { |(name, description), i| Category.create!(name: name, description: description, position: i) }
 end
 
-# Les classements de démonstration ci-dessous visent ces noms ; un nom renommé ou supprimé
-# dans les Paramètres est simplement ignoré.
-statuses = Status.all.index_by(&:name)
-categories = Category.all.index_by(&:name)
-
 Prompt.create!(name: "Prompt par défaut", is_default: true,
                content: "Tu assistes une personne qui doit garder une vue d'ensemble des échanges par mail " \
                         "circulant dans plusieurs boîtes mail. Elle n'a pas le temps de lire chaque mail : " \
@@ -62,7 +57,7 @@ rh = Prompt.create!(name: "Accompagnement RH",
 Prompt.create!(name: "Suivi comptable TPE",
                content: "Liste les pièces comptables reçues et celles qui manquent. Signale tout écart entre un montant annoncé dans le mail et celui d'une pièce jointe.")
 
-# Import des mails, comme le ferait l'import nocturne
+# Import des mails, comme le ferait un import automatique
 paths = Dir.glob(Rails.root.join("db/seeds/emails/kelenn_conseil/**/*.eml")).sort
 results = EmailImporter.import_files(paths)
 puts "  #{results.count { |r| r.status == :imported }} mails importés, " \
@@ -85,30 +80,9 @@ Contact.where(email: %w[d.roux@clinique-des-pins.fr g.lefloch@hotel-les-embruns.
                         as.kerbrat@pharmacie-du-port.fr erwan@garage-le-du.fr s.quemener@ateliers-quemener.fr])
        .update_all(state: "validated")
 
-# Statuts et catégories de démonstration, en attendant l'IA
-{
-  "09_mail_avec_incoherences@fictif.test" => ["Urgent", "Facturation"],
-  "tm-03@transports-morvan.fr" => ["En attente d'action", "Recrutement"],
-  "04_mail_avec_pdf_texte@fictif.test" => ["En attente d'action", "Budget et paie"],
-  "06_mail_avec_word_et_excel@fictif.test" => ["En attente d'action", "Recrutement"],
-  "cvp-01@kelenn-conseil.example" => ["En attente de réponse", "Formation"]
-}.each do |message_id, (status, category)|
-  conversation = Email.find_by(message_id: message_id)&.conversation
-  conversation&.update!(status: statuses[status], category: categories[category])
-end
-
-# Synthèses, statuts et catégories du jeu de démonstration, comme les rédigerait l'IA
-demo = JSON.parse(File.read(Rails.root.join("db/seeds/emails/kelenn_conseil/demo/syntheses.json")))
-demo["emails"].each { |message_id, summary| Email.where(message_id: message_id).update_all(summary: summary) }
-demo["conversations"].each do |message_id, attrs|
-  conversation = Email.find_by(message_id: message_id)&.conversation
-  next unless conversation
-
-  conversation.update!(status: statuses[attrs["status"]], category: categories[attrs["category"]],
-                       summary: attrs["summary"], summary_generated_at: (attrs["summary"] && Time.zone.parse("2026-11-27 07:00")))
-end
-
 puts "Terminé : #{Employee.count} collaborateurs, #{Company.count} domaines tiers, #{Contact.count} correspondants, " \
      "#{Conversation.count} fils, #{Email.count} mails."
 puts "À valider : #{Company.pending.count} domaines tiers, #{Contact.pending.count} correspondants."
+puts "Aucune synthèse n'est créée : l'IA les rédige. En production, une tâche planifiée analyse les fils " \
+     "toutes les 15 minutes ; en local, lancez bin/rails fil_rouge:analyser (clé OpenAI dans .env)."
 puts "Connexion : test@filrouge.fr / password"

@@ -31,8 +31,13 @@
 
     <% if conversation.summary.present? %>
       <p class="synth__text"><%= conversation.summary %></p>
+      <% if conversation.key_points.any? %>
+        <ul class="synth__points" aria-label="Points clés du fil">
+          <% conversation.key_points.each do |point| %><li><%= point %></li><% end %>
+        </ul>
+      <% end %>
     <% else %>
-      <p class="synth__text synth__text--empty">La synthèse sera rédigée par l'IA lors du traitement de nuit. Vous pouvez aussi la demander dès maintenant.</p>
+      <p class="synth__text synth__text--empty">La synthèse sera rédigée par l'IA lors de sa prochaine analyse, toutes les 15 minutes. Vous pouvez aussi la demander dès maintenant.</p>
     <% end %>
 
     <div class="synth__foot <%= "synth__foot--stale" if @emails_after_summary.positive? %>">

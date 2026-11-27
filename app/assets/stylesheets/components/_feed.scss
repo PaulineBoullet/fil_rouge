@@ -677,6 +677,26 @@
   &__text { margin: 0; font-size: $fs-lg; line-height: 1.65; color: $ink; max-width: 80ch; }
   &__text--empty { font-size: $fs-md; color: $ink-muted; font-style: italic; }
 
+  // Points clés du fil : échéances, montants, pièces manquantes encore d'actualité
+  &__points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--theme-blush);
+      font-size: $fs-sm;
+      font-weight: 600;
+      color: var(--theme-dark);
+    }
+  }
+
   &__foot {
     display: flex;
     flex-wrap: wrap;

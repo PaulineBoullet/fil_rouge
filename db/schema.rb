@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_27_160001) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_27_170001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -73,6 +73,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_27_160001) do
     t.datetime "summary_generated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "key_points", default: [], null: false
     t.index ["category_id"], name: "index_conversations_on_category_id"
     t.index ["company_id"], name: "index_conversations_on_company_id"
     t.index ["last_email_at"], name: "index_conversations_on_last_email_at"

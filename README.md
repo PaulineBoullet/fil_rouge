@@ -20,9 +20,17 @@ L'application tourne sur http://localhost:3000. Connectez-vous avec le compte de
 
 Pour que l'IA rédige les synthèses, ajoutez votre clé dans un fichier `.env` à la racine (il n'est pas versionné) : `OPENAI_API_KEY=...`.
 
+En production, une tâche planifiée (`config/recurring.yml`) fait analyser toutes les 15 minutes les fils qui l'attendent. En local, lancez l'analyse vous-même après le seed :
+
+```bash
+bin/rails fil_rouge:analyser
+```
+
+Le bouton « Mettre à jour la synthèse » d'un fil fait la même chose pour ce seul fil.
+
 ## Données de test
 
-Le seed importe les mails fictifs rangés en fichiers `.eml` dans `db/seeds/emails/kelenn_conseil/`, comme le ferait l'import de nuit. L'organisation est Kelenn Conseil (`kelenn-conseil.example`). Les fils du 5 au 27 novembre 2026 concernent sept domaines tiers validés ; un huitième reste à valider. Les mails du dossier `demo/` arrivent avec leur synthèse, leur statut et leur catégorie, les autres attendent l'IA.
+Le seed importe les mails fictifs rangés en fichiers `.eml` dans `db/seeds/emails/kelenn_conseil/`, comme le ferait un import automatique. L'organisation est Kelenn Conseil (`kelenn-conseil.example`). Les fils du 5 au 27 novembre 2026 concernent sept domaines tiers validés ; un huitième reste à valider. Le seed ne crée aucune synthèse : c'est l'IA qui les rédige, avec la priorité, la catégorie et les points clés de chaque fil.
 
 ```bash
 bin/rails db:seed:replant   # vide les tables puis relance le seed
