@@ -622,14 +622,6 @@
   a { font-weight: 600; white-space: nowrap; }
 }
 
-.diagnosis-note {
-  font-size: $fs-sm;
-  color: $ink-muted;
-
-  > summary { cursor: pointer; width: fit-content; }
-  .diagnosis-list { margin-top: 10px; }
-}
-
 .notice-panel {
   padding: 14px 18px;
   border-radius: 20px;

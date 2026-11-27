@@ -32,13 +32,6 @@ class DisplayDiagnosis
     reasons.any?
   end
 
-  # Fils qu'une validation ferait apparaître (hors masqués et internes)
-  def awaiting_validation_count
-    return 0 if Setting.org_domain.blank?
-
-    company_pending.count + contact_pending.count
-  end
-
   private
 
   def domain_reason
